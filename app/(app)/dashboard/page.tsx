@@ -50,8 +50,8 @@ export default function DashboardPage() {
           <Image
             src="/logo.png"
             alt="Security System Logo"
-            width={32}
-            height={32}
+            width={80}
+            height={80}
             className="object-contain"
             priority
           />

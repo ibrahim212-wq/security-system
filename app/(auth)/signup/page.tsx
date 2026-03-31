@@ -12,7 +12,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import RadarShieldLogo from "@/components/RadarShieldLogo";
+import Image from "next/image";
 
 // ── Person icon (right side of full-name input) ──
 function UserIcon() {
@@ -126,9 +126,16 @@ export default function SignupPage() {
     >
       <div className="w-full max-w-xs flex flex-col items-center">
 
-        {/* ── Hexagonal radar logo ── */}
-        <div className="mb-8 drop-shadow-[0_0_24px_rgba(0,207,255,0.45)]">
-          <RadarShieldLogo size={110} />
+        {/* ── Logo ── */}
+        <div className="mb-10">
+          <Image
+            src="/logo.png"
+            alt="Security System Logo"
+            width={180}
+            height={180}
+            className="object-contain"
+            priority
+          />
         </div>
 
         {/* ── Page heading ── */}
