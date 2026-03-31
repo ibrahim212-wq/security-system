@@ -71,7 +71,7 @@ export default function LoginPage() {
 
         {/* ── Logo ── */}
         <div className="mb-10">
-          <Image src="/logo.png" alt="Security System Logo" width={185} height={185} className="object-contain" priority />
+          <Image src="/logo.png" alt="Security System Logo" width={205} height={205} className="object-contain" priority />
         </div>
 
         {/* ── Form (no card, fields float on the blue bg) ── */}
