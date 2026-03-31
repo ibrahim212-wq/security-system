@@ -1,189 +1,189 @@
 // ─────────────────────────────────────────────
 // Dashboard Page — /dashboard
 //
-// Mobile-first security dashboard matching the reference UI.
-// Royal blue gradient background, stat cards with glow borders,
-// recent events list with severity badges, fixed bottom nav.
+// Pixel-accurate recreation of the reference mobile UI:
+// solid blue top app-bar, white content body, light gray
+// info rows, red/green action buttons, solid blue bottom nav.
 // ─────────────────────────────────────────────
 
+import Image from "next/image";
 import {
-  ShieldCheck,
-  Camera,
+  Menu,
   Bell,
-  Thermometer,
-  DoorOpen,
-  AlertTriangle,
-  Activity,
+  MapPin,
+  X,
+  Check,
+  User,
 } from "lucide-react";
-import BottomNav from "@/components/BottomNav";
+import DashboardBottomNav from "@/components/DashboardBottomNav";
 
-// ── Severity badge colors matching reference exactly ──
-const severityStyles = {
-  high:   { bg: "bg-[#D96B8B]/20", border: "border-[#D96B8B]/40", text: "text-[#F08AAA]", dot: "bg-[#F08AAA]" },
-  medium: { bg: "bg-[#D8B84B]/20", border: "border-[#D8B84B]/40", text: "text-[#F2D766]", dot: "bg-[#F2D766]" },
-  low:    { bg: "bg-[#3BAE73]/20", border: "border-[#3BAE73]/40", text: "text-[#7EE39D]", dot: "bg-[#7EE39D]" },
-};
-
-// ── Stat card data ──
-const stats = [
-  { label: "Cameras",    value: "4 / 4", icon: Camera,      iconBg: "bg-blue-500/20",   iconColor: "text-blue-300" },
-  { label: "Alerts",     value: "1",     icon: Bell,        iconBg: "bg-[#D96B8B]/20",  iconColor: "text-[#F08AAA]" },
-  { label: "Sensors",    value: "12",    icon: Thermometer, iconBg: "bg-[#3BAE73]/20",  iconColor: "text-[#7EE39D]" },
-  { label: "Open Doors", value: "0",     icon: DoorOpen,    iconBg: "bg-[#D8B84B]/20",  iconColor: "text-[#F2D766]" },
-];
-
-// ── Recent event data ──
-const recentEvents = [
-  {
-    id: "1",
-    icon: Activity,
-    description: "Motion detected at front door",
-    location: "Front Door",
-    timestamp: "2 min ago",
-    severity: "high" as const,
-  },
-  {
-    id: "2",
-    icon: Camera,
-    description: "Camera 2 came online",
-    location: "Backyard",
-    timestamp: "15 min ago",
-    severity: "low" as const,
-  },
-  {
-    id: "3",
-    icon: DoorOpen,
-    description: "Side gate opened",
-    location: "Side Gate",
-    timestamp: "1 hr ago",
-    severity: "medium" as const,
-  },
+// ── Alert detail rows — matches the reference card content ──
+const detailRows = [
+  { label: "Name",              value: "Ziyad Mostafa Elsayed Ismail Awad" },
+  { label: "ID Number",         value: "3030xxxxxxxxxx" },
+  { label: "Age",               value: "22" },
+  { label: "Similarity",        value: "85 %" },
+  { label: "Time of detection", value: "9:00 PM" },
+  { label: "Date",              value: "2026/01/20" },
+  { label: "Legal case",        value: "Thief" },
 ];
 
 export default function DashboardPage() {
   return (
-    // ── Full page: deep royal blue gradient, mobile-first ──
-    <div
-      className="min-h-screen pb-24"
-      style={{ background: "linear-gradient(180deg, #182B6B 0%, #1B3080 18%, #1F56C2 55%, #245ACB 100%)" }}
-    >
-      {/* ── Centered phone-width content column ── */}
-      <div className="max-w-sm mx-auto px-4 pt-10">
+    // ── Outer wrapper: white body fills everything below blue bar ──
+    <div className="min-h-screen bg-white flex flex-col max-w-sm mx-auto shadow-2xl">
 
-        {/* ── TOP HEADER ── */}
-        <div className="flex items-start justify-between mb-7">
-          <div>
-            <h1 className="text-[28px] font-extrabold text-white tracking-tight leading-tight">
-              Dashboard
-            </h1>
-            <p className="text-[#A9BCEB] text-sm mt-0.5 font-normal">
-              Welcome back, Ibrahim
-            </p>
-          </div>
+      {/* ══════════════════════════════════════════
+          BLUE TOP APP BAR
+      ══════════════════════════════════════════ */}
+      <header
+        className="flex items-center justify-between px-4 py-3"
+        style={{ background: "#1A44CC" }}
+      >
+        {/* Hamburger menu */}
+        <button aria-label="Menu">
+          <Menu size={24} color="#fff" />
+        </button>
 
-          {/* Armed badge — green pill */}
-          <div
-            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 mt-1"
-            style={{ background: "rgba(59,174,115,0.18)", border: "1px solid rgba(126,227,157,0.35)" }}
+        {/* Center logo + title */}
+        <div className="flex items-center gap-2">
+          <Image
+            src="/logo.png"
+            alt="Security System Logo"
+            width={32}
+            height={32}
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        {/* Notification bell with red dot */}
+        <div className="relative">
+          <Bell size={22} color="#fff" />
+          <span
+            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold text-white"
+            style={{ background: "#E8334A" }}
           >
-            <ShieldCheck size={13} className="text-[#7EE39D]" />
-            <span className="text-[#7EE39D] text-xs font-bold tracking-wide">Armed</span>
+            1
+          </span>
+        </div>
+      </header>
+
+      {/* ══════════════════════════════════════════
+          PAGE TITLE AREA — still on blue bg
+      ══════════════════════════════════════════ */}
+      <div
+        className="px-4 pt-3 pb-5 text-center"
+        style={{ background: "#1A44CC" }}
+      >
+        <h1 className="text-white text-[26px] font-extrabold tracking-wide">
+          Security System
+        </h1>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          WHITE CONTENT BODY
+      ══════════════════════════════════════════ */}
+      <div className="flex-1 bg-white px-4 pt-5 pb-28 flex flex-col gap-4">
+
+        {/* ── "Security Name" pill header ── */}
+        <div
+          className="flex items-center justify-between rounded-full px-4 py-2"
+          style={{ background: "#1A44CC" }}
+        >
+          <span className="text-white text-sm font-semibold tracking-wide">
+            Security Name
+          </span>
+          {/* Sliders/filter icon */}
+          <div className="flex gap-0.5">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="block w-0.5 rounded-full bg-white"
+                style={{ height: i === 1 ? 14 : 10, marginTop: i === 1 ? 0 : 2 }}
+              />
+            ))}
           </div>
         </div>
 
-        {/* ── STATS GRID — 2 columns ── */}
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          {stats.map(({ label, value, icon: Icon, iconBg, iconColor }) => (
+        {/* ── Alert header row ── */}
+        <div className="flex items-center gap-2 px-1">
+          <span className="text-[#1A1A1A] text-base font-bold">
+            Criminal detected
+          </span>
+          {/* Pink heart/alert emoji pill */}
+          <span
+            className="text-xs px-2 py-0.5 rounded-full font-bold"
+            style={{ background: "#FDEEF2", color: "#E8334A" }}
+          >
+            ♥
+          </span>
+        </div>
+
+        {/* ── Delivery / location row ── */}
+        <div
+          className="flex items-center gap-3 rounded-2xl px-3 py-3"
+          style={{ background: "#F2F4F8" }}
+        >
+          {/* Avatar placeholder */}
+          <div
+            className="w-10 h-10 rounded-full shrink-0 overflow-hidden flex items-center justify-center"
+            style={{ background: "#C8D0E7" }}
+          >
+            <User size={22} color="#7A8BB0" />
+          </div>
+          <div>
+            <p className="text-[11px] text-[#7A8BB0] font-medium">Deliver from</p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <MapPin size={11} color="#E8334A" />
+              <span className="text-[13px] font-semibold text-[#1A1A1A]">
+                Mall Masr , Gate 3
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Detail info rows ── */}
+        <div className="flex flex-col gap-2">
+          {detailRows.map(({ label, value }) => (
             <div
               key={label}
-              className="rounded-2xl p-4 flex items-center gap-3"
-              style={{
-                background: "rgba(39,70,163,0.55)",
-                border: "1px solid rgba(46,99,232,0.55)",
-                boxShadow: "0 0 16px rgba(46,99,232,0.18), inset 0 1px 0 rgba(255,255,255,0.06)",
-                backdropFilter: "blur(8px)",
-              }}
+              className="rounded-xl px-4 py-3"
+              style={{ background: "#F2F4F8" }}
             >
-              {/* Icon bubble */}
-              <div className={`${iconBg} rounded-xl p-2.5 shrink-0`}>
-                <Icon size={20} className={iconColor} />
-              </div>
-
-              {/* Value + label */}
-              <div>
-                <p className="text-[#F5F7FF] text-xl font-extrabold leading-none">{value}</p>
-                <p className="text-[#A9BCEB] text-[11px] mt-1 font-medium">{label}</p>
-              </div>
+              <p className="text-[13px] text-[#1A1A1A]">
+                <span className="font-bold">{label} : </span>
+                <span className="font-normal text-[#3A3A3A]">{value}</span>
+              </p>
             </div>
           ))}
         </div>
 
-        {/* ── RECENT EVENTS CONTAINER ── */}
-        <div
-          className="rounded-3xl p-4"
-          style={{
-            background: "rgba(39,70,163,0.45)",
-            border: "1px solid rgba(46,99,232,0.5)",
-            boxShadow: "0 0 24px rgba(46,99,232,0.15), inset 0 1px 0 rgba(255,255,255,0.05)",
-            backdropFilter: "blur(10px)",
-          }}
-        >
-          {/* Section title */}
-          <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle size={15} className="text-[#F2D766]" />
-            <h2 className="text-[#F5F7FF] text-sm font-bold tracking-wide uppercase">
-              Recent Events
-            </h2>
-          </div>
+        {/* ── Action buttons: ✕ Reject  ✓ Approve ── */}
+        <div className="flex items-center justify-center gap-10 mt-2">
+          {/* Red X button */}
+          <button
+            aria-label="Reject"
+            className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+            style={{ background: "#fff", border: "3px solid #E8334A" }}
+          >
+            <X size={28} color="#E8334A" strokeWidth={3} />
+          </button>
 
-          {/* Event rows */}
-          <ul className="flex flex-col gap-2.5">
-            {recentEvents.map((event) => {
-              const s = severityStyles[event.severity];
-              const Icon = event.icon;
-              return (
-                <li
-                  key={event.id}
-                  className="flex items-center gap-3 rounded-2xl px-3 py-3"
-                  style={{
-                    background: "rgba(27,48,128,0.6)",
-                    border: "1px solid rgba(46,99,232,0.35)",
-                  }}
-                >
-                  {/* Type icon bubble */}
-                  <div className="bg-blue-500/20 rounded-xl p-2 shrink-0">
-                    <Icon size={16} className="text-blue-300" />
-                  </div>
-
-                  {/* Description + location */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[#F5F7FF] text-[13px] font-semibold leading-snug truncate">
-                      {event.description}
-                    </p>
-                    <p className="text-[#A9BCEB] text-[11px] mt-0.5">{event.location}</p>
-                  </div>
-
-                  {/* Right side: badge + time */}
-                  <div className="flex flex-col items-end gap-1.5 shrink-0">
-                    {/* Severity badge */}
-                    <span
-                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold border ${s.bg} ${s.border} ${s.text}`}
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                      {event.severity}
-                    </span>
-                    <span className="text-[#A9BCEB] text-[10px]">{event.timestamp}</span>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          {/* Green check button */}
+          <button
+            aria-label="Approve"
+            className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+            style={{ background: "#fff", border: "3px solid #22C55E" }}
+          >
+            <Check size={28} color="#22C55E" strokeWidth={3} />
+          </button>
         </div>
 
       </div>
 
       {/* ── Bottom navigation ── */}
-      <BottomNav />
+      <DashboardBottomNav />
     </div>
   );
 }
