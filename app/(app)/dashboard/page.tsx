@@ -1,13 +1,11 @@
 // ─────────────────────────────────────────────
 // Dashboard Page — /dashboard
 //
-// Main home screen after login. Shows a summary of the security
-// system status: armed/disarmed state, active camera count,
-// and the most recent events.
+// Mobile-first security dashboard matching the reference UI.
+// Royal blue gradient background, stat cards with glow borders,
+// recent events list with severity badges, fixed bottom nav.
 // ─────────────────────────────────────────────
 
-import PageShell from "@/components/PageShell";
-import StatusBadge from "@/components/StatusBadge";
 import {
   ShieldCheck,
   Camera,
@@ -15,13 +13,30 @@ import {
   Thermometer,
   DoorOpen,
   AlertTriangle,
+  Activity,
 } from "lucide-react";
+import BottomNav from "@/components/BottomNav";
 
-// Placeholder recent events — replace with real Supabase data later
+// ── Severity badge colors matching reference exactly ──
+const severityStyles = {
+  high:   { bg: "bg-[#D96B8B]/20", border: "border-[#D96B8B]/40", text: "text-[#F08AAA]", dot: "bg-[#F08AAA]" },
+  medium: { bg: "bg-[#D8B84B]/20", border: "border-[#D8B84B]/40", text: "text-[#F2D766]", dot: "bg-[#F2D766]" },
+  low:    { bg: "bg-[#3BAE73]/20", border: "border-[#3BAE73]/40", text: "text-[#7EE39D]", dot: "bg-[#7EE39D]" },
+};
+
+// ── Stat card data ──
+const stats = [
+  { label: "Cameras",    value: "4 / 4", icon: Camera,      iconBg: "bg-blue-500/20",   iconColor: "text-blue-300" },
+  { label: "Alerts",     value: "1",     icon: Bell,        iconBg: "bg-[#D96B8B]/20",  iconColor: "text-[#F08AAA]" },
+  { label: "Sensors",    value: "12",    icon: Thermometer, iconBg: "bg-[#3BAE73]/20",  iconColor: "text-[#7EE39D]" },
+  { label: "Open Doors", value: "0",     icon: DoorOpen,    iconBg: "bg-[#D8B84B]/20",  iconColor: "text-[#F2D766]" },
+];
+
+// ── Recent event data ──
 const recentEvents = [
   {
     id: "1",
-    type: "motion" as const,
+    icon: Activity,
     description: "Motion detected at front door",
     location: "Front Door",
     timestamp: "2 min ago",
@@ -29,7 +44,7 @@ const recentEvents = [
   },
   {
     id: "2",
-    type: "camera" as const,
+    icon: Camera,
     description: "Camera 2 came online",
     location: "Backyard",
     timestamp: "15 min ago",
@@ -37,7 +52,7 @@ const recentEvents = [
   },
   {
     id: "3",
-    type: "door" as const,
+    icon: DoorOpen,
     description: "Side gate opened",
     location: "Side Gate",
     timestamp: "1 hr ago",
@@ -45,78 +60,130 @@ const recentEvents = [
   },
 ];
 
-// Quick-stat cards shown at the top of the dashboard
-const stats = [
-  { label: "Cameras",    value: "4 / 4",  icon: Camera,      color: "text-blue-400" },
-  { label: "Alerts",     value: "1",       icon: Bell,        color: "text-red-400" },
-  { label: "Sensors",    value: "12",      icon: Thermometer, color: "text-green-400" },
-  { label: "Open Doors", value: "0",       icon: DoorOpen,    color: "text-yellow-400" },
-];
-
 export default function DashboardPage() {
   return (
-    <PageShell>
-      <div className="p-4 md:p-8 max-w-3xl mx-auto">
+    // ── Full page: deep royal blue gradient, mobile-first ──
+    <div
+      className="min-h-screen pb-24"
+      style={{ background: "linear-gradient(180deg, #182B6B 0%, #1B3080 18%, #1F56C2 55%, #245ACB 100%)" }}
+    >
+      {/* ── Centered phone-width content column ── */}
+      <div className="max-w-sm mx-auto px-4 pt-10">
 
-        {/* ── Header ── */}
-        <div className="flex items-center justify-between mb-6">
+        {/* ── TOP HEADER ── */}
+        <div className="flex items-start justify-between mb-7">
           <div>
-            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-            <p className="text-brand-300 text-sm mt-0.5">Welcome back, Ibrahim</p>
+            <h1 className="text-[28px] font-extrabold text-white tracking-tight leading-tight">
+              Dashboard
+            </h1>
+            <p className="text-[#A9BCEB] text-sm mt-0.5 font-normal">
+              Welcome back, Ibrahim
+            </p>
           </div>
-          {/* System armed indicator */}
-          <div className="flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-full px-3 py-1.5">
-            <ShieldCheck size={16} className="text-green-400" />
-            <span className="text-green-300 text-xs font-semibold">Armed</span>
+
+          {/* Armed badge — green pill */}
+          <div
+            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 mt-1"
+            style={{ background: "rgba(59,174,115,0.18)", border: "1px solid rgba(126,227,157,0.35)" }}
+          >
+            <ShieldCheck size={13} className="text-[#7EE39D]" />
+            <span className="text-[#7EE39D] text-xs font-bold tracking-wide">Armed</span>
           </div>
         </div>
 
-        {/* ── Quick stats grid ── */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          {stats.map(({ label, value, icon: Icon, color }) => (
+        {/* ── STATS GRID — 2 columns ── */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          {stats.map(({ label, value, icon: Icon, iconBg, iconColor }) => (
             <div
               key={label}
-              className="bg-brand-900/60 backdrop-blur-md border border-brand-700/50 rounded-2xl p-4 flex items-center gap-3"
+              className="rounded-2xl p-4 flex items-center gap-3"
+              style={{
+                background: "rgba(39,70,163,0.55)",
+                border: "1px solid rgba(46,99,232,0.55)",
+                boxShadow: "0 0 16px rgba(46,99,232,0.18), inset 0 1px 0 rgba(255,255,255,0.06)",
+                backdropFilter: "blur(8px)",
+              }}
             >
-              <div className="bg-brand-800 rounded-xl p-2.5">
-                <Icon size={20} className={color} />
+              {/* Icon bubble */}
+              <div className={`${iconBg} rounded-xl p-2.5 shrink-0`}>
+                <Icon size={20} className={iconColor} />
               </div>
+
+              {/* Value + label */}
               <div>
-                <p className="text-white text-lg font-bold leading-tight">{value}</p>
-                <p className="text-brand-400 text-xs">{label}</p>
+                <p className="text-[#F5F7FF] text-xl font-extrabold leading-none">{value}</p>
+                <p className="text-[#A9BCEB] text-[11px] mt-1 font-medium">{label}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ── Recent events ── */}
-        <div className="bg-brand-900/60 backdrop-blur-md border border-brand-700/50 rounded-2xl p-4">
-          <h2 className="text-base font-semibold text-white mb-3 flex items-center gap-2">
-            <AlertTriangle size={16} className="text-yellow-400" />
-            Recent Events
-          </h2>
+        {/* ── RECENT EVENTS CONTAINER ── */}
+        <div
+          className="rounded-3xl p-4"
+          style={{
+            background: "rgba(39,70,163,0.45)",
+            border: "1px solid rgba(46,99,232,0.5)",
+            boxShadow: "0 0 24px rgba(46,99,232,0.15), inset 0 1px 0 rgba(255,255,255,0.05)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          {/* Section title */}
+          <div className="flex items-center gap-2 mb-4">
+            <AlertTriangle size={15} className="text-[#F2D766]" />
+            <h2 className="text-[#F5F7FF] text-sm font-bold tracking-wide uppercase">
+              Recent Events
+            </h2>
+          </div>
 
-          <ul className="flex flex-col gap-3">
-            {recentEvents.map((event) => (
-              <li
-                key={event.id}
-                className="flex items-start justify-between gap-3 bg-brand-800/50 rounded-xl p-3"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">
-                    {event.description}
-                  </p>
-                  <p className="text-brand-400 text-xs mt-0.5">{event.location}</p>
-                </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <StatusBadge severity={event.severity} />
-                  <span className="text-brand-500 text-xs">{event.timestamp}</span>
-                </div>
-              </li>
-            ))}
+          {/* Event rows */}
+          <ul className="flex flex-col gap-2.5">
+            {recentEvents.map((event) => {
+              const s = severityStyles[event.severity];
+              const Icon = event.icon;
+              return (
+                <li
+                  key={event.id}
+                  className="flex items-center gap-3 rounded-2xl px-3 py-3"
+                  style={{
+                    background: "rgba(27,48,128,0.6)",
+                    border: "1px solid rgba(46,99,232,0.35)",
+                  }}
+                >
+                  {/* Type icon bubble */}
+                  <div className="bg-blue-500/20 rounded-xl p-2 shrink-0">
+                    <Icon size={16} className="text-blue-300" />
+                  </div>
+
+                  {/* Description + location */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[#F5F7FF] text-[13px] font-semibold leading-snug truncate">
+                      {event.description}
+                    </p>
+                    <p className="text-[#A9BCEB] text-[11px] mt-0.5">{event.location}</p>
+                  </div>
+
+                  {/* Right side: badge + time */}
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    {/* Severity badge */}
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold border ${s.bg} ${s.border} ${s.text}`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
+                      {event.severity}
+                    </span>
+                    <span className="text-[#A9BCEB] text-[10px]">{event.timestamp}</span>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
+
       </div>
-    </PageShell>
+
+      {/* ── Bottom navigation ── */}
+      <BottomNav />
+    </div>
   );
 }

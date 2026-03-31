@@ -6,13 +6,18 @@
 // the default metadata (title, description) shown in the browser tab.
 // ─────────────────────────────────────────────
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Security System",
   description: "Smart security monitoring dashboard",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({

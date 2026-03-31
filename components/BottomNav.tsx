@@ -31,22 +31,39 @@ export default function BottomNav() {
   return (
     <>
       {/* ── Mobile bottom bar (visible on small screens) ── */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-brand-900/95 backdrop-blur-md border-t border-brand-700">
-        <ul className="flex items-center justify-around h-16">
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
+        style={{
+          background: "linear-gradient(180deg, #1B3080 0%, #182B6B 100%)",
+          borderTop: "1px solid rgba(46,99,232,0.4)",
+          boxShadow: "0 -4px 24px rgba(24,43,107,0.7)",
+        }}
+      >
+        <ul className="flex items-center justify-around h-16 max-w-sm mx-auto">
           {navItems.map(({ label, href, icon: Icon }) => {
             const isActive = pathname === href;
             return (
               <li key={href} className="flex-1">
                 <Link
                   href={href}
-                  className={`flex flex-col items-center justify-center gap-1 h-full transition-colors ${
-                    isActive
-                      ? "text-blue-300"
-                      : "text-brand-300 hover:text-white"
-                  }`}
+                  className="flex flex-col items-center justify-center gap-1 h-full transition-all"
                 >
-                  <Icon size={22} />
-                  <span className="text-xs font-medium">{label}</span>
+                  {/* Icon — brighter + slightly larger when active */}
+                  <Icon
+                    size={isActive ? 23 : 21}
+                    className={isActive ? "text-white" : "text-[#A9BCEB]"}
+                  />
+                  <span
+                    className={`text-[10px] font-semibold tracking-wide ${
+                      isActive ? "text-white" : "text-[#A9BCEB]"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  {/* Active indicator dot */}
+                  {isActive && (
+                    <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-white opacity-80" />
+                  )}
                 </Link>
               </li>
             );
