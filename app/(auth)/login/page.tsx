@@ -13,7 +13,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import RadarShieldLogo from "@/components/RadarShieldLogo";
+import Image from "next/image";
 
 // ── Envelope icon (right side of email input) ──
 function MailIcon() {
@@ -69,9 +69,9 @@ export default function LoginPage() {
     >
       <div className="w-full max-w-xs flex flex-col items-center">
 
-        {/* ── Hexagonal radar logo ── */}
-        <div className="mb-10 drop-shadow-[0_0_24px_rgba(0,207,255,0.45)]">
-          <RadarShieldLogo />
+        {/* ── Logo ── */}
+        <div className="mb-10">
+          <Image src="/logo.png" alt="Security System Logo" width={130} height={130} className="object-contain" priority />
         </div>
 
         {/* ── Form (no card, fields float on the blue bg) ── */}
