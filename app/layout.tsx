@@ -8,6 +8,8 @@
 
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Security System",
@@ -32,7 +34,11 @@ export default function RootLayout({
         `min-h-screen` ensures the background fills the full viewport.
       */}
       <body className="antialiased min-h-screen bg-brand-950 text-white">
-        {children}
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

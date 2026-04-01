@@ -13,6 +13,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Menu,
   Bell,
@@ -22,6 +23,7 @@ import {
   User,
   AlertTriangle,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -62,13 +64,19 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 }
 
 export default function DashboardPage() {
+  // ── Auth state ──
+  const { user } = useAuth();
+  
   // ── UI state ──
   const [menuOpen, setMenuOpen]       = useState(false);
   const [notifOpen, setNotifOpen]     = useState(false);
   const [alertAction, setAlertAction] = useState<"none" | "approved" | "rejected">("none");
 
   // ── Data (swap `mockAlertData` with real fetch result here) ──
-  const alert = mockAlertData;
+  const alert = {
+    ...mockAlertData,
+    securityName: user?.full_name || "Security System",
+  };
 
   // ── Build detail rows from data object ──
   const detailRows = [
@@ -211,10 +219,10 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2 px-1">
                 <span className="text-[#1A1A1A] text-base font-bold">{alert.alertTitle}</span>
                 <span
-                  className="text-xs px-2 py-0.5 rounded-full font-bold"
+                  className="text-xs px-2 py-0.5 rounded-full font-bold flex items-center"
                   style={{ background: "#FDEEF2", color: "#E8334A" }}
                 >
-                  ♥
+                  <ChevronDown size={12} />
                 </span>
               </div>
 
@@ -248,23 +256,23 @@ export default function DashboardPage() {
               </div>
 
               {/* Reject / Approve action buttons */}
-              <div className="flex items-center justify-center gap-10 mt-2">
+              <div className="flex items-center justify-center gap-4 mt-4">
                 <button
                   aria-label="Reject this alert"
                   onClick={() => setAlertAction("rejected")}
-                  className="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg active:scale-95 transition-transform"
-                  style={{ border: "3px solid #E8334A" }}
+                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  style={{ background: "#E8334A" }}
                 >
-                  <X size={28} color="#E8334A" strokeWidth={3} />
+                  Reject Alert
                 </button>
 
                 <button
                   aria-label="Approve this alert"
                   onClick={() => setAlertAction("approved")}
-                  className="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg active:scale-95 transition-transform"
-                  style={{ border: "3px solid #22C55E" }}
+                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  style={{ background: "#22C55E" }}
                 >
-                  <Check size={28} color="#22C55E" strokeWidth={3} />
+                  Approve Alert
                 </button>
               </div>
             </>

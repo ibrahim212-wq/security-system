@@ -28,3 +28,69 @@ html {
   background: #3b82f6;
   border-radius: 3px;
 }
+
+/* Dark mode styles */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f3f6;
+  --bg-tertiary: #ececf1;
+  --text-primary: #1a1a1a;
+  --text-secondary: #7a8bb0;
+  --text-tertiary: #3a3a3a;
+  --border-color: #c8d0e7;
+  --accent-bg: #1f49d8;
+  --accent-hover: #1a3ec4;
+  --success-color: #22c55e;
+  --error-color: #e8334a;
+  --warning-bg: #fdeef2;
+}
+
+.dark {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #c0c0c0;
+  --border-color: #4a4a4a;
+  --accent-bg: #1f49d8;
+  --accent-hover: #1a3ec4;
+  --success-color: #22c55e;
+  --error-color: #e8334a;
+  --warning-bg: #4a1a2a;
+}
+
+/* Apply theme variables to common elements */
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-white {
+  background-color: var(--bg-primary) !important;
+}
+
+.text-\[\#1A1A1A\] {
+  color: var(--text-primary) !important;
+}
+
+.text-\[\#7A8BB0\] {
+  color: var(--text-secondary) !important;
+}
+
+.text-\[\#3A3A3A\] {
+  color: var(--text-tertiary) !important;
+}
+
+.bg-\[\#ECECF1\] {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.bg-\[\#F3F3F6\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+.border-\[\#C8D0E7\] {
+  border-color: var(--border-color) !important;
+}

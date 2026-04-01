@@ -10,6 +10,7 @@
 
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   User,
   Mail,
@@ -21,15 +22,6 @@ import {
   Lock,
 } from "lucide-react";
 
-// Placeholder user data — replace with real Supabase session
-const mockUser = {
-  full_name: "Ibrahim Al-Amin",
-  email: "ibrahim@example.com",
-  phone: "+966 50 000 0000",
-  role: "Administrator",
-  joined: "January 2026",
-};
-
 // Settings menu items
 const settingsItems = [
   { label: "Notifications", icon: Bell,  href: "#" },
@@ -39,10 +31,23 @@ const settingsItems = [
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
 
   async function handleSignOut() {
     await supabase.auth.signOut();
     router.push("/login");
+  }
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
+        <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-[#7A8BB0]">Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -79,15 +84,15 @@ export default function ProfilePage() {
               className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold shrink-0"
               style={{ background: "#1F49D8" }}
             >
-              {mockUser.full_name.charAt(0)}
+              {user.full_name?.charAt(0) || 'U'}
             </div>
             <div>
-              <p className="text-[15px] font-bold text-[#1A1A1A]">{mockUser.full_name}</p>
+              <p className="text-[15px] font-bold text-[#1A1A1A]">{user.full_name || 'User'}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <Shield size={12} color="#1F49D8" />
-                <span className="text-[11px] font-medium" style={{ color: "#7A8BB0" }}>{mockUser.role}</span>
+                <span className="text-[11px] font-medium" style={{ color: "#7A8BB0" }}>{user.role || 'User'}</span>
               </div>
-              <p className="text-[11px] mt-0.5" style={{ color: "#7A8BB0" }}>Member since {mockUser.joined}</p>
+              <p className="text-[11px] mt-0.5" style={{ color: "#7A8BB0" }}>Member since January 2026</p>
             </div>
           </div>
 
@@ -98,12 +103,12 @@ export default function ProfilePage() {
           >
             <div className="flex items-center gap-3">
               <Mail size={16} color="#7A8BB0" />
-              <span className="text-[13px] text-[#1A1A1A]">{mockUser.email}</span>
+              <span className="text-[13px] text-[#1A1A1A]">{user.email || 'No email'}</span>
             </div>
             <div className="h-px" style={{ background: "#C8D0E7" }} />
             <div className="flex items-center gap-3">
               <Phone size={16} color="#7A8BB0" />
-              <span className="text-[13px] text-[#1A1A1A]">{mockUser.phone}</span>
+              <span className="text-[13px] text-[#1A1A1A]">{user.phone || 'No phone'}</span>
             </div>
           </div>
 

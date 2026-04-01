@@ -5,33 +5,122 @@
 // Blue header, white body, grouped setting rows.
 // ─────────────────────────────────────────────
 
-import Image from "next/image";
-import { Bell, Lock, User, LogOut, ChevronRight, Shield } from "lucide-react";
+"use client";
 
-const settingsSections = [
-  {
-    title: "Account",
-    items: [
-      { icon: User,   label: "Edit Profile",        description: "Update your name and photo" },
-      { icon: Lock,   label: "Change Password",     description: "Update your login credentials" },
-    ],
-  },
-  {
-    title: "Notifications",
-    items: [
-      { icon: Bell,   label: "Alert Notifications", description: "Motion, door and camera alerts" },
-      { icon: Shield, label: "Security Alerts",     description: "High-priority threat notifications" },
-    ],
-  },
-  {
-    title: "Session",
-    items: [
-      { icon: LogOut, label: "Sign Out",            description: "Log out of this device" },
-    ],
-  },
-];
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { useTheme } from "@/contexts/ThemeContext";
+import ToggleSwitch from "@/components/ToggleSwitch";
+import { 
+  Bell, 
+  Lock, 
+  User, 
+  LogOut, 
+  ChevronRight, 
+  Shield, 
+  X,
+  Check,
+  AlertTriangle
+} from "lucide-react";
 
 export default function SettingsPage() {
+  const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  const settingsSections = [
+    {
+      title: "Appearance",
+      items: [
+        { 
+          icon: Shield, 
+          label: "Dark Mode", 
+          description: "Toggle dark/light theme",
+          action: "toggle",
+          value: theme === "dark"
+        },
+      ],
+    },
+    {
+      title: "Account",
+      items: [
+        { icon: User,   label: "Edit Profile",        description: "Update your name and photo" },
+        { icon: Lock,   label: "Change Password",     description: "Update your login credentials", action: "password" },
+      ],
+    },
+    {
+      title: "Notifications",
+      items: [
+        { icon: Bell,   label: "Alert Notifications", description: "Motion, door and camera alerts" },
+        { icon: Shield, label: "Security Alerts",     description: "High-priority threat notifications" },
+      ],
+    },
+    {
+      title: "Session",
+      items: [
+        { icon: LogOut, label: "Sign Out",            description: "Log out of this device" },
+      ],
+    },
+  ];
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
+
+  const handlePasswordChange = async () => {
+    setPasswordError("");
+    setPasswordSuccess("");
+
+    // Validation
+    if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+      setPasswordError("All fields are required");
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordError("New passwords do not match");
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: passwordForm.newPassword
+      });
+
+      if (error) {
+        setPasswordError(error.message);
+      } else {
+        setPasswordSuccess("Password changed successfully!");
+        setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+        setTimeout(() => {
+          setShowPasswordModal(false);
+          setPasswordSuccess("");
+        }, 2000);
+      }
+    } catch (error) {
+      setPasswordError("An error occurred while changing password");
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
       <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
@@ -72,9 +161,18 @@ export default function SettingsPage() {
                 {title}
               </p>
               <div className="flex flex-col gap-2">
-                {items.map(({ icon: Icon, label, description }) => (
+                {items.map(({ icon: Icon, label, description, action, value }: any) => (
                   <button
                     key={label}
+                    onClick={() => {
+                      if (action === "password") {
+                        setShowPasswordModal(true);
+                      } else if (action === "toggle") {
+                        toggleTheme();
+                      } else if (label === "Sign Out") {
+                        handleSignOut();
+                      }
+                    }}
                     className="flex items-center gap-3 rounded-xl px-4 py-3 w-full text-left active:opacity-70 transition-opacity"
                     style={{ background: "#ECECF1" }}
                   >
@@ -88,13 +186,130 @@ export default function SettingsPage() {
                       <p className="text-[13px] font-bold text-[#1A1A1A]">{label}</p>
                       <p className="text-[11px] text-[#7A8BB0] mt-0.5">{description}</p>
                     </div>
-                    <ChevronRight size={16} color="#7A8BB0" />
+                    {action === "toggle" ? (
+                      <ToggleSwitch 
+                        checked={(value as boolean) || false} 
+                        onChange={() => toggleTheme()}
+                        label={label}
+                      />
+                    ) : (
+                      <ChevronRight size={16} color="#7A8BB0" />
+                    )}
                   </button>
                 ))}
               </div>
             </div>
           ))}
         </div>
+
+        {/* Password Change Modal */}
+        {showPasswordModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-[#1A1A1A]">Change Password</h2>
+                <button
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setPasswordError("");
+                    setPasswordSuccess("");
+                    setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                  }}
+                  className="p-1 rounded-lg hover:bg-gray-100"
+                >
+                  <X size={20} color="#7A8BB0" />
+                </button>
+              </div>
+
+              {passwordSuccess && (
+                <div className="mb-4 p-3 rounded-xl bg-green-50 border border-green-200">
+                  <div className="flex items-center gap-2">
+                    <Check size={16} color="#22C55E" />
+                    <p className="text-sm text-green-700">{passwordSuccess}</p>
+                  </div>
+                </div>
+              )}
+
+              {passwordError && (
+                <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle size={16} color="#E8334A" />
+                    <p className="text-sm text-red-700">{passwordError}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordForm.currentPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#C8D0E7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter current password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordForm.newPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#C8D0E7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter new password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#C8D0E7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+              </div>
+
+              {/* Modern Action Buttons */}
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setPasswordError("");
+                    setPasswordSuccess("");
+                    setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                  }}
+                  className="flex-1 py-3 rounded-xl font-semibold transition-all hover:scale-105 active:scale-95"
+                  style={{ 
+                    background: "#F3F4F6", 
+                    color: "#6B7280",
+                    border: "2px solid #E5E7EB"
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePasswordChange}
+                  disabled={isChangingPassword}
+                  className="flex-1 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ background: "#22C55E" }}
+                >
+                  {isChangingPassword ? "Changing..." : "Change Password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         </div>
     </div>
