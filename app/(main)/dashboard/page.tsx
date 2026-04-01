@@ -54,8 +54,8 @@ const mockAlertData = {
 // ─────────────────────────────────────────────
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl px-4 py-3" style={{ background: "#ECECF1" }}>
-      <p className="text-[13px] text-[#1A1A1A]">
+    <div className="rounded-lg px-3 py-2" style={{ background: "#ECECF1" }}>
+      <p className="text-[11px] text-[#1A1A1A]">
         <span className="font-bold">{label} : </span>
         <span className="font-normal text-[#3A3A3A]">{value}</span>
       </p>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
-      <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
+      <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl relative">
 
         {/* ══════════════════════════════════════
             BLUE TOP APP BAR
@@ -179,10 +179,10 @@ export default function DashboardPage() {
 
         {/* ── Page title — blue bg continues ── */}
         <div
-          className="px-4 pt-2 pb-5 text-center"
+          className="px-4 pt-1 pb-3 text-center"
           style={{ background: "#1F49D8" }}
         >
-          <h1 className="text-white text-[26px] font-extrabold tracking-wide">
+          <h1 className="text-white text-[22px] font-extrabold tracking-wide">
             Security System
           </h1>
         </div>
@@ -190,14 +190,14 @@ export default function DashboardPage() {
         {/* ══════════════════════════════════════
             WHITE CONTENT BODY
         ══════════════════════════════════════ */}
-        <div className="flex-1 bg-white px-4 pt-5 pb-28 flex flex-col gap-4">
+        <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-2 flex flex-col gap-3 relative">
 
           {/* "Security Name" blue pill bar */}
           <div
-            className="flex items-center justify-between rounded-full px-4 py-2"
+            className="flex items-center justify-between rounded-full px-3 py-1.5"
             style={{ background: "#1F49D8" }}
           >
-            <span className="text-white text-sm font-semibold tracking-wide">
+            <span className="text-white text-xs font-semibold tracking-wide">
               {alert.securityName}
             </span>
             {/* Filter bars icon */}
@@ -217,31 +217,31 @@ export default function DashboardPage() {
             <>
               {/* Alert title row */}
               <div className="flex items-center gap-2 px-1">
-                <span className="text-[#1A1A1A] text-base font-bold">{alert.alertTitle}</span>
+                <span className="text-[#1A1A1A] text-sm font-bold">{alert.alertTitle}</span>
                 <span
-                  className="text-xs px-2 py-0.5 rounded-full font-bold flex items-center"
+                  className="text-xs px-1.5 py-0.5 rounded-full font-bold flex items-center"
                   style={{ background: "#FDEEF2", color: "#E8334A" }}
                 >
-                  <ChevronDown size={12} />
+                  <ChevronDown size={10} />
                 </span>
               </div>
 
               {/* Location card */}
               <div
-                className="flex items-center gap-3 rounded-2xl px-3 py-3"
+                className="flex items-center gap-2 rounded-xl px-2.5 py-2"
                 style={{ background: "#ECECF1" }}
               >
                 <div
-                  className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center"
+                  className="w-8 h-8 rounded-full shrink-0 flex items-center justify-center"
                   style={{ background: "#C8D0E7" }}
                 >
-                  <User size={22} color="#7A8BB0" />
+                  <User size={18} color="#7A8BB0" />
                 </div>
                 <div>
-                  <p className="text-[11px] text-[#7A8BB0] font-medium">Deliver from</p>
+                  <p className="text-[10px] text-[#7A8BB0] font-medium">Deliver from</p>
                   <div className="flex items-center gap-1 mt-0.5">
-                    <MapPin size={11} color="#E8334A" />
-                    <span className="text-[13px] font-semibold text-[#1A1A1A]">
+                    <MapPin size={10} color="#E8334A" />
+                    <span className="text-[12px] font-semibold text-[#1A1A1A]">
                       {alert.location}
                     </span>
                   </div>
@@ -249,32 +249,14 @@ export default function DashboardPage() {
               </div>
 
               {/* Detail info rows — built from data object */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1.5">
                 {detailRows.map(({ label, value }) => (
                   <DetailRow key={label} label={label} value={value} />
                 ))}
               </div>
 
               {/* Reject / Approve action buttons */}
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <button
-                  aria-label="Reject this alert"
-                  onClick={() => setAlertAction("rejected")}
-                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
-                  style={{ background: "#E8334A" }}
-                >
-                  Reject Alert
-                </button>
-
-                <button
-                  aria-label="Approve this alert"
-                  onClick={() => setAlertAction("approved")}
-                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
-                  style={{ background: "#22C55E" }}
-                >
-                  Approve Alert
-                </button>
-              </div>
+              <div className="h-16" /> {/* Spacer for fixed buttons */}
             </>
           ) : (
             /* ── Post-action feedback screen ── */
@@ -310,6 +292,31 @@ export default function DashboardPage() {
           )}
 
         </div>
+
+        {/* Fixed Action Buttons */}
+        {alertAction === "none" && (
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-3 py-2 sm:px-4 sm:py-3 shadow-lg z-50">
+            <div className="max-w-sm mx-auto flex items-center justify-center gap-2 sm:gap-3">
+              <button
+                aria-label="Reject this alert"
+                onClick={() => setAlertAction("rejected")}
+                className="flex-1 py-2.5 sm:py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-md text-xs sm:text-sm"
+                style={{ background: "#E8334A" }}
+              >
+                Reject Alert
+              </button>
+
+              <button
+                aria-label="Approve this alert"
+                onClick={() => setAlertAction("approved")}
+                className="flex-1 py-2.5 sm:py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-md text-xs sm:text-sm"
+                style={{ background: "#22C55E" }}
+              >
+                Approve Alert
+              </button>
+            </div>
+          </div>
+        )}
 
         </div>
     </div>
