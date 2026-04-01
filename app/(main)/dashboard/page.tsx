@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
   // ── Build detail rows from data object ──
   const detailRows = [
-    { label: "Name",              value: alert.personName },
+    { label: "Criminal Name",      value: alert.personName },
     { label: "ID Number",         value: alert.idNumber },
     { label: "Age",               value: alert.age },
     { label: "Similarity",        value: alert.similarity },
