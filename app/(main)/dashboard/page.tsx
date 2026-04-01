@@ -39,7 +39,7 @@ const mockAlertData = {
   securityName: "Security Name",
   alertTitle: "Criminal detected",
   location: "Mall Masr , Gate 3",
-  personName: "Ibrahim Al-Amin",
+  personName: "XXXXXXXX",
   idNumber: "1020xxxxxxxxxx",
   age: "24",
   similarity: "91 %",
