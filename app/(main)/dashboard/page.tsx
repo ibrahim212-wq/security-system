@@ -296,13 +296,17 @@ export default function DashboardPage() {
         {/* Fixed Action Buttons */}
         {alertAction === "none" && (
           <div 
-            className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50"
+            className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-[9999]"
             style={{
               boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
-              borderTop: '1px solid #e5e7eb'
+              borderTop: '1px solid #e5e7eb',
+              position: 'fixed',
+              bottom: '0',
+              left: '0',
+              width: '100%'
             }}
           >
-            <div className="px-4 py-3 sm:px-4 sm:py-3">
+            <div className="px-4 py-3">
               <div className="max-w-sm mx-auto flex items-center justify-center gap-3">
                 <button
                   aria-label="Reject this alert"
