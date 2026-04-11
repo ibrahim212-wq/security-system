@@ -24,6 +24,7 @@ import {
   AlertTriangle,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -71,6 +72,7 @@ export default function DashboardPage() {
   const [menuOpen, setMenuOpen]       = useState(false);
   const [notifOpen, setNotifOpen]     = useState(false);
   const [alertAction, setAlertAction] = useState<"none" | "approved" | "rejected">("none");
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   // ── Data (swap `mockAlertData` with real fetch result here) ──
   const alert = {
@@ -216,14 +218,20 @@ export default function DashboardPage() {
           {alertAction === "none" ? (
             <>
               {/* Alert title row */}
-              <div className="flex items-center gap-2 px-1">
+              <div className="flex items-center justify-between px-1">
                 <span className="text-[#1A1A1A] text-sm font-bold">{alert.alertTitle}</span>
-                <span
-                  className="text-xs px-1.5 py-0.5 rounded-full font-bold flex items-center"
+                <button
+                  onClick={() => setDetailsExpanded(!detailsExpanded)}
+                  className="flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full font-bold transition-all hover:opacity-80"
                   style={{ background: "#FDEEF2", color: "#E8334A" }}
                 >
-                  <ChevronDown size={10} />
-                </span>
+                  <span className="mr-1">Details</span>
+                  {detailsExpanded ? (
+                    <ChevronUp size={10} />
+                  ) : (
+                    <ChevronDown size={10} />
+                  )}
+                </button>
               </div>
 
               {/* Location card */}
@@ -249,10 +257,12 @@ export default function DashboardPage() {
               </div>
 
               {/* Detail info rows — built from data object */}
-              <div className="flex flex-col gap-1.5">
-                {detailRows.map(({ label, value }) => (
-                  <DetailRow key={label} label={label} value={value} />
-                ))}
+              <div className={`transition-all duration-300 ease-in-out overflow-hidden ${detailsExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="flex flex-col gap-1.5">
+                  {detailRows.map(({ label, value }) => (
+                    <DetailRow key={label} label={label} value={value} />
+                  ))}
+                </div>
               </div>
 
               {/* Reject / Approve action buttons */}
