@@ -190,7 +190,7 @@ export default function DashboardPage() {
         {/* ══════════════════════════════════════
             WHITE CONTENT BODY
         ══════════════════════════════════════ */}
-        <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-20 flex flex-col gap-3 relative">
+        <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-3 relative">
 
           {/* "Security Name" blue pill bar */}
           <div
@@ -256,7 +256,25 @@ export default function DashboardPage() {
               </div>
 
               {/* Reject / Approve action buttons */}
-              <div className="h-20" /> {/* Spacer for fixed buttons */}
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button
+                  aria-label="Reject this alert"
+                  onClick={() => setAlertAction("rejected")}
+                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  style={{ background: "#E8334A" }}
+                >
+                  Reject Alert
+                </button>
+
+                <button
+                  aria-label="Approve this alert"
+                  onClick={() => setAlertAction("approved")}
+                  className="flex-1 py-4 rounded-2xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  style={{ background: "#22C55E" }}
+                >
+                  Approve Alert
+                </button>
+              </div>
             </>
           ) : (
             /* ── Post-action feedback screen ── */
@@ -292,43 +310,6 @@ export default function DashboardPage() {
           )}
 
         </div>
-
-        {/* Fixed Action Buttons */}
-        {alertAction === "none" && (
-          <div 
-            className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-[9999]"
-            style={{
-              boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
-              borderTop: '1px solid #e5e7eb',
-              position: 'fixed',
-              bottom: '0',
-              left: '0',
-              width: '100%'
-            }}
-          >
-            <div className="px-4 py-3">
-              <div className="max-w-sm mx-auto flex items-center justify-center gap-3">
-                <button
-                  aria-label="Reject this alert"
-                  onClick={() => setAlertAction("rejected")}
-                  className="flex-1 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-md text-sm"
-                  style={{ background: "#E8334A" }}
-                >
-                  Reject Alert
-                </button>
-
-                <button
-                  aria-label="Approve this alert"
-                  onClick={() => setAlertAction("approved")}
-                  className="flex-1 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 active:scale-95 shadow-md text-sm"
-                  style={{ background: "#22C55E" }}
-                >
-                  Approve Alert
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         </div>
     </div>
