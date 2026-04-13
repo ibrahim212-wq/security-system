@@ -121,7 +121,7 @@ export default function DashboardPage() {
               <User size={18} color="#7A8BB0" />
             </div>
             <div>
-              <p className="text-[10px] text-[#7A8BB0] font-medium">Deliver from</p>
+              <p className="text-[10px] text-[#7A8BB0] font-medium">Delivered from</p>
               <div className="flex items-center gap-1 mt-0.5">
                 <MapPin size={10} color="#E8334A" />
                 <span className="text-[12px] font-semibold text-[#1A1A1A]">
