@@ -181,7 +181,6 @@ export default function RealTimeDataTable({
                   index === 0 ? 'border-blue-500' : 'border-gray-300'
                 }`}
               >
-                {/* -------------------------------------------------- */}
                 {/* Card Title */}
                 <div className="flex items-center gap-3 mb-4">
                   <Activity size={20} className="text-red-500" />
@@ -192,20 +191,10 @@ export default function RealTimeDataTable({
                       <span className="text-sm text-blue-600 font-semibold">Latest</span>
                     </div>
                   )}
-              {/* -------------------------------------------------- */}
-              {/* Card Title */}
-              <div className="flex items-center gap-3 mb-4">
-                <Activity size={20} className="text-red-500" />
-                <h2 className="text-xl font-bold text-gray-900">Criminal detected</h2>
-                {index === 0 && (
-                  <div className="flex items-center gap-2 ml-auto">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm text-blue-600 font-semibold">Latest</span>
-                  </div>
-                )}
-              </div>
+                </div>
 
-              <div className="space-y-3 mb-6 text-lg">
+                {/* Match Data - Each on separate line */}
+                <div className="space-y-3 mb-6 text-lg">
                   <div className="text-gray-900">
                     <span className="font-semibold">type:</span> {match.legal_case}
                   </div>
@@ -232,7 +221,7 @@ export default function RealTimeDataTable({
                   </div>
                 </div>
 
-              {/* Action Buttons */}
+                {/* Action Buttons */}
                 <div className="flex items-center justify-center gap-4">
                   <button
                     onClick={() => handleConfirm(match)}
@@ -255,6 +244,148 @@ export default function RealTimeDataTable({
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                         : 'bg-red-500 text-white hover:bg-red-600'
                     }`}
+                  >
+                    <X size={20} />
+                    Reject Match
+                  </button>
+                </div>
+
+                {/* Visual Confirmation/Rejection Indicator */}
+                {cardState === 'confirmed' && (
+                  <div className="mt-4 pt-3 border-t border-green-300">
+                    <div className="flex items-center gap-2">
+                      <Check size={16} className="text-green-600" />
+                      <span className="text-sm text-green-600 font-semibold">Match Confirmed</span>
+                    </div>
+                  </div>
+                )}
+
+                {cardState === 'rejected' && (
+                  <div className="mt-4 pt-3 border-t border-red-300">
+                    <div className="flex items-center gap-2">
+                      <X size={16} className="text-red-600" />
+                      <span className="text-sm text-red-600 font-semibold">Match Rejected</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Latest Record Indicator */}
+                {index === 0 && !isDisabled && (
+                  <div className="mt-4 pt-3 border-t border-blue-200">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm text-blue-600 font-semibold">Latest Detection</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+        <p className="text-gray-500 mb-4">
+          {connectionType === 'websocket' 
+            ? "Waiting for real-time data from security nodes..."
+            : "No data found in system"}
+        </p>
+        <button
+          onClick={onSendTest}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          disabled={connectionType === 'offline'}
+        >
+          Send Test Data
+        </button>
+      </div>
+    ) : (
+      <div className="space-y-6">
+        {data.map((match, index) => {
+          const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+          const cardState = cardStates[matchKey];
+          const isDisabled = cardState === 'confirmed' || cardState === 'rejected';
+          return (
+            <div
+              key={match.match_id || index}
+              className={`bg-white border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${
+                index === 0 ? 'border-blue-500' : 'border-gray-300'
+              }`}
+            >
+              {/* Card Title */}
+              <div className="flex items-center gap-3 mb-4">
+                <Activity size={20} className="text-red-500" />
+                <h2 className="text-xl font-bold text-gray-900">Criminal detected</h2>
+                {index === 0 && (
+                  <div className="flex items-center gap-2 ml-auto">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm text-blue-600 font-semibold">Latest</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Match Data - Each on separate line */}
+              <div className="space-y-3 mb-6 text-lg">
+                <div className="text-gray-900">
+                  <span className="font-semibold">type:</span> {match.legal_case}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Name:</span> {match.person_name}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">ID:</span> {match.person_id}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Age:</span> {match.age}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Legal Case:</span> {match.legal_case}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Score:</span> {match.score}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Node ID:</span> {match.node_id}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Time:</span> {formatTimestamp(match.timestamp)}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  onClick={() => handleConfirm(match)}
+                  disabled={isDisabled}
+                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                    isDisabled 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-green-500 text-white hover:bg-green-600'
+                  }`}
+                >
+                  <Check size={20} />
+                  Confirm Match
+                </button>
+
+                <button
+                  onClick={() => handleReject(match)}
+                  disabled={isDisabled}
+                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                    isDisabled 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-red-500 text-white hover:bg-red-600'
+                  }`}
+                >
+                  <X size={20} />
+                  Reject Match
+                </button>
+              </div>
+
+              {/* Visual Confirmation/Rejection Indicator */}
+              {cardState === 'confirmed' && (
+                <div className="mt-4 pt-3 border-t border-green-300">
+                  <div className="flex items-center gap-2">
+                    <Check size={16} className="text-green-600" />
+                    <span className="text-sm text-green-600 font-semibold">Match Confirmed</span>
+                  </div>
                 </div>
               )}
 
