@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 
 export interface SecurityData {
+  type?: string;
   person_name: string;
   person_id: string;
   age: string;
@@ -139,6 +140,7 @@ export function useRealTimeData() {
 
         socketRef.current.on('new_match', (newData: SecurityData) => {
           console.log('Received new match via WebSocket:', newData);
+          console.log('Full WebSocket object structure:', JSON.stringify(newData, null, 2));
           
           // Update data with new match at the beginning
           const updatedData = [newData, ...dataRef.current];
