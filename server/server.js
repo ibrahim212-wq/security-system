@@ -8,6 +8,8 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 // Initialize Express app and HTTP server
 const app = express();
@@ -25,6 +27,41 @@ app.use(express.json());
 
 // Store connected clients
 let connectedClients = new Set();
+
+// JSON file storage
+const DATA_FILE = path.join(__dirname, 'security_data.json');
+
+// Initialize JSON file if it doesn't exist
+function initializeDataFile() {
+  if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+  }
+}
+
+// Read data from JSON file
+function readDataFromFile() {
+  try {
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading data file:', error);
+    return [];
+  }
+}
+
+// Save data to JSON file
+function saveDataToFile(data) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Error saving data file:', error);
+    return false;
+  }
+}
+
+// Initialize data file on startup
+initializeDataFile();
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
@@ -46,14 +83,28 @@ io.on('connection', (socket) => {
     const isValid = requiredFields.every(field => data.hasOwnProperty(field));
     
     if (isValid) {
-      // Broadcast to all connected clients (including sender)
-      io.emit('new_match', {
+      // Add server metadata
+      const enrichedData = {
         ...data,
         server_timestamp: new Date().toISOString(),
         match_id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      });
+      };
       
-      console.log(`Broadcasted match to ${connectedClients.size} clients`);
+      // Save to JSON file
+      const currentData = readDataFromFile();
+      currentData.unshift(enrichedData); // Add to beginning (latest first)
+      
+      // Keep only last 1000 records to prevent file from growing too large
+      if (currentData.length > 1000) {
+        currentData.splice(1000);
+      }
+      
+      saveDataToFile(currentData);
+      
+      // Broadcast to all connected clients (including sender)
+      io.emit('new_match', enrichedData);
+      
+      console.log(`Broadcasted match to ${connectedClients.size} clients and saved to file`);
     } else {
       console.error('Invalid match data format:', data);
       socket.emit('error', {
@@ -79,26 +130,72 @@ io.on('connection', (socket) => {
 app.post('/api/new_match', (req, res) => {
   const matchData = req.body;
   
-  // Broadcast to all WebSocket clients
-  io.emit('new_match', {
+  // Validate required fields
+  const requiredFields = ['person_name', 'person_id', 'age', 'legal_case', 'score', 'node_id', 'timestamp'];
+  const isValid = requiredFields.every(field => matchData.hasOwnProperty(field));
+  
+  if (!isValid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid data format. Required fields: person_name, person_id, age, legal_case, score, node_id, timestamp'
+    });
+  }
+  
+  // Add server metadata
+  const enrichedData = {
     ...matchData,
     server_timestamp: new Date().toISOString(),
     match_id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-  });
+  };
+  
+  // Save to JSON file
+  const currentData = readDataFromFile();
+  currentData.unshift(enrichedData);
+  
+  // Keep only last 1000 records
+  if (currentData.length > 1000) {
+    currentData.splice(1000);
+  }
+  
+  saveDataToFile(currentData);
+  
+  // Broadcast to all WebSocket clients
+  io.emit('new_match', enrichedData);
   
   console.log('Received match via REST API:', matchData);
   res.json({ 
     success: true, 
-    message: 'Match broadcasted to all clients',
-    match_id: matchData.match_id 
+    message: 'Match saved and broadcasted to all clients',
+    match_id: enrichedData.match_id 
   });
+});
+
+// REST endpoint to read saved data (fallback for frontend)
+app.get('/api/data', (req, res) => {
+  try {
+    const data = readDataFromFile();
+    res.json({
+      success: true,
+      data: data,
+      count: data.length,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error reading data:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error reading data file'
+    });
+  }
 });
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  const data = readDataFromFile();
   res.json({
     status: 'healthy',
     connected_clients: connectedClients.size,
+    saved_records: data.length,
     timestamp: new Date().toISOString()
   });
 });
