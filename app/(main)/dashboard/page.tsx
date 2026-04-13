@@ -102,41 +102,19 @@ export default function DashboardPage() {
   // Handle match rejection
   const handleRejectMatch = (match: any) => {
     console.log('Match rejected:', match);
-    setProcessedMatches(prev => new Set(prev).add(match.match_id || `${match.timestamp}_${match.person_id}`));
-    
-    // Here you can add API call to reject the match
-    // Example: await fetch('/api/reject-match', { method: 'POST', body: JSON.stringify(match) });
+    // API call to reject match can be added here
   };
-
-  // ── Data (swap `mockAlertData` with real fetch result here) ──
-  const alert = {
-    ...mockAlertData,
-    securityName: user?.full_name || "Security System",
-  };
-
-  // ── Build detail rows from data object ──
-  const detailRows = [
-    { label: "Criminal Name",      value: alert.personName },
-    { label: "ID Number",         value: alert.idNumber },
-    { label: "Age",               value: alert.age },
-    { label: "Similarity",        value: alert.similarity },
-    { label: "Time of detection", value: alert.detectionTime },
-    { label: "Date",              value: alert.detectionDate },
-    { label: "Legal case",        value: alert.legalCase },
-  ];
 
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
       <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl relative">
 
-        {/* ══════════════════════════════════════
-            BLUE TOP APP BAR
-        ══════════════════════════════════════ */}
+        {/* BLUE TOP APP BAR */}
         <header
           className="flex items-center justify-between px-4 py-3"
           style={{ background: "#1F49D8" }}
         >
-          {/* Menu button — opens slide-down nav panel */}
+          {/* Menu button */}
           <button
             aria-label="Open menu"
             onClick={() => { setMenuOpen((v) => !v); setNotifOpen(false); }}
@@ -155,25 +133,17 @@ export default function DashboardPage() {
             priority
           />
 
-          {/* Notification button — opens alert preview panel */}
+          {/* Notification button */}
           <button
-            aria-label={`Notifications — ${alert.notificationCount} unread`}
+            aria-label="Notifications"
             onClick={() => { setNotifOpen((v) => !v); setMenuOpen(false); }}
             className="relative p-1 rounded-lg transition-colors active:bg-white/10"
           >
             <Bell size={22} color="#fff" />
-            {alert.notificationCount > 0 && (
-              <span
-                className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
-                style={{ background: "#E8334A" }}
-              >
-                {alert.notificationCount}
-              </span>
-            )}
           </button>
         </header>
 
-        {/* ── Slide-down menu panel ── */}
+        {/* Slide-down menu panel */}
         {menuOpen && (
           <nav
             className="flex flex-col px-4 pb-2 pt-1"
@@ -199,21 +169,7 @@ export default function DashboardPage() {
           </nav>
         )}
 
-        {/* ── Notification preview panel ── */}
-        {notifOpen && (
-          <div className="bg-white border-b border-gray-100 px-4 py-3 shadow-md">
-            <p className="text-[11px] font-semibold text-[#7A8BB0] uppercase tracking-wide mb-2">Recent Alert</p>
-            <div className="flex items-start gap-3 rounded-xl p-3" style={{ background: "#ECECF1" }}>
-              <AlertTriangle size={16} className="text-red-500 shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-[#1A1A1A] truncate">{alert.alertTitle}</p>
-                <p className="text-[11px] text-[#7A8BB0] mt-0.5">{alert.location} · {alert.detectionTime}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Page title — blue bg continues ── */}
+        {/* Page title - blue bg continues */}
         <div
           className="px-4 pt-1 pb-3 text-center"
           style={{ background: "#1F49D8" }}
@@ -223,13 +179,23 @@ export default function DashboardPage() {
           </h1>
         </div>
 
-        {/* ══════════════════════════════════════
-            WHITE CONTENT BODY
-        ══════════════════════════════════════ */}
+        {/* WHITE CONTENT BODY */}
         <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-3 relative">
 
-          {/* "Security Name" blue pill bar */}
-          <div
+          {/* WebSocket Match Results */}
+          <div className="flex-1">
+            <RealTimeDataTable
+              data={matches}
+              connected={connected}
+              loading={loading}
+              error={error}
+              lastUpdate={lastUpdate}
+              connectionType={connectionType}
+              onRefresh={refreshData}
+              onSendTest={sendTestData}
+              onConfirmMatch={handleConfirmMatch}
+              onRejectMatch={handleRejectMatch}
+            />
             className="flex items-center justify-between rounded-full px-3 py-1.5"
             style={{ background: "#1F49D8" }}
           >
