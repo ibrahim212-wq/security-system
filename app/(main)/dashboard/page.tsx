@@ -88,6 +88,25 @@ export default function DashboardPage() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [alertAction, setAlertAction] = useState<"none" | "approved" | "rejected">("none");
   const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [processedMatches, setProcessedMatches] = useState<Set<string>>(new Set());
+
+  // Handle match confirmation
+  const handleConfirmMatch = (match: any) => {
+    console.log('Match confirmed:', match);
+    setProcessedMatches(prev => new Set(prev).add(match.match_id || `${match.timestamp}_${match.person_id}`));
+    
+    // Here you can add API call to confirm the match
+    // Example: await fetch('/api/confirm-match', { method: 'POST', body: JSON.stringify(match) });
+  };
+
+  // Handle match rejection
+  const handleRejectMatch = (match: any) => {
+    console.log('Match rejected:', match);
+    setProcessedMatches(prev => new Set(prev).add(match.match_id || `${match.timestamp}_${match.person_id}`));
+    
+    // Here you can add API call to reject the match
+    // Example: await fetch('/api/reject-match', { method: 'POST', body: JSON.stringify(match) });
+  };
 
   // ── Data (swap `mockAlertData` with real fetch result here) ──
   const alert = {
@@ -347,6 +366,8 @@ export default function DashboardPage() {
             connectionType={connectionType}
             onRefresh={refreshData}
             onSendTest={sendTestData}
+            onConfirmMatch={handleConfirmMatch}
+            onRejectMatch={handleRejectMatch}
           />
         </div>
 

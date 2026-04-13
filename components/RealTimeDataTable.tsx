@@ -1,10 +1,10 @@
-// Real-time data display component with table and card views
-// Shows security data with connection status and fallback indicators
+// Real-time data display component with individual match rows
+// Shows security data with connection status and action buttons
 
 "use client";
 
 import { SecurityData } from "@/hooks/useRealTimeData";
-import { Activity, AlertTriangle, Wifi, WifiOff, Database, RefreshCw } from "lucide-react";
+import { Activity, AlertTriangle, Wifi, WifiOff, Database, RefreshCw, Check, X } from "lucide-react";
 
 interface RealTimeDataTableProps {
   data: SecurityData[];
@@ -15,6 +15,8 @@ interface RealTimeDataTableProps {
   connectionType: 'websocket' | 'fallback' | 'offline';
   onRefresh: () => void;
   onSendTest: () => void;
+  onConfirmMatch?: (match: SecurityData) => void;
+  onRejectMatch?: (match: SecurityData) => void;
 }
 
 export default function RealTimeDataTable({
@@ -25,7 +27,9 @@ export default function RealTimeDataTable({
   lastUpdate,
   connectionType,
   onRefresh,
-  onSendTest
+  onSendTest,
+  onConfirmMatch,
+  onRejectMatch
 }: RealTimeDataTableProps) {
   
   const getConnectionStatus = () => {
@@ -113,7 +117,7 @@ export default function RealTimeDataTable({
         </div>
       </div>
 
-      {/* Data Display */}
+      {/* Data Display - Each match in separate row */}
       {data.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg border">
           <AlertTriangle size={48} className="text-gray-400 mx-auto mb-4" />
@@ -121,7 +125,7 @@ export default function RealTimeDataTable({
           <p className="text-gray-500 mb-4">
             {connectionType === 'websocket' 
               ? "Waiting for real-time data from security nodes..."
-              : "No data found in the system"}
+              : "No data found in system"}
           </p>
           <button
             onClick={onSendTest}
@@ -132,62 +136,95 @@ export default function RealTimeDataTable({
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
-          {data.map((record, index) => (
+        <div className="space-y-4">
+          {data.map((match, index) => (
             <div
-              key={record.match_id || index}
-              className={`bg-white border rounded-lg p-4 transition-all duration-300 ${
+              key={match.match_id || index}
+              className={`bg-white border rounded-lg transition-all duration-300 ${
                 index === 0 ? 'border-blue-300 shadow-md' : 'border-gray-200'
               }`}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
-                    <Activity size={20} className="text-white" />
+              {/* Match Title */}
+              <div className="flex items-center gap-2 px-4 pt-4 pb-2">
+                <Activity size={16} className="text-red-500" />
+                <h3 className="text-sm font-bold text-gray-900">Criminal detected</h3>
+                {index === 0 && (
+                  <div className="flex items-center gap-2 ml-auto">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-blue-600 font-semibold">Latest</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Match Data */}
+              <div className="px-4 pb-3">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
+                      <Activity size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 text-base">{match.person_name}</h4>
+                      <p className="text-sm text-gray-500">ID: {match.person_id}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full font-semibold">
+                      {match.score} Match
+                    </span>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Node: {match.node_id}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
+                  <div>
+                    <span className="font-semibold text-gray-600">Age:</span>
+                    <span className="ml-2 text-gray-900">{match.age}</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">{record.person_name}</h4>
-                    <p className="text-sm text-gray-500">ID: {record.person_id}</p>
+                    <span className="font-semibold text-gray-600">Legal Case:</span>
+                    <span className="ml-2 text-gray-900">{match.legal_case}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-600">Detected:</span>
+                    <span className="ml-2 text-gray-900">
+                      {formatTimestamp(match.timestamp)}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-600">Server:</span>
+                    <span className="ml-2 text-gray-900">
+                      {match.server_timestamp ? formatTimestamp(match.server_timestamp) : 'N/A'}
+                    </span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full font-semibold">
-                    {record.score} Match
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Node: {record.node_id}
-                  </p>
+
+                {/* Action Buttons */}
+                <div className="flex items-center justify-center gap-4 pt-2 border-t border-gray-100">
+                  <button
+                    onClick={() => onConfirmMatch?.(match)}
+                    className="flex-1 py-3 px-4 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Check size={16} />
+                    Confirm Match
+                  </button>
+
+                  <button
+                    onClick={() => onRejectMatch?.(match)}
+                    className="flex-1 py-3 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <X size={16} />
+                    Reject Match
+                  </button>
                 </div>
               </div>
 
-              {/* Details Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                <div>
-                  <span className="font-semibold text-gray-600">Age:</span>
-                  <span className="ml-2 text-gray-900">{record.age}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-600">Legal Case:</span>
-                  <span className="ml-2 text-gray-900">{record.legal_case}</span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-600">Detected:</span>
-                  <span className="ml-2 text-gray-900">
-                    {formatTimestamp(record.timestamp)}
-                  </span>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-600">Server:</span>
-                  <span className="ml-2 text-gray-900">
-                    {record.server_timestamp ? formatTimestamp(record.server_timestamp) : 'N/A'}
-                  </span>
-                </div>
-              </div>
-
-              {/* New Record Indicator */}
+              {/* Latest Record Indicator */}
               {index === 0 && (
-                <div className="mt-3 pt-3 border-t border-blue-200">
+                <div className="px-4 pb-3 pt-1 border-t border-blue-200">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                     <span className="text-xs text-blue-600 font-semibold">Latest Detection</span>
