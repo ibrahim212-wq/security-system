@@ -60,6 +60,7 @@ export default function RealTimeDataTable({
   };
 
   const handleConfirm = (match: SecurityData) => {
+    console.log("CONFIRM CLICKED");
     console.log('Confirm button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
     console.log('Setting card state to confirmed for key:', matchKey);
@@ -68,6 +69,7 @@ export default function RealTimeDataTable({
   };
 
   const handleReject = (match: SecurityData) => {
+    console.log("REJECT CLICKED");
     console.log('Reject button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
     console.log('Setting card state to rejected for key:', matchKey);
@@ -378,26 +380,36 @@ export default function RealTimeDataTable({
               {/* Action Buttons */}
               <div className="flex items-center justify-center gap-4">
                 <button
-                  onClick={() => handleConfirm(match)}
+                  type="button"
+                  onClick={() => {
+                    console.log("CONFIRM CLICKED");
+                    handleConfirm(match);
+                  }}
                   disabled={isDisabled}
-                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto ${
                     isDisabled 
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                       : 'bg-green-500 text-white hover:bg-green-600'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <Check size={20} />
                   Confirm Match
                 </button>
 
                 <button
-                  onClick={() => handleReject(match)}
+                  type="button"
+                  onClick={() => {
+                    console.log("REJECT CLICKED");
+                    handleReject(match);
+                  }}
                   disabled={isDisabled}
-                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                  className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto ${
                     isDisabled 
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                       : 'bg-red-500 text-white hover:bg-red-600'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <X size={20} />
                   Reject Match
