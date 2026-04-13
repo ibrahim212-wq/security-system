@@ -38,7 +38,11 @@ export default function RealTimeDataTable({
 }: RealTimeDataTableProps) {
   
   const [cardStates, setCardStates] = useState<CardState>({});
-  const [showToast, setShowToast] = useState(false);
+  const [toast, setToast] = useState<{ show: boolean; type: 'success' | 'error'; message: string }>({
+    show: false,
+    type: 'success',
+    message: ''
+  });
   
   const getConnectionStatus = () => {
     switch (connectionType) {
@@ -60,6 +64,13 @@ export default function RealTimeDataTable({
     return new Date(timestamp).toLocaleString();
   };
 
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ show: true, type, message });
+    setTimeout(() => {
+      setToast(prev => ({ ...prev, show: false }));
+    }, 3000);
+  };
+
   const handleConfirm = (match: SecurityData) => {
     console.log("CONFIRM CLICKED");
     console.log('Confirm button clicked for match:', match);
@@ -73,10 +84,7 @@ export default function RealTimeDataTable({
     });
     
     // Show toast notification
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
+    showToast('success', 'The criminal catching successfully');
     
     onConfirmMatch?.(match);
   };
@@ -92,6 +100,9 @@ export default function RealTimeDataTable({
       console.log('Updated cardStates after reject:', newState);
       return newState;
     });
+    
+    // Show toast notification
+    showToast('error', 'Match rejected successfully');
     
     onRejectMatch?.(match);
   };
@@ -141,11 +152,13 @@ export default function RealTimeDataTable({
   return (
     <div className="space-y-4">
       {/* Toast Notification */}
-      {showToast && (
+      {toast.show && (
         <div className="fixed top-4 right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="bg-green-500 text-white px-6 py-4 rounded-lg shadow-xl flex items-center gap-3">
-            <Check size={24} />
-            <span className="font-semibold text-lg">The criminal catching successfully</span>
+          <div className={`${
+            toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          } text-white px-6 py-4 rounded-lg shadow-xl flex items-center gap-3`}>
+            {toast.type === 'success' ? <Check size={24} /> : <X size={24} />}
+            <span className="font-semibold text-lg">{toast.message}</span>
           </div>
         </div>
       )}
