@@ -306,15 +306,35 @@ export default function RealTimeDataTable({
           return (
             <div
               key={match.match_id || index}
-              className={`bg-white border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${
-                index === 0 ? 'border-blue-500' : 'border-gray-300'
+              className={`border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${getCardStyle(match)} ${
+                index === 0 && !isDisabled ? 'border-blue-500' : ''
               }`}
             >
               {/* Card Title */}
               <div className="flex items-center gap-3 mb-4">
                 <Activity size={20} className="text-red-500" />
                 <h2 className="text-xl font-bold text-gray-900">Criminal detected</h2>
-                {index === 0 && (
+                
+                {/* Status Indicator */}
+                {cardState === 'confirmed' && (
+                  <div className="flex items-center gap-2 ml-auto">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-lg font-bold">+</span>
+                    </div>
+                    <span className="text-green-600 font-semibold">CONFIRMED</span>
+                  </div>
+                )}
+                
+                {cardState === 'rejected' && (
+                  <div className="flex items-center gap-2 ml-auto">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-lg font-bold">×</span>
+                    </div>
+                    <span className="text-red-600 font-semibold">REJECTED</span>
+                  </div>
+                )}
+                
+                {index === 0 && !isDisabled && (
                   <div className="flex items-center gap-2 ml-auto">
                     <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
                     <span className="text-sm text-blue-600 font-semibold">Latest</span>
