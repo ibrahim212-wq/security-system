@@ -409,7 +409,7 @@ export default function RealTimeDataTable({
                 <div className="mt-4 pt-3 border-t border-green-300">
                   <div className="flex items-center gap-2">
                     <Check size={16} className="text-green-600" />
-                    <span className="text-sm text-green-600 font-semibold">Match Confirmed</span>
+                    <span className="text-sm text-green-600 font-semibold">Match successfully confirmed</span>
                   </div>
                 </div>
               )}
@@ -418,7 +418,7 @@ export default function RealTimeDataTable({
                 <div className="mt-4 pt-3 border-t border-red-300">
                   <div className="flex items-center gap-2">
                     <X size={16} className="text-red-600" />
-                    <span className="text-sm text-red-600 font-semibold">Match Rejected</span>
+                    <span className="text-sm text-red-600 font-semibold">Match rejected successfully</span>
                   </div>
                 </div>
               )}
