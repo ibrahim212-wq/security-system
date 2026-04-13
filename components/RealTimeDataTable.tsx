@@ -1,5 +1,5 @@
-// Real-time data display component with individual match rows
-// Shows security data with connection status and action buttons
+// Real-time data display component with exact card structure
+// Shows security data with individual cards and action buttons
 
 "use client";
 
@@ -117,7 +117,7 @@ export default function RealTimeDataTable({
         </div>
       </div>
 
-      {/* Data Display - Each match in separate row */}
+      {/* Data Display - Each match in separate card */}
       {data.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg border">
           <AlertTriangle size={48} className="text-gray-400 mx-auto mb-4" />
@@ -136,98 +136,69 @@ export default function RealTimeDataTable({
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {data.map((match, index) => (
             <div
               key={match.match_id || index}
-              className={`bg-white border rounded-lg transition-all duration-300 ${
-                index === 0 ? 'border-blue-300 shadow-md' : 'border-gray-200'
+              className={`bg-white border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${
+                index === 0 ? 'border-blue-500' : 'border-gray-300'
               }`}
             >
-              {/* Match Title */}
-              <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-                <Activity size={16} className="text-red-500" />
-                <h3 className="text-sm font-bold text-gray-900">Criminal detected</h3>
+              {/* -------------------------------------------------- */}
+              {/* Card Title */}
+              <div className="flex items-center gap-3 mb-4">
+                <Activity size={20} className="text-red-500" />
+                <h2 className="text-xl font-bold text-gray-900">Criminal detected</h2>
                 {index === 0 && (
                   <div className="flex items-center gap-2 ml-auto">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-blue-600 font-semibold">Latest</span>
+                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm text-blue-600 font-semibold">Latest</span>
                   </div>
                 )}
               </div>
 
-              {/* Match Data */}
-              <div className="px-4 pb-3">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center">
-                      <Activity size={20} className="text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 text-base">{match.person_name}</h4>
-                      <p className="text-sm text-gray-500">ID: {match.person_id}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full font-semibold">
-                      {match.score} Match
-                    </span>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Node: {match.node_id}
-                    </p>
-                  </div>
+              {/* Match Data - Each on separate line */}
+              <div className="space-y-3 mb-6 text-lg">
+                <div className="text-gray-900">
+                  <span className="font-semibold">Name:</span> {match.person_name}
                 </div>
-
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
-                  <div>
-                    <span className="font-semibold text-gray-600">Age:</span>
-                    <span className="ml-2 text-gray-900">{match.age}</span>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-gray-600">Legal Case:</span>
-                    <span className="ml-2 text-gray-900">{match.legal_case}</span>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-gray-600">Detected:</span>
-                    <span className="ml-2 text-gray-900">
-                      {formatTimestamp(match.timestamp)}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-gray-600">Server:</span>
-                    <span className="ml-2 text-gray-900">
-                      {match.server_timestamp ? formatTimestamp(match.server_timestamp) : 'N/A'}
-                    </span>
-                  </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">ID:</span> {match.person_id}
                 </div>
-
-                {/* Action Buttons */}
-                <div className="flex items-center justify-center gap-4 pt-2 border-t border-gray-100">
-                  <button
-                    onClick={() => onConfirmMatch?.(match)}
-                    className="flex-1 py-3 px-4 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Check size={16} />
-                    Confirm Match
-                  </button>
-
-                  <button
-                    onClick={() => onRejectMatch?.(match)}
-                    className="flex-1 py-3 px-4 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <X size={16} />
-                    Reject Match
-                  </button>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Time:</span> {formatTimestamp(match.timestamp)}
+                </div>
+                <div className="text-gray-900">
+                  <span className="font-semibold">Location:</span> Node {match.node_id}
                 </div>
               </div>
 
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  onClick={() => onConfirmMatch?.(match)}
+                  className="flex-1 py-4 px-8 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-lg"
+                >
+                  <Check size={20} />
+                  Confirm
+                </button>
+
+                <button
+                  onClick={() => onRejectMatch?.(match)}
+                  className="flex-1 py-4 px-8 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 shadow-lg"
+                >
+                  <X size={20} />
+                  Reject
+                </button>
+              </div>
+              {/* -------------------------------------------------- */}
+
               {/* Latest Record Indicator */}
               {index === 0 && (
-                <div className="px-4 pb-3 pt-1 border-t border-blue-200">
+                <div className="mt-4 pt-3 border-t border-blue-200">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-blue-600 font-semibold">Latest Detection</span>
+                    <span className="text-sm text-blue-600 font-semibold">Latest Detection</span>
                   </div>
                 </div>
               )}
