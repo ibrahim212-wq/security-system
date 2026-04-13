@@ -38,6 +38,7 @@ export default function RealTimeDataTable({
 }: RealTimeDataTableProps) {
   
   const [cardStates, setCardStates] = useState<CardState>({});
+  const [showToast, setShowToast] = useState(false);
   
   const getConnectionStatus = () => {
     switch (connectionType) {
@@ -70,6 +71,12 @@ export default function RealTimeDataTable({
       console.log('Updated cardStates after confirm:', newState);
       return newState;
     });
+    
+    // Show toast notification
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
     
     onConfirmMatch?.(match);
   };
@@ -133,6 +140,16 @@ export default function RealTimeDataTable({
 
   return (
     <div className="space-y-4">
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed top-4 right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="bg-green-500 text-white px-6 py-4 rounded-lg shadow-xl flex items-center gap-3">
+            <Check size={24} />
+            <span className="font-semibold text-lg">The criminal catching successfully</span>
+          </div>
+        </div>
+      )}
+
       {/* Status Bar */}
       <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
         <div className="flex items-center gap-3">
