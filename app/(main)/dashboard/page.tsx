@@ -14,6 +14,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { useWebSocket } from "@/hooks/useWebSocket";
 import {
   Menu,
   Bell,
@@ -25,6 +26,7 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
+  Activity,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -67,6 +69,9 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 export default function DashboardPage() {
   // ── Auth state ──
   const { user } = useAuth();
+  
+  // ── WebSocket state ──
+  const { connected, matches, error, sendTestMatch } = useWebSocket();
   
   // ── UI state ──
   const [menuOpen, setMenuOpen]       = useState(false);
@@ -319,6 +324,96 @@ export default function DashboardPage() {
             </div>
           )}
 
+        </div>
+
+        {/* ══════════════════════════════════════
+            REAL-TIME MATCHES SECTION
+        ══════════════════════════════════════ */}
+        <div id="matches" className="bg-white px-3 sm:px-4 py-3 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Activity size={16} className="text-green-500" />
+              <h2 className="text-sm font-bold text-[#1A1A1A]">Criminal Detected</h2>
+              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                connected ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              }`}>
+                {connected ? 'LIVE' : 'OFFLINE'}
+              </span>
+            </div>
+            <button
+              onClick={sendTestMatch}
+              className="px-3 py-1.5 bg-blue-500 text-white text-xs rounded-lg hover:bg-blue-600 transition-colors"
+              disabled={!connected}
+            >
+              Test Match
+            </button>
+          </div>
+
+          {/* Connection error display */}
+          {error && (
+            <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-xs text-red-700">{error}</p>
+            </div>
+          )}
+
+          {/* Real-time matches list */}
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {matches.length === 0 ? (
+              <div className="text-center py-8">
+                <AlertTriangle size={24} className="text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">No criminal matches detected yet</p>
+                <p className="text-xs text-gray-400 mt-1">Waiting for real-time data from security nodes...</p>
+              </div>
+            ) : (
+              matches.map((match, index) => (
+                <div
+                  key={match.match_id || index}
+                  className={`p-3 rounded-lg border transition-all duration-300 ${
+                    index === 0 ? 'border-red-300 bg-red-50 animate-pulse' : 'border-gray-200 bg-gray-50'
+                  }`}
+                  style={{
+                    animation: index === 0 ? 'pulse 2s ease-in-out' : 'none'
+                  }}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
+                        <User size={16} className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-[#1A1A1A]">{match.person_name}</p>
+                        <p className="text-xs text-gray-500">ID: {match.person_id}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full font-semibold">
+                        {match.score} Match
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span className="font-semibold text-gray-600">Age:</span>
+                      <span className="ml-1">{match.age}</span>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-600">Case:</span>
+                      <span className="ml-1">{match.legal_case}</span>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-600">Node:</span>
+                      <span className="ml-1">{match.node_id}</span>
+                    </div>
+                    <div>
+                      <span className="font-semibold text-gray-600">Time:</span>
+                      <span className="ml-1">{new Date(match.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
 
         </div>
