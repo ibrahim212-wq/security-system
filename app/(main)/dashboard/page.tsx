@@ -10,6 +10,8 @@ import {
   Menu,
   Bell,
   ChevronRight,
+  MapPin,
+  User,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -107,13 +109,26 @@ export default function DashboardPage() {
 
         <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-3 relative">
 
+          {/* Location card - Original design restored */}
           <div
-            className="flex items-center justify-center rounded-full px-4 py-3"
-            style={{ background: "#1F49D8" }}
+            className="flex items-center gap-2 rounded-xl px-2.5 py-2"
+            style={{ background: "#ECECF1" }}
           >
-            <span className="text-white text-base font-bold tracking-wide">
-              Mall Masr, Gate 3
-            </span>
+            <div
+              className="w-8 h-8 rounded-full shrink-0 flex items-center justify-center"
+              style={{ background: "#C8D0E7" }}
+            >
+              <User size={18} color="#7A8BB0" />
+            </div>
+            <div>
+              <p className="text-[10px] text-[#7A8BB0] font-medium">Deliver from</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <MapPin size={10} color="#E8334A" />
+                <span className="text-[12px] font-semibold text-[#1A1A1A]">
+                  Mall Masr, Gate 3
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="flex-1">
