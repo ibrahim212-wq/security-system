@@ -64,7 +64,13 @@ export default function RealTimeDataTable({
     console.log('Confirm button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
     console.log('Setting card state to confirmed for key:', matchKey);
-    setCardStates(prev => ({ ...prev, [matchKey]: 'confirmed' }));
+    
+    setCardStates(prev => {
+      const newState = { ...prev, [matchKey]: 'confirmed' } as CardState;
+      console.log('Updated cardStates after confirm:', newState);
+      return newState;
+    });
+    
     onConfirmMatch?.(match);
   };
 
@@ -73,7 +79,13 @@ export default function RealTimeDataTable({
     console.log('Reject button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
     console.log('Setting card state to rejected for key:', matchKey);
-    setCardStates(prev => ({ ...prev, [matchKey]: 'rejected' }));
+    
+    setCardStates(prev => {
+      const newState = { ...prev, [matchKey]: 'rejected' } as CardState;
+      console.log('Updated cardStates after reject:', newState);
+      return newState;
+    });
+    
     onRejectMatch?.(match);
   };
 
@@ -430,7 +442,7 @@ export default function RealTimeDataTable({
                 <div className="mt-4 pt-3 border-t border-red-300">
                   <div className="flex items-center gap-2">
                     <X size={16} className="text-red-600" />
-                    <span className="text-sm text-red-600 font-semibold">Match rejected successfully</span>
+                    <span className="text-sm text-red-600 font-semibold">Match rejected</span>
                   </div>
                 </div>
               )}
