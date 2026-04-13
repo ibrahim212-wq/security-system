@@ -1,8 +1,9 @@
-// Real-time data display component with exact card structure
+// Real-time data display component with exact card structure and button functionality
 // Shows security data with individual cards and action buttons
 
 "use client";
 
+import { useState } from "react";
 import { SecurityData } from "@/hooks/useRealTimeData";
 import { Activity, AlertTriangle, Wifi, WifiOff, Database, RefreshCw, Check, X } from "lucide-react";
 
@@ -19,6 +20,10 @@ interface RealTimeDataTableProps {
   onRejectMatch?: (match: SecurityData) => void;
 }
 
+interface CardState {
+  [key: string]: 'confirmed' | 'rejected' | 'pending';
+}
+
 export default function RealTimeDataTable({
   data,
   connected,
@@ -31,6 +36,8 @@ export default function RealTimeDataTable({
   onConfirmMatch,
   onRejectMatch
 }: RealTimeDataTableProps) {
+  
+  const [cardStates, setCardStates] = useState<CardState>({});
   
   const getConnectionStatus = () => {
     switch (connectionType) {
@@ -50,6 +57,32 @@ export default function RealTimeDataTable({
 
   const formatTimestamp = (timestamp: string) => {
     return new Date(timestamp).toLocaleString();
+  };
+
+  const handleConfirm = (match: SecurityData) => {
+    const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+    setCardStates(prev => ({ ...prev, [matchKey]: 'confirmed' }));
+    onConfirmMatch?.(match);
+  };
+
+  const handleReject = (match: SecurityData) => {
+    const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+    setCardStates(prev => ({ ...prev, [matchKey]: 'rejected' }));
+    onRejectMatch?.(match);
+  };
+
+  const getCardStyle = (match: SecurityData) => {
+    const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+    const state = cardStates[matchKey];
+    
+    switch (state) {
+      case 'confirmed':
+        return 'bg-green-50 border-green-500';
+      case 'rejected':
+        return 'bg-red-50 border-red-500';
+      default:
+        return 'bg-white border-gray-200';
+    }
   };
 
   if (loading) {
@@ -137,13 +170,28 @@ export default function RealTimeDataTable({
         </div>
       ) : (
         <div className="space-y-6">
-          {data.map((match, index) => (
-            <div
-              key={match.match_id || index}
-              className={`bg-white border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${
-                index === 0 ? 'border-blue-500' : 'border-gray-300'
-              }`}
-            >
+          {data.map((match, index) => {
+            const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+            const cardState = cardStates[matchKey];
+            const isDisabled = cardState === 'confirmed' || cardState === 'rejected';
+            return (
+              <div
+                key={match.match_id || index}
+                className={`bg-white border-2 rounded-lg shadow-xl p-6 transition-all duration-300 ${
+                  index === 0 ? 'border-blue-500' : 'border-gray-300'
+                }`}
+              >
+                {/* -------------------------------------------------- */}
+                {/* Card Title */}
+                <div className="flex items-center gap-3 mb-4">
+                  <Activity size={20} className="text-red-500" />
+                  <h2 className="text-xl font-bold text-gray-900">Criminal detected</h2>
+                  {index === 0 && (
+                    <div className="flex items-center gap-2 ml-auto">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm text-blue-600 font-semibold">Latest</span>
+                    </div>
+                  )}
               {/* -------------------------------------------------- */}
               {/* Card Title */}
               <div className="flex items-center gap-3 mb-4">
@@ -157,44 +205,70 @@ export default function RealTimeDataTable({
                 )}
               </div>
 
-              {/* Match Data - Each on separate line */}
               <div className="space-y-3 mb-6 text-lg">
-                <div className="text-gray-900">
-                  <span className="font-semibold">Name:</span> {match.person_name}
+                  <div className="text-gray-900">
+                    <span className="font-semibold">type:</span> {match.legal_case}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Name:</span> {match.person_name}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">ID:</span> {match.person_id}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Age:</span> {match.age}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Legal Case:</span> {match.legal_case}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Score:</span> {match.score}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Node ID:</span> {match.node_id}
+                  </div>
+                  <div className="text-gray-900">
+                    <span className="font-semibold">Time:</span> {formatTimestamp(match.timestamp)}
+                  </div>
                 </div>
-                <div className="text-gray-900">
-                  <span className="font-semibold">ID:</span> {match.person_id}
-                </div>
-                <div className="text-gray-900">
-                  <span className="font-semibold">Time:</span> {formatTimestamp(match.timestamp)}
-                </div>
-                <div className="text-gray-900">
-                  <span className="font-semibold">Location:</span> Node {match.node_id}
-                </div>
-              </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-4">
-                <button
-                  onClick={() => onConfirmMatch?.(match)}
-                  className="flex-1 py-4 px-8 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-lg"
-                >
-                  <Check size={20} />
-                  Confirm
-                </button>
+                <div className="flex items-center justify-center gap-4">
+                  <button
+                    onClick={() => handleConfirm(match)}
+                    disabled={isDisabled}
+                    className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                      isDisabled 
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                        : 'bg-green-500 text-white hover:bg-green-600'
+                    }`}
+                  >
+                    <Check size={20} />
+                    Confirm Match
+                  </button>
 
-                <button
-                  onClick={() => onRejectMatch?.(match)}
-                  className="flex-1 py-4 px-8 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 shadow-lg"
-                >
-                  <X size={20} />
-                  Reject
-                </button>
-              </div>
-              {/* -------------------------------------------------- */}
+                  <button
+                    onClick={() => handleReject(match)}
+                    disabled={isDisabled}
+                    className={`flex-1 py-4 px-8 rounded-lg font-bold text-lg transition-colors flex items-center justify-center gap-2 shadow-lg ${
+                      isDisabled 
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                    }`}
+                </div>
+              )}
+
+              {cardState === 'rejected' && (
+                <div className="mt-4 pt-3 border-t border-red-300">
+                  <div className="flex items-center gap-2">
+                    <X size={16} className="text-red-600" />
+                    <span className="text-sm text-red-600 font-semibold">Match Rejected</span>
+                  </div>
+                </div>
+              )}
 
               {/* Latest Record Indicator */}
-              {index === 0 && (
+              {index === 0 && !isDisabled && (
                 <div className="mt-4 pt-3 border-t border-blue-200">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
@@ -203,9 +277,9 @@ export default function RealTimeDataTable({
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+          );
+        })}
+      </div>
+    )}
+  </div>
+);
