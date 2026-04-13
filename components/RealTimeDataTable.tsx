@@ -60,13 +60,17 @@ export default function RealTimeDataTable({
   };
 
   const handleConfirm = (match: SecurityData) => {
+    console.log('Confirm button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+    console.log('Setting card state to confirmed for key:', matchKey);
     setCardStates(prev => ({ ...prev, [matchKey]: 'confirmed' }));
     onConfirmMatch?.(match);
   };
 
   const handleReject = (match: SecurityData) => {
+    console.log('Reject button clicked for match:', match);
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
+    console.log('Setting card state to rejected for key:', matchKey);
     setCardStates(prev => ({ ...prev, [matchKey]: 'rejected' }));
     onRejectMatch?.(match);
   };
@@ -74,6 +78,7 @@ export default function RealTimeDataTable({
   const getCardStyle = (match: SecurityData) => {
     const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
     const state = cardStates[matchKey];
+    console.log('Card state for key', matchKey, ':', state);
     
     switch (state) {
       case 'confirmed':
