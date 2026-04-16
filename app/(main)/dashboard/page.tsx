@@ -45,7 +45,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
-      <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl relative">
+      <div className="flex flex-col w-full min-h-screen bg-white shadow-2xl relative sm:max-w-md sm:mx-auto">
 
         <header
           className="flex items-center justify-between px-4 py-3"
