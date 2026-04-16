@@ -22,7 +22,7 @@ export default function DashboardBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 w-full sm:max-w-md sm:mx-auto z-50"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-md z-50"
       style={{
         background: "#1A44CC",
         borderTop: "1px solid rgba(255,255,255,0.12)",
