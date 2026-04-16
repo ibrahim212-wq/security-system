@@ -11,8 +11,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { useTheme } from "@/contexts/ThemeContext";
-import ToggleSwitch from "@/components/ToggleSwitch";
 import { 
   Bell, 
   Lock, 
@@ -27,7 +25,6 @@ import {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -39,18 +36,6 @@ export default function SettingsPage() {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const settingsSections = [
-    {
-      title: "Appearance",
-      items: [
-        { 
-          icon: Shield, 
-          label: "Dark Mode", 
-          description: "Toggle dark/light theme",
-          action: "toggle",
-          value: theme === "dark"
-        },
-      ],
-    },
     {
       title: "Account",
       items: [
@@ -161,14 +146,12 @@ export default function SettingsPage() {
                 {title}
               </p>
               <div className="flex flex-col gap-2">
-                {items.map(({ icon: Icon, label, description, action, value }: any) => (
+                {items.map(({ icon: Icon, label, description, action }: any) => (
                   <button
                     key={label}
                     onClick={() => {
                       if (action === "password") {
                         setShowPasswordModal(true);
-                      } else if (action === "toggle") {
-                        toggleTheme();
                       } else if (label === "Sign Out") {
                         handleSignOut();
                       }
@@ -186,15 +169,7 @@ export default function SettingsPage() {
                       <p className="text-[13px] font-bold text-[#1A1A1A]">{label}</p>
                       <p className="text-[11px] text-[#7A8BB0] mt-0.5">{description}</p>
                     </div>
-                    {action === "toggle" ? (
-                      <ToggleSwitch 
-                        checked={(value as boolean) || false} 
-                        onChange={() => toggleTheme()}
-                        label={label}
-                      />
-                    ) : (
-                      <ChevronRight size={16} color="#7A8BB0" />
-                    )}
+                    <ChevronRight size={16} color="#7A8BB0" />
                   </button>
                 ))}
               </div>

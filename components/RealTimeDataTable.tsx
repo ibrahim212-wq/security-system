@@ -265,28 +265,28 @@ export default function RealTimeDataTable({
               {/* Match Data - Each on separate line */}
               <div className="space-y-3 mb-6 text-lg">
                 <div className="text-gray-900">
-                  <span className="font-semibold">Type:</span> {match.type || match.legal_case}
+                  <span className="font-semibold">type:</span> {match.type}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Person Name:</span> {match.person_name}
+                  <span className="font-semibold">person_name:</span> {match.person_name}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Person ID:</span> {match.person_id}
+                  <span className="font-semibold">person_id:</span> {match.person_id}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Age:</span> {match.age}
+                  <span className="font-semibold">age:</span> {match.age}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Legal Case:</span> {match.legal_case}
+                  <span className="font-semibold">legal_case:</span> {match.legal_case}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Score:</span> {match.score}
+                  <span className="font-semibold">score:</span> {match.score}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Node ID:</span> {match.node_id}
+                  <span className="font-semibold">node_id:</span> {match.node_id}
                 </div>
                 <div className="text-gray-900">
-                  <span className="font-semibold">Timestamp:</span> {formatTimestamp(match.timestamp)}
+                  <span className="font-semibold">timestamp:</span> {match.timestamp}
                 </div>
               </div>
 

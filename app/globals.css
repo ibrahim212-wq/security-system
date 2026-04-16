@@ -29,7 +29,7 @@ html {
   border-radius: 3px;
 }
 
-/* Dark mode styles */
+/* Light mode styles */
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f3f3f6;
@@ -43,21 +43,6 @@ html {
   --success-color: #22c55e;
   --error-color: #e8334a;
   --warning-bg: #fdeef2;
-}
-
-.dark {
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-tertiary: #3a3a3a;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-tertiary: #c0c0c0;
-  --border-color: #4a4a4a;
-  --accent-bg: #1f49d8;
-  --accent-hover: #1a3ec4;
-  --success-color: #22c55e;
-  --error-color: #e8334a;
-  --warning-bg: #4a1a2a;
 }
 
 /* Apply theme variables to common elements */
