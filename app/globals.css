@@ -7,6 +7,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force light mode on all devices */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  body {
+    background-color: #f3f3f6 !important;
+    color: #1a1a1a !important;
+  }
+  * {
+    background-color: inherit !important;
+    color: inherit !important;
+  }
+}
+
 /* Smooth scrolling for the whole app */
 html {
   scroll-behavior: smooth;
@@ -47,35 +62,34 @@ html {
 
 /* Apply theme variables to common elements */
 body {
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #f3f3f6 !important;
+  color: #1a1a1a !important;
 }
 
 .bg-white {
-  background-color: var(--bg-primary) !important;
+  background-color: #ffffff !important;
 }
 
 .text-\[\#1A1A1A\] {
-  color: var(--text-primary) !important;
+  color: #1a1a1a !important;
 }
 
 .text-\[\#7A8BB0\] {
-  color: var(--text-secondary) !important;
+  color: #7a8bb0 !important;
 }
 
 .text-\[\#3A3A3A\] {
-  color: var(--text-tertiary) !important;
+  color: #3a3a3a !important;
 }
 
 .bg-\[\#ECECF1\] {
-  background-color: var(--bg-tertiary) !important;
+  background-color: #ececf1 !important;
 }
 
 .bg-\[\#F3F3F6\] {
-  background-color: var(--bg-secondary) !important;
+  background-color: #f3f3f6 !important;
 }
 
 .border-\[\#C8D0E7\] {
-  border-color: var(--border-color) !important;
+  border-color: #c8d0e7 !important;
 }

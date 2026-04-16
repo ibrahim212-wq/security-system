@@ -13,12 +13,16 @@ import { AuthProvider } from "@/contexts/AuthContext";
 export const metadata: Metadata = {
   title: "Security System",
   description: "Smart security monitoring dashboard",
+  themeColor: "#ffffff",
+  colorScheme: "light",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  colorScheme: "light",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -32,7 +36,7 @@ export default function RootLayout({
         The `antialiased` class improves font rendering.
         `min-h-screen` ensures the background fills the full viewport.
       */}
-      <body className="antialiased min-h-screen bg-brand-950 text-white">
+      <body className="antialiased min-h-screen bg-gray-50 text-gray-900">
         <AuthProvider>
           {children}
         </AuthProvider>
