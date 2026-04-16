@@ -11,7 +11,7 @@ import { History } from "lucide-react";
 export default function HistoryPage() {
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
-      <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
+      <div className="flex flex-col w-full min-h-screen bg-white shadow-2xl relative sm:max-w-md sm:mx-auto">
 
         {/* ── Blue top bar ── */}
         <header

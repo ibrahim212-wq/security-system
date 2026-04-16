@@ -41,7 +41,7 @@ export default function ProfilePage() {
   if (loading || !user) {
     return (
       <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
-        <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
+        <div className="flex flex-col w-full min-h-screen bg-white shadow-2xl relative sm:max-w-md sm:mx-auto">
           <div className="flex-1 flex items-center justify-center">
             <p className="text-[#7A8BB0]">Loading...</p>
           </div>
@@ -52,7 +52,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F3F3F6" }}>
-      <div className="flex flex-col max-w-sm mx-auto w-full min-h-screen bg-white shadow-2xl">
+      <div className="flex flex-col w-full min-h-screen bg-white shadow-2xl relative sm:max-w-md sm:mx-auto">
 
         {/* ── Blue top bar ── */}
         <header
