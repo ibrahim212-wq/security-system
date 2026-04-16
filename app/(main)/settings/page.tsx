@@ -12,12 +12,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { 
-  Bell, 
   Lock, 
   User, 
   LogOut, 
   ChevronRight, 
-  Shield, 
   X,
   Check,
   AlertTriangle
@@ -41,13 +39,6 @@ export default function SettingsPage() {
       items: [
         { icon: User,   label: "Edit Profile",        description: "Update your name and photo" },
         { icon: Lock,   label: "Change Password",     description: "Update your login credentials", action: "password" },
-      ],
-    },
-    {
-      title: "Notifications",
-      items: [
-        { icon: Bell,   label: "Alert Notifications", description: "Motion, door and camera alerts" },
-        { icon: Shield, label: "Security Alerts",     description: "High-priority threat notifications" },
       ],
     },
     {
