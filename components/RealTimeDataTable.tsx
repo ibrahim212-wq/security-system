@@ -122,15 +122,6 @@ export default function RealTimeDataTable({
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <RefreshCw className="animate-spin text-blue-500 mr-2" size={20} />
-        <span className="text-gray-600">Loading security data...</span>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-4">

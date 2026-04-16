@@ -34,7 +34,7 @@ export function useRealTimeData() {
   const [state, setState] = useState<RealTimeDataState>({
     connected: false,
     data: [],
-    loading: true,
+    loading: false,
     error: null,
     lastUpdate: null,
     connectionType: 'offline'
