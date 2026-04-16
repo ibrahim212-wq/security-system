@@ -222,6 +222,44 @@ export function useRealTimeData() {
     }
   }, [fetchFallbackData]);
 
+  // Emit criminal confirmed event
+  const emitCriminalConfirmed = useCallback((data: SecurityData) => {
+    const eventData = {
+      name: data.person_name,
+      id: data.person_id,
+      time: data.timestamp,
+      location: data.node_id
+    };
+
+    if (socketRef.current?.connected) {
+      socketRef.current.emit('criminal_confirmed', eventData);
+      console.log('Emitted criminal_confirmed:', eventData);
+      return true;
+    } else {
+      console.warn('WebSocket not connected, cannot emit criminal_confirmed');
+      return false;
+    }
+  }, []);
+
+  // Emit criminal rejected event
+  const emitCriminalRejected = useCallback((data: SecurityData) => {
+    const eventData = {
+      name: data.person_name,
+      id: data.person_id,
+      time: data.timestamp,
+      location: data.node_id
+    };
+
+    if (socketRef.current?.connected) {
+      socketRef.current.emit('criminal_rejected', eventData);
+      console.log('Emitted criminal_rejected:', eventData);
+      return true;
+    } else {
+      console.warn('WebSocket not connected, cannot emit criminal_rejected');
+      return false;
+    }
+  }, []);
+
   // Manual refresh
   const refreshData = useCallback(() => {
     if (socketRef.current?.connected) {
@@ -256,6 +294,8 @@ export function useRealTimeData() {
     ...state,
     sendTestData,
     refreshData,
-    reconnect: connectWebSocket
+    reconnect: connectWebSocket,
+    emitCriminalConfirmed,
+    emitCriminalRejected
   };
 }

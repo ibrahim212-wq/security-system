@@ -84,7 +84,7 @@ export default function RealTimeDataTable({
     });
     
     // Show toast notification
-    showToast('success', 'The criminal catching successfully');
+    showToast('success', 'the criminal detected successfully');
     
     onConfirmMatch?.(match);
   };
@@ -102,7 +102,7 @@ export default function RealTimeDataTable({
     });
     
     // Show toast notification
-    showToast('error', 'Match rejected successfully');
+    showToast('error', 'the criminal undetected');
     
     onRejectMatch?.(match);
   };

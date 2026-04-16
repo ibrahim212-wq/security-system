@@ -25,7 +25,9 @@ export default function DashboardPage() {
     lastUpdate, 
     connectionType, 
     sendTestData, 
-    refreshData 
+    refreshData,
+    emitCriminalConfirmed,
+    emitCriminalRejected
   } = useRealTimeData();
   
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,10 +35,12 @@ export default function DashboardPage() {
 
   const handleConfirmMatch = (match: any) => {
     console.log('Match confirmed:', match);
+    emitCriminalConfirmed(match);
   };
 
   const handleRejectMatch = (match: any) => {
     console.log('Match rejected:', match);
+    emitCriminalRejected(match);
   };
 
   return (

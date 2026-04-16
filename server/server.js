@@ -28,6 +28,9 @@ app.use(express.json());
 // Store connected clients
 let connectedClients = new Set();
 
+// In-memory storage for confirmed/rejected detections
+let detections = [];
+
 // JSON file storage
 const DATA_FILE = path.join(__dirname, 'security_data.json');
 
@@ -114,6 +117,58 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Handle "criminal_confirmed" events from frontend
+  socket.on('criminal_confirmed', (data) => {
+    console.log('Received criminal_confirmed event:', data);
+    
+    // Store in memory with status
+    const detectionRecord = {
+      name: data.name,
+      id: data.id,
+      time: data.time,
+      location: data.location,
+      status: 'confirmed',
+      server_timestamp: new Date().toISOString()
+    };
+    
+    detections.push(detectionRecord);
+    
+    console.log('Stored confirmed detection:', detectionRecord);
+    console.log(`Total detections stored: ${detections.length}`);
+    
+    // Acknowledge receipt
+    socket.emit('criminal_confirmed_ack', {
+      success: true,
+      message: 'Criminal detection confirmed and stored'
+    });
+  });
+
+  // Handle "criminal_rejected" events from frontend
+  socket.on('criminal_rejected', (data) => {
+    console.log('Received criminal_rejected event:', data);
+    
+    // Store in memory with status
+    const detectionRecord = {
+      name: data.name,
+      id: data.id,
+      time: data.time,
+      location: data.location,
+      status: 'rejected',
+      server_timestamp: new Date().toISOString()
+    };
+    
+    detections.push(detectionRecord);
+    
+    console.log('Stored rejected detection:', detectionRecord);
+    console.log(`Total detections stored: ${detections.length}`);
+    
+    // Acknowledge receipt
+    socket.emit('criminal_rejected_ack', {
+      success: true,
+      message: 'Criminal detection rejected and stored'
+    });
+  });
+
   // Handle client disconnection
   socket.on('disconnect', () => {
     console.log(`Client disconnected: ${socket.id}`);
@@ -196,6 +251,17 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     connected_clients: connectedClients.size,
     saved_records: data.length,
+    detections_count: detections.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// API endpoint to get all detections (confirmed/rejected)
+app.get('/api/detections', (req, res) => {
+  res.json({
+    success: true,
+    detections: detections,
+    count: detections.length,
     timestamp: new Date().toISOString()
   });
 });
@@ -207,6 +273,7 @@ server.listen(PORT, () => {
   console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
   console.log(`🌐 Health check: http://localhost:${PORT}/health`);
   console.log(`📝 REST API: http://localhost:${PORT}/api/new_match`);
+  console.log(`🔍 Detections API: http://localhost:${PORT}/api/detections`);
 });
 
 // Graceful shutdown
