@@ -8,6 +8,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,6 +21,8 @@ import {
   ChevronRight,
   Bell,
   Lock,
+  Camera,
+  X,
 } from "lucide-react";
 
 // Settings menu items
@@ -32,11 +35,113 @@ const settingsItems = [
 export default function ProfilePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+
+  // Load profile image on mount
+  useEffect(() => {
+    if (user && (user as any).user_metadata?.avatar_url) {
+      setProfileImageUrl((user as any).user_metadata.avatar_url);
+    }
+  }, [user]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
     router.push("/login");
   }
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = event.target.files?.[0];
+      if (!file || !user) return;
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      setUploading(true);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload to Supabase Storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        alert('Failed to upload image');
+        setUploading(false);
+        return;
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Update user metadata
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: publicUrl }
+      });
+
+      if (updateError) {
+        console.error('Update error:', updateError);
+        alert('Failed to update profile');
+      } else {
+        setProfileImageUrl(publicUrl);
+        setPreviewUrl(null);
+      }
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('An error occurred while uploading the image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    try {
+      setUploading(true);
+
+      // Remove from user metadata
+      const { error } = await supabase.auth.updateUser({
+        data: { avatar_url: null }
+      });
+
+      if (error) {
+        console.error('Error removing image:', error);
+        alert('Failed to remove profile image');
+      } else {
+        setProfileImageUrl(null);
+        setPreviewUrl(null);
+      }
+    } catch (error) {
+      console.error('Error removing image:', error);
+      alert('An error occurred while removing the image');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   if (loading || !user) {
     return (
@@ -80,19 +185,61 @@ export default function ProfilePage() {
             className="flex items-center gap-4 rounded-2xl px-4 py-4"
             style={{ background: "#ECECF1" }}
           >
-            <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold shrink-0"
-              style={{ background: "#1F49D8" }}
-            >
-              {user.full_name?.charAt(0) || 'U'}
+            <div className="relative">
+              {previewUrl || profileImageUrl ? (
+                <>
+                  <img
+                    src={previewUrl || profileImageUrl || ''}
+                    alt="Profile"
+                    className="w-14 h-14 rounded-xl object-cover shrink-0"
+                  />
+                  <button
+                    onClick={handleRemoveImage}
+                    disabled={uploading}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ zIndex: 10 }}
+                  >
+                    <X size={12} />
+                  </button>
+                </>
+              ) : (
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-bold shrink-0 relative"
+                  style={{ background: "#1F49D8" }}
+                >
+                  {user.full_name?.charAt(0) || 'U'}
+                  <label htmlFor="avatar-upload" className="absolute inset-0 cursor-pointer flex items-center justify-center bg-black/20 rounded-xl opacity-0 hover:opacity-100 transition-opacity">
+                    <Camera size={16} color="white" />
+                  </label>
+                </div>
+              )}
+              {!previewUrl && !profileImageUrl && (
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+              )}
             </div>
-            <div>
+            <div className="flex-1">
               <p className="text-[15px] font-bold text-[#1A1A1A]">{user.full_name || 'User'}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <Shield size={12} color="#1F49D8" />
                 <span className="text-[11px] font-medium" style={{ color: "#7A8BB0" }}>{user.role || 'User'}</span>
               </div>
               <p className="text-[11px] mt-0.5" style={{ color: "#7A8BB0" }}>Member since January 2026</p>
+              {!profileImageUrl && !previewUrl && (
+                <button
+                  onClick={() => document.getElementById('avatar-upload')?.click()}
+                  disabled={uploading}
+                  className="mt-2 text-xs text-blue-600 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploading ? 'Uploading...' : 'Add photo'}
+                </button>
+              )}
             </div>
           </div>
 
