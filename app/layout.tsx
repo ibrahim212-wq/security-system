@@ -36,7 +36,7 @@ export default function RootLayout({
         The `antialiased` class improves font rendering.
         `min-h-screen` ensures the background fills the full viewport.
       */}
-      <body className="antialiased min-h-screen bg-gray-50 text-gray-900">
+      <body className="antialiased min-h-screen">
         <AuthProvider>
           {children}
         </AuthProvider>

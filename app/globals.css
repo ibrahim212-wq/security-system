@@ -7,21 +7,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force light mode on all devices */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light !important;
-  }
-  body {
-    background-color: #f3f3f6 !important;
-    color: #1a1a1a !important;
-  }
-  * {
-    background-color: inherit !important;
-    color: inherit !important;
-  }
-}
-
 /* Smooth scrolling for the whole app */
 html {
   scroll-behavior: smooth;
@@ -44,7 +29,7 @@ html {
   border-radius: 3px;
 }
 
-/* Light mode styles */
+/* Light mode styles - CSS Variables */
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f3f3f6;
@@ -58,38 +43,4 @@ html {
   --success-color: #22c55e;
   --error-color: #e8334a;
   --warning-bg: #fdeef2;
-}
-
-/* Apply theme variables to common elements */
-body {
-  background-color: #f3f3f6 !important;
-  color: #1a1a1a !important;
-}
-
-.bg-white {
-  background-color: #ffffff !important;
-}
-
-.text-\[\#1A1A1A\] {
-  color: #1a1a1a !important;
-}
-
-.text-\[\#7A8BB0\] {
-  color: #7a8bb0 !important;
-}
-
-.text-\[\#3A3A3A\] {
-  color: #3a3a3a !important;
-}
-
-.bg-\[\#ECECF1\] {
-  background-color: #ececf1 !important;
-}
-
-.bg-\[\#F3F3F6\] {
-  background-color: #f3f3f6 !important;
-}
-
-.border-\[\#C8D0E7\] {
-  border-color: #c8d0e7 !important;
 }
