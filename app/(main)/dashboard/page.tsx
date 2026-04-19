@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealTimeData } from "@/hooks/useRealTimeData";
 import RealTimeDataTable from "@/components/RealTimeDataTable";
+import NotificationBell from "@/components/NotificationBell";
 import {
   Menu,
-  Bell,
   ChevronRight,
   MapPin,
   User,
@@ -31,7 +31,6 @@ export default function DashboardPage() {
   } = useRealTimeData();
   
   const [menuOpen, setMenuOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
 
   const handleConfirmMatch = (match: any) => {
     console.log('Match confirmed:', match);
@@ -53,7 +52,7 @@ export default function DashboardPage() {
         >
           <button
             aria-label="Open menu"
-            onClick={() => { setMenuOpen((v) => !v); setNotifOpen(false); }}
+            onClick={() => setMenuOpen((v) => !v)}
             className="p-1 rounded-lg transition-colors active:bg-white/10"
           >
             <Menu size={24} color="#fff" />
@@ -68,13 +67,7 @@ export default function DashboardPage() {
             priority
           />
 
-          <button
-            aria-label="Notifications"
-            onClick={() => { setNotifOpen((v) => !v); setMenuOpen(false); }}
-            className="relative p-1 rounded-lg transition-colors active:bg-white/10"
-          >
-            <Bell size={22} color="#fff" />
-          </button>
+          <NotificationBell />
         </header>
 
         {menuOpen && (

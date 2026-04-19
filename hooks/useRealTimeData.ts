@@ -4,6 +4,8 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 export interface SecurityData {
   type?: string;
@@ -44,6 +46,7 @@ export function useRealTimeData() {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const fallbackIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dataRef = useRef<SecurityData[]>([]);
+  const { addNotification } = useNotifications();
 
   // Fallback: Fetch data from JSON file via REST API
   const fetchFallbackData = useCallback(async () => {
@@ -154,6 +157,21 @@ export function useRealTimeData() {
             lastUpdate: newData.server_timestamp || newData.timestamp,
             connectionType: 'websocket'
           }));
+
+          // Add to notification queue
+          const notificationItem = {
+            id: newData.match_id || `${newData.timestamp}_${newData.person_id}`,
+            type: "match" as const,
+            person_name: newData.person_name,
+            person_id: newData.person_id,
+            age: newData.age,
+            legal_case: newData.legal_case,
+            score: parseFloat(newData.score) || 0,
+            node_id: newData.node_id,
+            timestamp: newData.timestamp,
+            server_timestamp: newData.server_timestamp
+          };
+          addNotification(notificationItem);
         });
 
         socketRef.current.on('error', (error: any) => {
