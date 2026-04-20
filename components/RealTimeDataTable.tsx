@@ -1,10 +1,12 @@
 // Real-time data display component with exact card structure and button functionality
 // Shows security data with individual cards and action buttons
+// Integrated with notification system for persistent storage
 
 "use client";
 
 import { useState } from "react";
 import { SecurityData } from "@/hooks/useRealTimeData";
+import { useNotifications } from "@/contexts/NotificationContext";
 import { Activity, AlertTriangle, Wifi, WifiOff, Database, RefreshCw, Check, X } from "lucide-react";
 
 interface RealTimeDataTableProps {
@@ -43,6 +45,8 @@ export default function RealTimeDataTable({
     type: 'success',
     message: ''
   });
+
+  const { confirmNotification, rejectNotification, pendingNotifications } = useNotifications();
 
   const getConnectionStatus = () => {
     switch (connectionType) {
@@ -86,6 +90,13 @@ export default function RealTimeDataTable({
     // Show toast notification
     showToast('success', 'the criminal detected successfully');
 
+    // Call notification context to sync with bell and explore
+    const notificationId = matchKey;
+    const notification = pendingNotifications.find(n => n.id === notificationId);
+    if (notification) {
+      confirmNotification(notificationId);
+    }
+
     onConfirmMatch?.(match);
   };
 
@@ -103,6 +114,13 @@ export default function RealTimeDataTable({
 
     // Show toast notification
     showToast('error', 'the criminal undetected');
+
+    // Call notification context to sync with bell and explore
+    const notificationId = matchKey;
+    const notification = pendingNotifications.find(n => n.id === notificationId);
+    if (notification) {
+      rejectNotification(notificationId);
+    }
 
     onRejectMatch?.(match);
   };

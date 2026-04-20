@@ -4,11 +4,14 @@
 // Manages notification state for pending results
 // Handles adding, confirming, and rejecting notifications
 // Syncs with Explore page for processed results
+// Saves to Supabase for persistent storage
 // ─────────────────────────────────────────────
 
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface NotificationItem {
   id: string;
@@ -35,19 +38,93 @@ interface NotificationContextType {
   confirmNotification: (id: string) => void;
   rejectNotification: (id: string) => void;
   getPendingCount: () => number;
+  refreshProcessedResults: () => Promise<void>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const [pendingNotifications, setPendingNotifications] = useState<NotificationItem[]>([]);
   const [processedResults, setProcessedResults] = useState<ProcessedResult[]>([]);
+
+  // Load processed results from Supabase on mount and when user changes
+  useEffect(() => {
+    if (user) {
+      loadProcessedResults();
+    }
+  }, [user]);
+
+  const loadProcessedResults = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('processed_results')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('processed_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading processed results:', error);
+        return;
+      }
+
+      if (data) {
+        const results: ProcessedResult[] = data.map((item: any) => ({
+          id: item.match_id,
+          type: "match",
+          person_name: item.person_name,
+          person_id: item.person_id,
+          age: item.age,
+          legal_case: item.legal_case,
+          score: item.score,
+          node_id: item.node_id,
+          timestamp: item.timestamp,
+          server_timestamp: item.server_timestamp,
+          status: item.status,
+          processedAt: item.processed_at
+        }));
+        setProcessedResults(results);
+      }
+    } catch (error) {
+      console.error('Error loading processed results:', error);
+    }
+  };
 
   const addNotification = (item: NotificationItem) => {
     setPendingNotifications(prev => [...prev, item]);
   };
 
-  const confirmNotification = (id: string) => {
+  const saveToSupabase = async (notification: NotificationItem, status: "confirmed" | "rejected") => {
+    try {
+      const { error } = await supabase
+        .from('processed_results')
+        .insert({
+          match_id: notification.id,
+          person_name: notification.person_name,
+          person_id: notification.person_id,
+          age: notification.age,
+          legal_case: notification.legal_case,
+          score: notification.score,
+          node_id: notification.node_id,
+          timestamp: notification.timestamp,
+          server_timestamp: notification.server_timestamp,
+          status: status,
+          user_id: user?.id
+        });
+
+      if (error) {
+        console.error('Error saving to Supabase:', error);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error saving to Supabase:', error);
+      return false;
+    }
+  };
+
+  const confirmNotification = async (id: string) => {
     const notification = pendingNotifications.find(n => n.id === id);
     if (!notification) return;
 
@@ -57,11 +134,17 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       processedAt: new Date().toISOString()
     };
 
+    // Remove from pending immediately
     setPendingNotifications(prev => prev.filter(n => n.id !== id));
+
+    // Add to local state
     setProcessedResults(prev => [processedItem, ...prev]);
+
+    // Save to Supabase for persistence
+    await saveToSupabase(notification, "confirmed");
   };
 
-  const rejectNotification = (id: string) => {
+  const rejectNotification = async (id: string) => {
     const notification = pendingNotifications.find(n => n.id === id);
     if (!notification) return;
 
@@ -71,11 +154,21 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       processedAt: new Date().toISOString()
     };
 
+    // Remove from pending immediately
     setPendingNotifications(prev => prev.filter(n => n.id !== id));
+
+    // Add to local state
     setProcessedResults(prev => [processedItem, ...prev]);
+
+    // Save to Supabase for persistence
+    await saveToSupabase(notification, "rejected");
   };
 
   const getPendingCount = () => pendingNotifications.length;
+
+  const refreshProcessedResults = async () => {
+    await loadProcessedResults();
+  };
 
   return (
     <NotificationContext.Provider
@@ -85,7 +178,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         addNotification,
         confirmNotification,
         rejectNotification,
-        getPendingCount
+        getPendingCount,
+        refreshProcessedResults
       }}
     >
       {children}
