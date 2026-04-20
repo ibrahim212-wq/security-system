@@ -10,7 +10,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -165,14 +164,7 @@ export default function ProfilePage() {
           className="flex items-center justify-center px-4 py-3"
           style={{ background: "#1F49D8" }}
         >
-          <Image
-            src="/logo.png"
-            alt="Security System Logo"
-            width={128}
-            height={128}
-            className="object-contain"
-            priority
-          />
+          <User size={28} color="#fff" />
         </header>
 
         {/* ── Page title ── */}

@@ -61,8 +61,8 @@ export default function DashboardPage() {
           <Image
             src="/logo.png"
             alt="Security System Logo"
-            width={128}
-            height={128}
+            width={96}
+            height={96}
             className="object-contain mt-3"
             priority
           />

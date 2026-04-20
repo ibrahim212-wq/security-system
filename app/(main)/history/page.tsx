@@ -9,7 +9,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { History, Check, X, RefreshCw } from "lucide-react";
 import { useNotifications } from "@/contexts/NotificationContext";
 
@@ -32,14 +31,7 @@ export default function HistoryPage() {
           className="flex items-center justify-between px-4 py-3"
           style={{ background: "#1F49D8" }}
         >
-          <Image
-            src="/logo.png"
-            alt="Security System Logo"
-            width={128}
-            height={128}
-            className="object-contain"
-            priority
-          />
+          <History size={28} color="#fff" />
           <button
             onClick={handleRefresh}
             disabled={refreshing}
