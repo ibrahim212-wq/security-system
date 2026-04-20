@@ -109,8 +109,8 @@ export default function SettingsPage() {
           <Image
             src="/logo.png"
             alt="Security System Logo"
-            width={80}
-            height={80}
+            width={128}
+            height={128}
             className="object-contain"
             priority
           />
