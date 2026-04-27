@@ -8,7 +8,7 @@ This enhanced system provides real-time data display from WebSocket server with 
 Raspberry Pi/Devices
         |
         v
-WebSocket Server (Port 5000)
+WebSocket Server (Port 5050)
         |    \
         |     \  JSON File Storage
         v      v
@@ -71,10 +71,10 @@ npm run dev
 ```
 
 Server endpoints:
-- **WebSocket**: `ws://localhost:5000`
-- **Health Check**: `http://localhost:5000/health`
-- **Data API**: `http://localhost:5000/api/data`
-- **Test API**: `http://localhost:5000/api/new_match`
+- **WebSocket**: `ws://localhost:5050`
+- **Health Check**: `http://localhost:5050/health`
+- **Data API**: `http://localhost:5050/api/data`
+- **Test API**: `http://localhost:5050/api/new_match`
 
 ### 2. Frontend Setup
 ```bash
@@ -163,7 +163,7 @@ security-system/
 ### **POST /api/new_match**
 Add new security match data.
 ```bash
-curl -X POST http://localhost:5000/api/new_match \
+curl -X POST http://localhost:5050/api/new_match \
   -H "Content-Type: application/json" \
   -d '{
     "person_name": "Test Criminal",
@@ -179,20 +179,20 @@ curl -X POST http://localhost:5000/api/new_match \
 ### **GET /api/data**
 Retrieve all saved security data.
 ```bash
-curl http://localhost:5000/api/data
+curl http://localhost:5050/api/data
 ```
 
 ### **GET /health**
 Check server status and statistics.
 ```bash
-curl http://localhost:5000/health
+curl http://localhost:5050/health
 ```
 
 ## Client Integration Examples
 
 ### **JavaScript/Node.js Client**
 ```javascript
-const socket = io('ws://localhost:5000');
+const socket = io('ws://localhost:5050');
 
 socket.on('connect', () => {
   console.log('Connected to server');
@@ -231,7 +231,7 @@ def connect():
 def new_match(data):
     print('Received new match:', data)
 
-sio.connect('http://localhost:5000')
+sio.connect('http://localhost:5050')
 
 # Send match data
 match_data = {
@@ -252,7 +252,7 @@ sio.emit('new_match', match_data)
 ### **Common Issues**
 
 1. **WebSocket Connection Failed**
-   - Ensure server is running on port 5000
+   - Ensure server is running on port 5050
    - Check firewall settings
    - Verify socket.io-client is installed
 
@@ -298,7 +298,7 @@ DEBUG=socket.io:* npm start
 
 ### **Environment Variables**
 ```bash
-PORT=5000                    # Server port
+PORT=5050                    # Server port
 NODE_ENV=production         # Production mode
 MAX_RECORDS=1000            # Max records to keep
 POLLING_INTERVAL=5000       # Fallback polling (ms)

@@ -8,7 +8,7 @@ This implementation provides a real-time WebSocket system for receiving MATCH ev
 Raspberry Pi (WebSocket Client) 
     |
     v
-WebSocket Server (Node.js, Port 5000)
+WebSocket Server (Node.js, Port 5050)
     |
     v
 Web Dashboard (WebSocket Client)
@@ -46,9 +46,9 @@ npm run dev
 ```
 
 Server will run on:
-- WebSocket: `ws://localhost:5000`
-- Health Check: `http://localhost:5000/health`
-- REST API: `http://localhost:5000/api/new_match`
+- WebSocket: `ws://localhost:5050`
+- Health Check: `http://localhost:5050/health`
+- REST API: `http://localhost:5050/api/new_match`
 
 ### 2. Frontend Setup
 
@@ -108,7 +108,7 @@ def disconnect():
     print('Disconnected from WebSocket server')
 
 # Connect to server
-sio.connect('http://localhost:5000')
+sio.connect('http://localhost:5050')
 
 # Send match data
 match_data = {
@@ -126,7 +126,7 @@ sio.emit('new_match', match_data)
 
 ### REST API Alternative (HTTP POST)
 ```bash
-curl -X POST http://localhost:5000/api/new_match \
+curl -X POST http://localhost:5050/api/new_match \
   -H "Content-Type: application/json" \
   -d '{
     "person_name": "Test Criminal",
@@ -176,22 +176,22 @@ security-system/
 ## Configuration
 
 ### Server Port
-Default port is 5000. Change via environment variable:
+Default port is 5050. Change via environment variable:
 ```bash
 PORT=3001 npm start
 ```
 
 ### WebSocket URL
-Frontend connects to `ws://localhost:5000` by default.
+Frontend connects to `ws://localhost:5050` by default.
 Update in `hooks/useWebSocket.ts` if needed.
 
 ## Troubleshooting
 
 ### Common Issues
-1. **Connection Failed**: Ensure server is running on port 5000
+1. **Connection Failed**: Ensure server is running on port 5050
 2. **CORS Errors**: Server allows all origins for development
 3. **Missing Dependencies**: Run `npm install` in both directories
-4. **Port Conflicts**: Change server port if 5000 is in use
+4. **Port Conflicts**: Change server port if 5050 is in use
 
 ### Debug Mode
 Enable detailed logging:
