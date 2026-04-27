@@ -38,7 +38,7 @@ export function useWebSocket() {
   const connect = () => {
     try {
       // Connect to WebSocket server (Socket.IO uses HTTP URL)
-      const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://192.168.2.8:5050';
+      const serverUrl = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
       
       socketRef.current = (window as any).io(serverUrl, {
         transports: ['websocket', 'polling']

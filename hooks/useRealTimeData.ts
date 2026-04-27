@@ -29,8 +29,8 @@ interface RealTimeDataState {
   connectionType: 'websocket' | 'fallback' | 'offline';
 }
 
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://192.168.2.8:5050';
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://192.168.2.8:5050';
+const SERVER_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
+const WS_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
 
 export function useRealTimeData() {
   const [state, setState] = useState<RealTimeDataState>({
