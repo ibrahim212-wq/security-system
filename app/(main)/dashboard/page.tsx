@@ -29,6 +29,13 @@ export default function DashboardPage() {
     emitCriminalConfirmed,
     emitCriminalRejected
   } = useRealTimeData();
+
+  // Log data changes for debugging
+  console.log('Dashboard - Connection status:', { connected, connectionType });
+  console.log('Dashboard - Matches data:', matches);
+  console.log('Dashboard - Matches count:', matches.length);
+  console.log('Dashboard - Loading:', loading);
+  console.log('Dashboard - Error:', error);
   
   const [menuOpen, setMenuOpen] = useState(false);
 

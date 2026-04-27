@@ -92,7 +92,8 @@ export function useRealTimeData() {
 
       // Import socket.io-client dynamically to avoid SSR issues
       import('socket.io-client').then(({ io }) => {
-        socketRef.current = io(WS_URL, {
+        console.log('Connecting to Socket.IO server at:', SERVER_URL);
+        socketRef.current = io(SERVER_URL, {
           transports: ['websocket', 'polling'],
           timeout: 5000,
           reconnection: true,
@@ -101,7 +102,8 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('connect', () => {
-          console.log('WebSocket connected');
+          console.log('✅ WebSocket connected successfully');
+          console.log('Socket ID:', socketRef.current.id);
           setState(prev => ({
             ...prev,
             connected: true,
@@ -142,12 +144,16 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('new_match', (newData: SecurityData) => {
-          console.log('Received new match via WebSocket:', newData);
-          console.log('Full WebSocket object structure:', JSON.stringify(newData, null, 2));
+          console.log('📡 Received new_match event via WebSocket');
+          console.log('Data received:', newData);
+          console.log('Data structure:', JSON.stringify(newData, null, 2));
           
           // Update data with new match at the beginning
           const updatedData = [newData, ...dataRef.current];
           dataRef.current = updatedData;
+          
+          console.log('Updated data array length:', updatedData.length);
+          console.log('First item in array:', updatedData[0]);
           
           setState(prev => ({
             ...prev,
