@@ -268,12 +268,12 @@ app.get('/api/detections', (req, res) => {
 
 // Start server on port 5050
 const PORT = process.env.PORT || 5050;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Security System WebSocket Server running on port ${PORT}`);
-  console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}`);
-  console.log(`🌐 Health check: http://localhost:${PORT}/health`);
-  console.log(`📝 REST API: http://localhost:${PORT}/api/new_match`);
-  console.log(`🔍 Detections API: http://localhost:${PORT}/api/detections`);
+  console.log(`📡 WebSocket endpoint: ws://192.168.2.8:${PORT}`);
+  console.log(`🌐 Health check: http://192.168.2.8:${PORT}/health`);
+  console.log(`📝 REST API: http://192.168.2.8:${PORT}/api/new_match`);
+  console.log(`🔍 Detections API: http://192.168.2.8:${PORT}/api/detections`);
 });
 
 // Graceful shutdown
