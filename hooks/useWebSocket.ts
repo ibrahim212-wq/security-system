@@ -37,11 +37,10 @@ export function useWebSocket() {
 
   const connect = () => {
     try {
-      // Connect to WebSocket server with dynamic configuration
-      const hostname = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
-      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || `ws://${hostname}:5050`;
+      // Connect to WebSocket server (Socket.IO uses HTTP URL)
+      const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:5050';
       
-      socketRef.current = (window as any).io(wsUrl, {
+      socketRef.current = (window as any).io(serverUrl, {
         transports: ['websocket', 'polling']
       });
 
