@@ -40,7 +40,7 @@ export function useWebSocket() {
       // Connect to WebSocket server (Socket.IO uses HTTP URL)
       const serverUrl = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
       
-      console.log('Connecting to Socket.IO server at:', serverUrl);
+      console.log('connecting...');
       socketRef.current = (window as any).io(serverUrl, {
         transports: ['websocket', 'polling'],
         timeout: 20000,
@@ -51,7 +51,7 @@ export function useWebSocket() {
       });
 
       socketRef.current.on('connect', () => {
-        console.log('Connected to WebSocket server');
+        console.log('connected');
         setState(prev => ({ ...prev, connected: true, error: null }));
         
         // Clear any pending reconnection timeout

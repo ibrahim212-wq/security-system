@@ -92,7 +92,7 @@ export function useRealTimeData() {
 
       // Import socket.io-client dynamically to avoid SSR issues
       import('socket.io-client').then(({ io }) => {
-        console.log('Connecting to Socket.IO server at:', SERVER_URL);
+        console.log('connecting...');
         socketRef.current = io(SERVER_URL, {
           transports: ['websocket', 'polling'],
           timeout: 20000,
@@ -103,7 +103,7 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('connect', () => {
-          console.log('✅ WebSocket connected successfully');
+          console.log('connected');
           console.log('Socket ID:', socketRef.current.id);
           setState(prev => ({
             ...prev,
