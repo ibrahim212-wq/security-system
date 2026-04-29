@@ -29,8 +29,13 @@ interface RealTimeDataState {
   connectionType: 'websocket' | 'fallback' | 'offline' | 'reconnecting';
 }
 
-const SERVER_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
-const WS_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
+const SOCKET_URL =
+  typeof window !== 'undefined' && window.location.hostname === "localhost"
+    ? "http://localhost:5050"
+    : "https://spireless-elmira-unmurmurously.ngrok-free.dev";
+
+const SERVER_URL = SOCKET_URL;
+const WS_URL = SOCKET_URL;
 
 export function useRealTimeData() {
   const [state, setState] = useState<RealTimeDataState>({
@@ -94,16 +99,13 @@ export function useRealTimeData() {
       import('socket.io-client').then(({ io }) => {
         console.log('connecting...');
         socketRef.current = io(SERVER_URL, {
-          transports: ['websocket', 'polling'],
-          timeout: 20000,
-          reconnection: true,
-          reconnectionDelay: 1000,
-          reconnectionAttempts: 10,
-          forceNew: true
+          transports: ['websocket'],
+          forceNew: true,
+          reconnection: true
         });
 
         socketRef.current.on('connect', () => {
-          console.log('connected');
+          console.log('CONNECTED');
           console.log('Socket ID:', socketRef.current.id);
           setState(prev => ({
             ...prev,
@@ -178,8 +180,7 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('connect_error', (error: any) => {
-          console.error('❌ WebSocket connection error:', error);
-          console.log('Socket.IO will attempt to reconnect automatically...');
+          console.log('ERROR:', error);
           // Don't set error state - let Socket.IO handle reconnection
           // Error state will only be set if reconnection fails completely
         });
