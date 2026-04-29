@@ -26,7 +26,7 @@ interface RealTimeDataState {
   loading: boolean;
   error: string | null;
   lastUpdate: string | null;
-  connectionType: 'websocket' | 'fallback' | 'offline';
+  connectionType: 'websocket' | 'fallback' | 'offline' | 'reconnecting';
 }
 
 const SERVER_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
@@ -95,10 +95,11 @@ export function useRealTimeData() {
         console.log('Connecting to Socket.IO server at:', SERVER_URL);
         socketRef.current = io(SERVER_URL, {
           transports: ['websocket', 'polling'],
-          timeout: 5000,
+          timeout: 20000,
           reconnection: true,
           reconnectionDelay: 1000,
-          reconnectionAttempts: 5
+          reconnectionAttempts: 10,
+          forceNew: true
         });
 
         socketRef.current.on('connect', () => {
@@ -121,26 +122,13 @@ export function useRealTimeData() {
 
         socketRef.current.on('disconnect', (reason: string) => {
           console.log('WebSocket disconnected:', reason);
+          console.log('Socket.IO will attempt to reconnect automatically...');
           setState(prev => ({
             ...prev,
             connected: false,
-            connectionType: 'offline'
+            connectionType: 'reconnecting'
           }));
-
-          // Start fallback polling if WebSocket fails
-          if (reason === 'io client disconnect') {
-            // Client initiated disconnect, don't reconnect
-            return;
-          }
-
-          // Start fallback after 3 seconds if no reconnection
-          setTimeout(() => {
-            if (!socketRef.current?.connected) {
-              console.log('Starting fallback polling');
-              fetchFallbackData();
-              fallbackIntervalRef.current = setInterval(fetchFallbackData, 5000);
-            }
-          }, 3000);
+          // Let Socket.IO handle reconnection automatically
         });
 
         socketRef.current.on('new_match', (newData: SecurityData) => {
@@ -190,10 +178,10 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('connect_error', (error: any) => {
-          console.error('WebSocket connection error:', error);
-          // Start fallback polling
-          fetchFallbackData();
-          fallbackIntervalRef.current = setInterval(fetchFallbackData, 5000);
+          console.error('❌ WebSocket connection error:', error);
+          console.log('Socket.IO will attempt to reconnect automatically...');
+          // Don't set error state - let Socket.IO handle reconnection
+          // Error state will only be set if reconnection fails completely
         });
 
       }).catch((error) => {

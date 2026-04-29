@@ -40,8 +40,14 @@ export function useWebSocket() {
       // Connect to WebSocket server (Socket.IO uses HTTP URL)
       const serverUrl = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
       
+      console.log('Connecting to Socket.IO server at:', serverUrl);
       socketRef.current = (window as any).io(serverUrl, {
-        transports: ['websocket', 'polling']
+        transports: ['websocket', 'polling'],
+        timeout: 20000,
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 10,
+        forceNew: true
       });
 
       socketRef.current.on('connect', () => {
@@ -57,13 +63,9 @@ export function useWebSocket() {
 
       socketRef.current.on('disconnect', () => {
         console.log('Disconnected from WebSocket server');
+        console.log('Socket.IO will attempt to reconnect automatically...');
         setState(prev => ({ ...prev, connected: false }));
-        
-        // Attempt to reconnect after 3 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          console.log('Attempting to reconnect...');
-          connect();
-        }, 3000);
+        // Let Socket.IO handle reconnection automatically
       });
 
       socketRef.current.on('new_match', (data: MatchData) => {
@@ -73,6 +75,12 @@ export function useWebSocket() {
           ...prev,
           matches: [data, ...prev.matches] // Add new match at the beginning
         }));
+      });
+
+      socketRef.current.on('connect_error', (error: any) => {
+        console.error('❌ WebSocket connection error:', error);
+        console.log('Socket.IO will attempt to reconnect automatically...');
+        // Don't set error state - let Socket.IO handle reconnection
       });
 
       socketRef.current.on('error', (error: any) => {
