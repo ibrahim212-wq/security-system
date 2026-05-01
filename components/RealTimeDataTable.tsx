@@ -15,7 +15,7 @@ interface RealTimeDataTableProps {
   loading: boolean;
   error: string | null;
   lastUpdate: string | null;
-  connectionType: 'websocket' | 'fallback' | 'offline';
+  connectionType: 'websocket' | 'fallback' | 'offline' | 'reconnecting';
   onRefresh: () => void;
   onSendTest: () => void;
   onConfirmMatch?: (match: SecurityData) => void;
