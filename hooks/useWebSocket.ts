@@ -38,12 +38,9 @@ export function useWebSocket() {
   const connect = () => {
     try {
       // Connect to WebSocket server (Socket.IO uses HTTP URL)
-      const SOCKET_URL =
-        typeof window !== 'undefined' && window.location.hostname === "localhost"
-          ? "http://localhost:5050"
-          : "https://spireless-elmira-unmurmurously.ngrok-free.dev";
+      const SOCKET_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
       
-      console.log('connecting...');
+      console.log('Connecting to socket...');
       socketRef.current = (window as any).io(SOCKET_URL, {
         transports: ['websocket'],
         forceNew: true,
@@ -51,7 +48,7 @@ export function useWebSocket() {
       });
 
       socketRef.current.on('connect', () => {
-        console.log('CONNECTED');
+        console.log('Connected');
         setState(prev => ({ ...prev, connected: true, error: null }));
         
         // Clear any pending reconnection timeout

@@ -29,13 +29,8 @@ interface RealTimeDataState {
   connectionType: 'websocket' | 'fallback' | 'offline' | 'reconnecting';
 }
 
-const SOCKET_URL =
-  typeof window !== 'undefined' && window.location.hostname === "localhost"
-    ? "http://localhost:5050"
-    : "https://spireless-elmira-unmurmurously.ngrok-free.dev";
-
-const SERVER_URL = SOCKET_URL;
-const WS_URL = SOCKET_URL;
+const SERVER_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
+const WS_URL = 'https://spireless-elmira-unmurmurously.ngrok-free.dev';
 
 export function useRealTimeData() {
   const [state, setState] = useState<RealTimeDataState>({
@@ -97,7 +92,7 @@ export function useRealTimeData() {
 
       // Import socket.io-client dynamically to avoid SSR issues
       import('socket.io-client').then(({ io }) => {
-        console.log('connecting...');
+        console.log('Connecting to socket...');
         socketRef.current = io(SERVER_URL, {
           transports: ['websocket'],
           forceNew: true,
@@ -105,7 +100,7 @@ export function useRealTimeData() {
         });
 
         socketRef.current.on('connect', () => {
-          console.log('CONNECTED');
+          console.log('Connected');
           console.log('Socket ID:', socketRef.current.id);
           setState(prev => ({
             ...prev,
