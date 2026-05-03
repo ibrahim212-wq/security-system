@@ -56,10 +56,12 @@ export default function ProfilePage() {
   const handleSaveLocation = async () => {
     try {
       setSavingLocation(true);
+      // Sanitize gate_number to remove "Gate" prefix if present
+      const sanitizedGateNumber = gateNumber.replace(/gate\s*/i, '').trim();
       const { error } = await supabase.auth.updateUser({
         data: { 
           mall_name: mallName,
-          gate_number: gateNumber
+          gate_number: sanitizedGateNumber
         }
       });
       

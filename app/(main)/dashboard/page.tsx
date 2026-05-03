@@ -130,7 +130,7 @@ export default function DashboardPage() {
                 <MapPin size={10} color="#E8334A" />
                 <span className="text-[12px] font-semibold text-[#1A1A1A]">
                   {user?.mall_name && user?.gate_number
-                    ? `${user.mall_name}, Gate ${user.gate_number}`
+                    ? `${user.mall_name}, Gate ${user.gate_number.replace(/gate\s*/i, '').trim()}`
                     : user?.mall_name
                     ? `${user.mall_name}`
                     : "Set your location in Profile"}
