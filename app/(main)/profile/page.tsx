@@ -13,27 +13,16 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  User,
   Mail,
   Phone,
   Shield,
   LogOut,
-  ChevronRight,
-  Bell,
-  Lock,
   Camera,
   X,
   MapPin,
   Building2,
   Save,
 } from "lucide-react";
-
-// Settings menu items
-const settingsItems = [
-  { label: "Notifications", icon: Bell,  href: "#" },
-  { label: "Security",      icon: Lock,  href: "#" },
-  { label: "Account",       icon: User,  href: "#" },
-];
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -350,27 +339,6 @@ export default function ProfilePage() {
               <Save size={14} />
               {savingLocation ? 'Saving...' : 'Save Location'}
             </button>
-          </div>
-
-          {/* Settings menu */}
-          <div className="flex flex-col gap-2 rounded-2xl p-1" style={{ background: "#ECECF1" }}>
-            {settingsItems.map(({ label, icon: Icon }, idx) => (
-              <div key={label}>
-                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl active:opacity-70 transition-opacity">
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: "#1F49D8" }}
-                  >
-                    <Icon size={14} color="#fff" />
-                  </div>
-                  <span className="flex-1 text-left text-[13px] font-bold text-[#1A1A1A]">{label}</span>
-                  <ChevronRight size={14} color="#7A8BB0" />
-                </button>
-                {idx < settingsItems.length - 1 && (
-                  <div className="h-px mx-4" style={{ background: "#C8D0E7" }} />
-                )}
-              </div>
-            ))}
           </div>
 
           {/* Sign out button */}
