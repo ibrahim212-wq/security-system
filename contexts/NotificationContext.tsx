@@ -55,6 +55,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
+  // Helper function to check if event belongs to user's gate
+  const isEventForUserGate = (eventNodeId: string): boolean => {
+    if (!user?.gate_number) return false; // If user has no gate assigned, don't show any events
+    const userGate = user.gate_number.trim();
+    const eventGate = eventNodeId.trim();
+    return userGate === eventGate;
+  };
+
   const loadProcessedResults = async () => {
     try {
       const { data, error } = await supabase
@@ -69,9 +77,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       }
 
       if (data) {
-        const results: ProcessedResult[] = data.map((item: any) => ({
+        // Gate-based filtering: Only show results for user's gate
+        const allResults: ProcessedResult[] = data.map((item: any) => ({
           id: item.match_id,
-          type: "match",
+          type: "match" as const,
           person_name: item.person_name,
           person_id: item.person_id,
           age: item.age,
@@ -83,7 +92,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           status: item.status,
           processedAt: item.processed_at
         }));
-        setProcessedResults(results);
+        
+        // Filter results by user's gate
+        const filteredResults = user?.gate_number 
+          ? allResults.filter((item) => isEventForUserGate(item.node_id))
+          : [];
+        
+        setProcessedResults(filteredResults);
+        console.log(`Loaded ${filteredResults.length}/${allResults.length} processed results (gate-filtered for: ${user?.gate_number || 'none'})`);
       }
     } catch (error) {
       console.error('Error loading processed results:', error);

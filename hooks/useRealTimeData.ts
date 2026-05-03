@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface SecurityData {
   type?: string;
@@ -47,6 +48,15 @@ export function useRealTimeData() {
   const fallbackIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dataRef = useRef<SecurityData[]>([]);
   const { addNotification } = useNotifications();
+  const { user } = useAuth();
+  
+  // Helper function to check if event belongs to user's gate
+  const isEventForUserGate = useCallback((eventNodeId: string): boolean => {
+    if (!user?.gate_number) return false; // If user has no gate assigned, don't show any events
+    const userGate = user.gate_number.trim();
+    const eventGate = eventNodeId.trim();
+    return userGate === eventGate;
+  }, [user?.gate_number]);
 
   // Fallback: Fetch data from JSON file via REST API
   const fetchFallbackData = useCallback(async () => {
@@ -55,19 +65,25 @@ export function useRealTimeData() {
       if (response.ok) {
         const result = await response.json();
         if (result.success) {
-          const newData = result.data || [];
-          dataRef.current = newData;
+          const allData = result.data || [];
+          
+          // Gate-based filtering: Only show events for user's gate
+          const filteredData = user?.gate_number 
+            ? allData.filter((item: SecurityData) => isEventForUserGate(item.node_id))
+            : []; // If user has no gate assigned, show no events
+          
+          dataRef.current = filteredData;
           
           setState(prev => ({
             ...prev,
-            data: newData,
+            data: filteredData,
             loading: false,
             error: null,
             lastUpdate: result.timestamp,
             connectionType: 'fallback'
           }));
           
-          console.log(`Loaded ${newData.length} records via fallback`);
+          console.log(`Loaded ${filteredData.length}/${allData.length} records via fallback (gate-filtered for: ${user?.gate_number || 'none'})`);
         }
       }
     } catch (error) {
@@ -79,7 +95,7 @@ export function useRealTimeData() {
         connectionType: 'offline'
       }));
     }
-  }, []);
+  }, [isEventForUserGate, user?.gate_number]);
 
   // Initialize WebSocket connection
   const connectWebSocket = useCallback(() => {
@@ -132,6 +148,14 @@ export function useRealTimeData() {
           console.log('📡 Received new_match event via WebSocket');
           console.log('Data received:', newData);
           console.log('Data structure:', JSON.stringify(newData, null, 2));
+          
+          // Gate-based filtering: Check if event belongs to user's gate
+          if (!isEventForUserGate(newData.node_id)) {
+            console.log(`🚫 Event filtered out - User gate: ${user?.gate_number}, Event gate: ${newData.node_id}`);
+            return; // Skip this event - it belongs to a different gate
+          }
+          
+          console.log(`✅ Event accepted for user's gate: ${user?.gate_number}`);
           
           // Update data with new match at the beginning
           const updatedData = [newData, ...dataRef.current];
