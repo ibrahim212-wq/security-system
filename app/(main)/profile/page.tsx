@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import {
+  User,
   Mail,
   Phone,
   Shield,
