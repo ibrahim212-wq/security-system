@@ -113,7 +113,7 @@ export default function DashboardPage() {
 
         <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-3 relative">
 
-          {/* Location card - Original design restored */}
+          {/* Location card - Dynamic user location */}
           <div
             className="flex items-center gap-2 rounded-xl px-2.5 py-2"
             style={{ background: "#ECECF1" }}
@@ -129,7 +129,11 @@ export default function DashboardPage() {
               <div className="flex items-center gap-1 mt-0.5">
                 <MapPin size={10} color="#E8334A" />
                 <span className="text-[12px] font-semibold text-[#1A1A1A]">
-                  Mall Masr, Gate 3
+                  {user?.mall_name && user?.gate_number
+                    ? `${user.mall_name}, Gate ${user.gate_number}`
+                    : user?.mall_name
+                    ? `${user.mall_name}`
+                    : "Set your location in Profile"}
                 </span>
               </div>
             </div>

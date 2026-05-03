@@ -17,6 +17,8 @@ interface AuthUser {
   email: string | null;
   phone: string | null;
   role?: string;
+  mall_name?: string | null;
+  gate_number?: string | null;
 }
 
 interface AuthContextType {
@@ -42,7 +44,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         full_name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split('@')[0] || 'User',
         email: supabaseUser.email || null,
         phone: supabaseUser.phone || null,
-        role: supabaseUser.user_metadata?.role || 'User'
+        role: supabaseUser.user_metadata?.role || 'User',
+        mall_name: supabaseUser.user_metadata?.mall_name || null,
+        gate_number: supabaseUser.user_metadata?.gate_number || null
       };
       setUser(userData);
     } catch (error) {

@@ -23,6 +23,9 @@ import {
   Lock,
   Camera,
   X,
+  MapPin,
+  Building2,
+  Save,
 } from "lucide-react";
 
 // Settings menu items
@@ -34,10 +37,23 @@ const settingsItems = [
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  
+  // Location fields
+  const [mallName, setMallName] = useState('');
+  const [gateNumber, setGateNumber] = useState('');
+  const [savingLocation, setSavingLocation] = useState(false);
+  
+  // Load user data on mount
+  useEffect(() => {
+    if (user) {
+      setMallName(user.mall_name || '');
+      setGateNumber(user.gate_number || '');
+    }
+  }, [user]);
 
   // Load profile image on mount
   useEffect(() => {
@@ -45,6 +61,32 @@ export default function ProfilePage() {
       setProfileImageUrl((user as any).user_metadata.avatar_url);
     }
   }, [user]);
+  
+  // Save location data
+  const handleSaveLocation = async () => {
+    try {
+      setSavingLocation(true);
+      const { error } = await supabase.auth.updateUser({
+        data: { 
+          mall_name: mallName,
+          gate_number: gateNumber
+        }
+      });
+      
+      if (error) {
+        console.error('Error saving location:', error);
+        alert('Failed to save location');
+      } else {
+        await refreshUser();
+        alert('Location saved successfully');
+      }
+    } catch (error) {
+      console.error('Error saving location:', error);
+      alert('An error occurred while saving');
+    } finally {
+      setSavingLocation(false);
+    }
+  };
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -257,6 +299,57 @@ export default function ProfilePage() {
               <Phone size={16} color="#7A8BB0" />
               <span className="text-[13px] text-[#1A1A1A]">{user.phone || 'No phone'}</span>
             </div>
+          </div>
+
+          {/* Location Settings */}
+          <div
+            className="flex flex-col gap-3 rounded-2xl p-4"
+            style={{ background: "#ECECF1" }}
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <MapPin size={16} color="#1F49D8" />
+              <span className="text-[13px] font-bold text-[#1A1A1A]">Location Settings</span>
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <label className="text-[11px] font-medium text-[#7A8BB0]">Mall Name</label>
+              <div className="flex items-center gap-2">
+                <Building2 size={14} color="#7A8BB0" />
+                <input
+                  type="text"
+                  value={mallName}
+                  onChange={(e) => setMallName(e.target.value)}
+                  placeholder="Enter mall name"
+                  className="flex-1 text-[13px] bg-transparent outline-none text-[#1A1A1A] placeholder:text-[#7A8BB0]/50"
+                />
+              </div>
+            </div>
+            
+            <div className="h-px" style={{ background: "#C8D0E7" }} />
+            
+            <div className="flex flex-col gap-2">
+              <label className="text-[11px] font-medium text-[#7A8BB0]">Gate Number</label>
+              <div className="flex items-center gap-2">
+                <MapPin size={14} color="#7A8BB0" />
+                <input
+                  type="text"
+                  value={gateNumber}
+                  onChange={(e) => setGateNumber(e.target.value)}
+                  placeholder="Enter gate number"
+                  className="flex-1 text-[13px] bg-transparent outline-none text-[#1A1A1A] placeholder:text-[#7A8BB0]/50"
+                />
+              </div>
+            </div>
+            
+            <button
+              onClick={handleSaveLocation}
+              disabled={savingLocation}
+              className="flex items-center justify-center gap-2 mt-2 rounded-xl py-2.5 text-[12px] font-semibold active:opacity-70 transition-opacity disabled:opacity-50"
+              style={{ background: "#1F49D8", color: "#fff" }}
+            >
+              <Save size={14} />
+              {savingLocation ? 'Saving...' : 'Save Location'}
+            </button>
           </div>
 
           {/* Settings menu */}
