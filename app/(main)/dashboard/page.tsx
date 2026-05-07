@@ -54,7 +54,7 @@ export default function DashboardPage() {
       <div className="flex flex-col w-full min-h-screen bg-white shadow-2xl relative sm:max-w-md sm:mx-auto">
 
         <header
-          className="flex items-center justify-between px-4 py-3"
+          className="flex items-center justify-between px-4 py-2"
           style={{ background: "#1F49D8" }}
         >
           <button
@@ -62,15 +62,15 @@ export default function DashboardPage() {
             onClick={() => setMenuOpen((v) => !v)}
             className="p-1 rounded-lg transition-colors active:bg-white/10"
           >
-            <Menu size={24} color="#fff" />
+            <Menu size={22} color="#fff" />
           </button>
 
           <Image
             src="/logo.png"
             alt="Security System Logo"
-            width={96}
-            height={96}
-            className="object-contain mt-3"
+            width={80}
+            height={80}
+            className="object-contain mt-1"
             priority
           />
 
@@ -103,32 +103,32 @@ export default function DashboardPage() {
         )}
 
         <div
-          className="px-4 pt-1 pb-3 text-center"
+          className="px-4 pt-0.5 pb-2 text-center"
           style={{ background: "#1F49D8" }}
         >
-          <h1 className="text-white text-[22px] font-extrabold tracking-wide">
+          <h1 className="text-white text-[18px] font-extrabold tracking-wide">
             Security System
           </h1>
         </div>
 
-        <div className="flex-1 bg-white px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-3 relative">
+        <div className="flex-1 bg-white px-3 sm:px-4 pt-2 pb-3 flex flex-col gap-2 relative">
 
           {/* Location card - Dynamic user location */}
           <div
-            className="flex items-center gap-2 rounded-xl px-2.5 py-2"
+            className="flex items-center gap-2 rounded-xl px-2 py-1.5"
             style={{ background: "#ECECF1" }}
           >
             <div
-              className="w-8 h-8 rounded-full shrink-0 flex items-center justify-center"
+              className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center"
               style={{ background: "#C8D0E7" }}
             >
-              <User size={18} color="#7A8BB0" />
+              <User size={16} color="#7A8BB0" />
             </div>
             <div>
-              <p className="text-[10px] text-[#7A8BB0] font-medium">Delivered from</p>
-              <div className="flex items-center gap-1 mt-0.5">
-                <MapPin size={10} color="#E8334A" />
-                <span className="text-[12px] font-semibold text-[#1A1A1A]">
+              <p className="text-[9px] text-[#7A8BB0] font-medium">Delivered from</p>
+              <div className="flex items-center gap-1 mt-0">
+                <MapPin size={9} color="#E8334A" />
+                <span className="text-[11px] font-semibold text-[#1A1A1A]">
                   {user?.mall_name && user?.gate_number
                     ? `${user.mall_name}, Gate ${user.gate_number.replace(/gate\s*/i, '').trim()}`
                     : user?.mall_name

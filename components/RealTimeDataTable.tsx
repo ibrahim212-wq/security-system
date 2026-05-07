@@ -159,7 +159,7 @@ export default function RealTimeDataTable({
   }
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="space-y-2 sm:space-y-3">
       {/* Toast Notification */}
       {toast.show && (
         <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
@@ -172,7 +172,7 @@ export default function RealTimeDataTable({
       )}
 
       {/* Status Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg border">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg border">
         <div className="flex items-center gap-2 sm:gap-3">
           <StatusIcon size={18} className={`${status.color} sm:w-5 sm:h-5`} />
           <div>
@@ -211,7 +211,7 @@ export default function RealTimeDataTable({
 
       {/* Data Display - Each match in separate card */}
       {data.length === 0 ? (
-        <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-lg border px-4">
+        <div className="text-center py-6 sm:py-8 bg-gray-50 rounded-lg border px-3">
           <AlertTriangle size={48} className="text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-700 mb-2">No Security Data Available</h3>
           <p className="text-gray-500 mb-4">
@@ -228,7 +228,7 @@ export default function RealTimeDataTable({
           </button>
         </div>
       ) : (
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-3 sm:space-y-4">
           {data.map((match, index) => {
             const matchKey = match.match_id || `${match.timestamp}_${match.person_id}`;
             const cardState = cardStates[matchKey];
@@ -236,75 +236,75 @@ export default function RealTimeDataTable({
             return (
               <div
                 key={match.match_id || index}
-                className={`border-2 rounded-lg shadow-xl p-4 sm:p-6 transition-all duration-300 ${getCardStyle(match)} ${index === 0 && !isDisabled ? 'border-blue-500' : ''
+                className={`border-2 rounded-lg shadow-xl p-3 sm:p-4 transition-all duration-300 ${getCardStyle(match)} ${index === 0 && !isDisabled ? 'border-blue-500' : ''
                   }`}
               >
                 {/* Card Title */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Activity size={18} className="text-red-500 sm:w-5 sm:h-5" />
-                    <h2 className="text-lg sm:text-xl font-bold text-gray-900">Criminal detected</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Activity size={16} className="text-red-500 sm:w-4 sm:h-4" />
+                    <h2 className="text-base sm:text-lg font-bold text-gray-900">Criminal detected</h2>
                   </div>
 
                   {/* Status Indicator */}
-                  <div className="flex items-center gap-2 sm:ml-auto">
+                  <div className="flex items-center gap-1.5 sm:ml-auto">
                     {cardState === 'confirmed' && (
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-sm sm:text-lg font-bold">+</span>
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-bold">+</span>
                         </div>
-                        <span className="text-green-600 font-semibold text-sm sm:text-base">CONFIRMED</span>
+                        <span className="text-green-600 font-semibold text-xs sm:text-sm">CONFIRMED</span>
                       </div>
                     )}
 
                     {cardState === 'rejected' && (
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-red-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-sm sm:text-lg font-bold">×</span>
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-bold">×</span>
                         </div>
-                        <span className="text-red-600 font-semibold text-sm sm:text-base">REJECTED</span>
+                        <span className="text-red-600 font-semibold text-xs sm:text-sm">REJECTED</span>
                       </div>
                     )}
 
                     {index === 0 && !isDisabled && (
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                        <span className="text-xs sm:text-sm text-blue-600 font-semibold">Latest</span>
+                      <div className="flex items-center gap-1 sm:gap-1.5">
+                        <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-blue-500 rounded-full animate-pulse"></div>
+                        <span className="text-[10px] sm:text-xs text-blue-600 font-semibold">Latest</span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Match Data - Each on separate line */}
-                <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 text-sm sm:text-base">
-                  <div className="text-gray-900 break-words">
+                <div className="space-y-1 sm:space-y-1.5 mb-3 sm:mb-4 text-xs sm:text-sm">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">type:</span> <span className="text-gray-700">{match.type}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">person_name:</span> <span className="text-gray-700">{match.person_name}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">person_id:</span> <span className="text-gray-700">{match.person_id}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">age:</span> <span className="text-gray-700">{match.age}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">legal_case:</span> <span className="text-gray-700">{match.legal_case}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">score:</span> <span className="text-gray-700">{match.score}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
+                  <div className="text-gray-900 break-words leading-tight">
                     <span className="font-semibold">node_id:</span> <span className="text-gray-700">{match.node_id}</span>
                   </div>
-                  <div className="text-gray-900 break-words">
-                    <span className="font-semibold">timestamp:</span> <span className="text-gray-700 text-xs sm:text-sm">{match.timestamp}</span>
+                  <div className="text-gray-900 break-words leading-tight">
+                    <span className="font-semibold">timestamp:</span> <span className="text-gray-700 text-[10px] sm:text-xs">{match.timestamp}</span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => {
@@ -312,13 +312,13 @@ export default function RealTimeDataTable({
                       handleConfirm(match);
                     }}
                     disabled={isDisabled}
-                    className={`flex-1 py-3 sm:py-4 px-4 sm:px-8 rounded-lg font-bold text-sm sm:text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto min-h-[48px] ${isDisabled
+                    className={`flex-1 py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 shadow-lg pointer-events-auto min-h-[40px] ${isDisabled
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-green-500 text-white hover:bg-green-600'
                       }`}
                     style={{ zIndex: 10 }}
                   >
-                    <Check size={18} className="sm:w-5 sm:h-5" />
+                    <Check size={16} className="sm:w-4 sm:h-4" />
                     <span>Confirm</span>
                   </button>
 
@@ -329,42 +329,42 @@ export default function RealTimeDataTable({
                       handleReject(match);
                     }}
                     disabled={isDisabled}
-                    className={`flex-1 py-3 sm:py-4 px-4 sm:px-8 rounded-lg font-bold text-sm sm:text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto min-h-[48px] ${isDisabled
+                    className={`flex-1 py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 shadow-lg pointer-events-auto min-h-[40px] ${isDisabled
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-600'
                       }`}
                     style={{ zIndex: 10 }}
                   >
-                    <X size={18} className="sm:w-5 sm:h-5" />
+                    <X size={16} className="sm:w-4 sm:h-4" />
                     <span>Reject</span>
                   </button>
                 </div>
 
                 {/* Visual Confirmation/Rejection Indicator */}
                 {cardState === 'confirmed' && (
-                  <div className="mt-4 pt-3 border-t border-green-300">
-                    <div className="flex items-center gap-2">
-                      <Check size={16} className="text-green-600" />
-                      <span className="text-sm text-green-600 font-semibold">The criminal catching successfully</span>
+                  <div className="mt-2 pt-2 border-t border-green-300">
+                    <div className="flex items-center gap-1.5">
+                      <Check size={14} className="text-green-600" />
+                      <span className="text-xs text-green-600 font-semibold">The criminal catching successfully</span>
                     </div>
                   </div>
                 )}
 
                 {cardState === 'rejected' && (
-                  <div className="mt-4 pt-3 border-t border-red-300">
-                    <div className="flex items-center gap-2">
-                      <X size={16} className="text-red-600" />
-                      <span className="text-sm text-red-600 font-semibold">Match rejected</span>
+                  <div className="mt-2 pt-2 border-t border-red-300">
+                    <div className="flex items-center gap-1.5">
+                      <X size={14} className="text-red-600" />
+                      <span className="text-xs text-red-600 font-semibold">Match rejected</span>
                     </div>
                   </div>
                 )}
 
                 {/* Latest Record Indicator */}
                 {index === 0 && !isDisabled && (
-                  <div className="mt-4 pt-3 border-t border-blue-200">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                      <span className="text-sm text-blue-600 font-semibold">Latest Detection</span>
+                  <div className="mt-2 pt-2 border-t border-blue-200">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+                      <span className="text-xs text-blue-600 font-semibold">Latest Detection</span>
                     </div>
                   </div>
                 )}
