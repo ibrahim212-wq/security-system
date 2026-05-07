@@ -19,6 +19,8 @@ interface AuthUser {
   role?: string;
   mall_name?: string | null;
   gate_number?: string | null;
+  gate_id?: string | null;
+  gate_emails?: string[];
 }
 
 interface AuthContextType {
@@ -37,8 +39,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (supabaseUser: SupabaseUser) => {
     try {
-      // For now, use basic user data from Supabase auth
-      // In a real app, you might fetch additional user profile data from a 'users' table
+      // Fetch gate data from gates table based on user's email
+      let gateData = null;
+      if (supabaseUser.email) {
+        const { data: gate } = await supabase
+          .from('gates')
+          .select('*')
+          .contains('emails', [supabaseUser.email])
+          .single();
+        
+        if (gate) {
+          gateData = {
+            gate_id: gate.id,
+            gate_number: gate.gate_number,
+            gate_emails: gate.emails,
+            mall_name: gate.mall_name
+          };
+        }
+      }
+
+      // Build user data with gate information from gates table
+      // Fall back to user_metadata for backward compatibility
+      const userData: AuthUser = {
+        id: supabaseUser.id,
+        full_name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split('@')[0] || 'User',
+        email: supabaseUser.email || null,
+        phone: supabaseUser.phone || null,
+        role: supabaseUser.user_metadata?.role || 'User',
+        mall_name: gateData?.mall_name || supabaseUser.user_metadata?.mall_name || null,
+        gate_number: gateData?.gate_number || supabaseUser.user_metadata?.gate_number || null,
+        gate_id: gateData?.gate_id || supabaseUser.user_metadata?.gate_id || null,
+        gate_emails: gateData?.gate_emails || []
+      };
+      setUser(userData);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // Fall back to user_metadata if gates table query fails
       const userData: AuthUser = {
         id: supabaseUser.id,
         full_name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split('@')[0] || 'User',
@@ -46,12 +82,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         phone: supabaseUser.phone || null,
         role: supabaseUser.user_metadata?.role || 'User',
         mall_name: supabaseUser.user_metadata?.mall_name || null,
-        gate_number: supabaseUser.user_metadata?.gate_number || null
+        gate_number: supabaseUser.user_metadata?.gate_number || null,
+        gate_id: supabaseUser.user_metadata?.gate_id || null,
+        gate_emails: []
       };
       setUser(userData);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      setUser(null);
     }
   };
 
