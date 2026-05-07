@@ -179,11 +179,6 @@ export default function RealTimeDataTable({
             <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold ${status.bg} ${status.color}`}>
               {status.text}
             </span>
-            {lastUpdate && (
-              <p className="text-xs text-gray-500 mt-1 hidden sm:block">
-                Last update: {formatTimestamp(lastUpdate)}
-              </p>
-            )}
           </div>
         </div>
 
@@ -304,7 +299,7 @@ export default function RealTimeDataTable({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-1.5 sm:gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => {
@@ -312,13 +307,13 @@ export default function RealTimeDataTable({
                       handleConfirm(match);
                     }}
                     disabled={isDisabled}
-                    className={`flex-1 py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 shadow-lg pointer-events-auto min-h-[40px] ${isDisabled
+                    className={`flex-1 py-3.5 sm:py-4 px-4 sm:px-8 rounded-lg font-bold text-base sm:text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto min-h-[50px] ${isDisabled
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-green-500 text-white hover:bg-green-600'
                       }`}
                     style={{ zIndex: 10 }}
                   >
-                    <Check size={16} className="sm:w-4 sm:h-4" />
+                    <Check size={20} className="sm:w-5 sm:h-5" />
                     <span>Confirm</span>
                   </button>
 
@@ -329,13 +324,13 @@ export default function RealTimeDataTable({
                       handleReject(match);
                     }}
                     disabled={isDisabled}
-                    className={`flex-1 py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 shadow-lg pointer-events-auto min-h-[40px] ${isDisabled
+                    className={`flex-1 py-3.5 sm:py-4 px-4 sm:px-8 rounded-lg font-bold text-base sm:text-lg transition-colors flex items-center justify-center gap-2 shadow-lg pointer-events-auto min-h-[50px] ${isDisabled
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-600'
                       }`}
                     style={{ zIndex: 10 }}
                   >
-                    <X size={16} className="sm:w-4 sm:h-4" />
+                    <X size={20} className="sm:w-5 sm:h-5" />
                     <span>Reject</span>
                   </button>
                 </div>

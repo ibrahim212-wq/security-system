@@ -106,7 +106,7 @@ export default function DashboardPage() {
           className="px-4 pt-0.5 pb-2 text-center"
           style={{ background: "#1F49D8" }}
         >
-          <h1 className="text-white text-[18px] font-extrabold tracking-wide">
+          <h1 className="text-white text-[22px] font-extrabold tracking-wide">
             Security System
           </h1>
         </div>
