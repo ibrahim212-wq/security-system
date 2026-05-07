@@ -1,33 +1,34 @@
--- Create gates table to support multiple emails per gate
--- This enables one-to-many relationship: one gate can have multiple registered emails
+-- Create gates table for open shared access model
+-- Any authenticated user can access any gate without ownership restrictions
 
 CREATE TABLE IF NOT EXISTS gates (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   gate_number TEXT NOT NULL UNIQUE,
   mall_name TEXT NOT NULL,
-  emails TEXT[] NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
+  created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Create index for faster queries
 CREATE INDEX IF NOT EXISTS idx_gates_gate_number ON gates(gate_number);
-CREATE INDEX IF NOT EXISTS idx_gates_emails ON gates USING GIN(emails);
+CREATE INDEX IF NOT EXISTS idx_gates_status ON gates(status);
 
 -- Enable Row Level Security
 ALTER TABLE gates ENABLE ROW LEVEL SECURITY;
 
--- Create policy: Users can view gates where their email is in the emails array
-CREATE POLICY "Users can view gates they have access to"
+-- Create policy: Authenticated users can view all gates
+CREATE POLICY "Authenticated users can view gates"
   ON gates FOR SELECT
-  USING (auth.uid() IS NOT NULL AND emails @> ARRAY[auth.email()]);
+  USING (auth.uid() IS NOT NULL);
 
--- Create policy: Only authenticated users can insert gates
+-- Create policy: Authenticated users can insert gates
 CREATE POLICY "Authenticated users can insert gates"
   ON gates FOR INSERT
   WITH CHECK (auth.uid() IS NOT NULL);
 
--- Create policy: Only authenticated users can update gates
+-- Create policy: Authenticated users can update gates
 CREATE POLICY "Authenticated users can update gates"
   ON gates FOR UPDATE
   USING (auth.uid() IS NOT NULL);

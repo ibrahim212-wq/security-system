@@ -1,5 +1,5 @@
--- Migration script to migrate existing gate data from user metadata to gates table
--- This ensures backward compatibility by converting single-email gate assignments to array format
+-- Migration script to migrate existing gate data to open access model
+-- This removes email restrictions and allows any authenticated user to access any gate
 
 -- Step 1: Create a temporary table to hold user-gate mappings
 CREATE TEMP TABLE IF NOT EXISTS user_gate_mapping AS
@@ -13,21 +13,22 @@ WHERE user_metadata->>'gate_number' IS NOT NULL
   AND user_metadata->>'gate_number' != '';
 
 -- Step 2: Insert unique gates into the gates table
--- Each gate_number will be created with its associated email(s)
-INSERT INTO gates (gate_number, mall_name, emails)
+-- Each gate_number will be created without email restrictions
+-- created_by is set to the first user who created/registered the gate
+INSERT INTO gates (gate_number, mall_name, created_by, status)
 SELECT 
   DISTINCT ON (gate_number) 
   gate_number,
   COALESCE(mall_name, 'Unknown Mall') as mall_name,
-  ARRAY_AGG(DISTINCT email) as emails
+  user_id as created_by,
+  'active' as status
 FROM user_gate_mapping
 WHERE gate_number IS NOT NULL
   AND gate_number != ''
-GROUP BY gate_number, mall_name
 ON CONFLICT (gate_number) 
 DO UPDATE SET 
-  emails = COALESCE(gates.emails || EXCLUDED.emails, EXCLUDED.emails),
   mall_name = COALESCE(EXCLUDED.mall_name, gates.mall_name),
+  status = COALESCE(gates.status, 'active'),
   updated_at = NOW();
 
 -- Step 3: Add a back-reference to the gates table in user metadata
@@ -47,14 +48,14 @@ WHERE user_metadata->>'gate_number' IS NOT NULL
     WHERE gate_number = user_metadata->>'gate_number'
   );
 
--- Step 4: Create a function to check if a user has access to a gate
-CREATE OR REPLACE FUNCTION check_gate_access(user_email TEXT, gate_num TEXT)
+-- Step 4: Create a function to check if a gate exists and is active
+CREATE OR REPLACE FUNCTION check_gate_access(gate_num TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
   RETURN EXISTS (
     SELECT 1 FROM gates 
     WHERE gate_number = gate_num 
-    AND emails @> ARRAY[user_email]
+    AND status = 'active'
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

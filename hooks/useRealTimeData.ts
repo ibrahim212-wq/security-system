@@ -51,21 +51,16 @@ export function useRealTimeData() {
   const { user } = useAuth();
   
   // Helper function to check if event belongs to user's gate
-  // Now checks if user's email is in the gate's email list for multi-email support
+  // Open access model: All authenticated users can access all gates
+  // Only check if user has a gate assigned, not email membership
   const isEventForUserGate = useCallback((eventNodeId: string): boolean => {
-    if (!user?.email) return false; // If user has no email, don't show any events
     if (!user?.gate_number) return false; // If user has no gate assigned, don't show any events
     
-    // New logic: Check if user's email is in the gate's email list
-    if (user.gate_emails && user.gate_emails.length > 0) {
-      return user.gate_emails.includes(user.email);
-    }
-    
-    // Fallback: Use old gate_number comparison for backward compatibility
+    // Open access: Simply check gate number match
     const userGate = user.gate_number.trim();
     const eventGate = eventNodeId.trim();
     return userGate === eventGate;
-  }, [user?.gate_number, user?.gate_emails, user?.email]);
+  }, [user?.gate_number]);
 
   // Fallback: Fetch data from JSON file via REST API
   const fetchFallbackData = useCallback(async () => {

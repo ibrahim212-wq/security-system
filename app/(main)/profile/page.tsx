@@ -35,8 +35,6 @@ export default function ProfilePage() {
   // Location fields
   const [mallName, setMallName] = useState('');
   const [gateNumber, setGateNumber] = useState('');
-  const [gateEmails, setGateEmails] = useState<string[]>([]);
-  const [newEmail, setNewEmail] = useState('');
   const [savingLocation, setSavingLocation] = useState(false);
   
   // Load user data on mount
@@ -44,7 +42,6 @@ export default function ProfilePage() {
     if (user) {
       setMallName(user.mall_name || '');
       setGateNumber(user.gate_number || '');
-      setGateEmails(user.gate_emails || []);
     }
   }, [user]);
 
@@ -74,32 +71,27 @@ export default function ProfilePage() {
         console.error('Error saving location to user metadata:', updateError);
       }
       
-      // Update gates table with email list
-      if (user?.gate_id) {
-        const { error: gateError } = await supabase
-          .from('gates')
-          .update({
-            gate_number: sanitizedGateNumber,
-            mall_name: mallName,
-            emails: gateEmails.length > 0 ? gateEmails : [user?.email || '']
-          })
-          .eq('id', user.gate_id);
-        
-        if (gateError) {
-          console.error('Error updating gate:', gateError);
-          alert('Failed to update gate information');
-        } else {
-          await refreshUser();
-          alert('Location and gate emails saved successfully');
-        }
+      // Open access model: Create or join gate without ownership restrictions
+      // Check if gate already exists
+      const { data: existingGate } = await supabase
+        .from('gates')
+        .select('id')
+        .eq('gate_number', sanitizedGateNumber)
+        .single();
+      
+      if (existingGate) {
+        // Gate exists, allow user to join/access it
+        console.log('Gate exists, user can access it:', sanitizedGateNumber);
+        await refreshUser();
+        alert('Location saved successfully. You can now access this gate.');
       } else {
-        // Create new gate if it doesn't exist
+        // Gate doesn't exist, create it
         const { error: insertError } = await supabase
           .from('gates')
           .insert({
             gate_number: sanitizedGateNumber,
             mall_name: mallName,
-            emails: gateEmails.length > 0 ? gateEmails : [user?.email || '']
+            status: 'active'
           });
         
         if (insertError) {
@@ -107,7 +99,7 @@ export default function ProfilePage() {
           alert('Failed to create gate');
         } else {
           await refreshUser();
-          alert('Location and gate emails saved successfully');
+          alert('Gate created successfully. You can now access it.');
         }
       }
     } catch (error) {
@@ -116,17 +108,6 @@ export default function ProfilePage() {
     } finally {
       setSavingLocation(false);
     }
-  };
-
-  const handleAddEmail = () => {
-    if (newEmail && !gateEmails.includes(newEmail)) {
-      setGateEmails([...gateEmails, newEmail]);
-      setNewEmail('');
-    }
-  };
-
-  const handleRemoveEmail = (emailToRemove: string) => {
-    setGateEmails(gateEmails.filter(email => email !== emailToRemove));
   };
 
   async function handleSignOut() {
@@ -379,45 +360,6 @@ export default function ProfilePage() {
                   placeholder="Enter gate number"
                   className="flex-1 text-[13px] bg-transparent outline-none text-[#1A1A1A] placeholder:text-[#7A8BB0]/50"
                 />
-              </div>
-            </div>
-
-            <div className="h-px" style={{ background: "#C8D0E7" }} />
-            
-            <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-medium text-[#7A8BB0]">Gate Emails (Multiple users can access this gate)</label>
-              <div className="flex flex-col gap-2">
-                {gateEmails.map((email, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Mail size={14} color="#7A8BB0" />
-                    <span className="flex-1 text-[13px] text-[#1A1A1A]">{email}</span>
-                    {gateEmails.length > 1 && (
-                      <button
-                        onClick={() => handleRemoveEmail(email)}
-                        className="text-red-500 hover:text-red-600"
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-2">
-                <input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  placeholder="Add email (e.g., user@example.com)"
-                  className="flex-1 text-[13px] bg-transparent outline-none text-[#1A1A1A] placeholder:text-[#7A8BB0]/50"
-                />
-                <button
-                  onClick={handleAddEmail}
-                  disabled={!newEmail}
-                  className="px-3 py-1 rounded-lg text-[11px] font-semibold active:opacity-70 transition-opacity disabled:opacity-50"
-                  style={{ background: "#1F49D8", color: "#fff" }}
-                >
-                  Add
-                </button>
               </div>
             </div>
             
