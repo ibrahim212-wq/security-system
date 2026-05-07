@@ -28,22 +28,22 @@ export default function DashboardBottomNav() {
         borderTop: "1px solid rgba(255,255,255,0.12)",
       }}
     >
-      <ul className="flex items-center justify-around h-16">
+      <ul className="flex items-center justify-around h-14">
         {navItems.map(({ label, href, icon: Icon }) => {
           const isActive = pathname === href;
           return (
             <li key={href} className="flex-1">
               <Link
                 href={href}
-                className="flex flex-col items-center justify-center gap-1 h-full"
+                className="flex flex-col items-center justify-center gap-0.5 h-full"
               >
                 <Icon
-                  size={22}
+                  size={20}
                   color={isActive ? "#ffffff" : "rgba(255,255,255,0.65)"}
                   strokeWidth={isActive ? 2.5 : 1.8}
                 />
                 <span
-                  className="text-[10px] font-semibold"
+                  className="text-[9px] font-semibold"
                   style={{ color: isActive ? "#ffffff" : "rgba(255,255,255,0.65)" }}
                 >
                   {label}

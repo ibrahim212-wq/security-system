@@ -111,7 +111,7 @@ export default function DashboardPage() {
           </h1>
         </div>
 
-        <div className="flex-1 bg-white px-3 sm:px-4 pt-2 pb-3 flex flex-col gap-2 relative">
+        <div className="flex-1 bg-white px-3 sm:px-4 pt-2 pb-16 sm:pb-3 flex flex-col gap-2 relative">
 
           {/* Location card - Dynamic user location */}
           <div
