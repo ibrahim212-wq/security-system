@@ -1,9 +1,8 @@
 // ─────────────────────────────────────────────
 // Login Page — /login
 //
-// EXACT REPLICA of reference design
-// Shield logo with face, circuit patterns,
-// glowing particles, exact form layout
+// PIXEL-PERFECT REPLICA of reference design
+// ONLY MODIFICATION: Logo replaced with /logo.png
 // ─────────────────────────────────────────────
 
 "use client";
@@ -14,274 +13,257 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 
-// ── Shield Logo with Face (from reference image) ──
-function ShieldLogo() {
+// ── Project Logo (from Home Page - /logo.png) ──
+function ProjectLogo() {
   return (
-    <div className="relative w-[140px] h-[160px]">
-      <svg viewBox="0 0 140 160" className="w-full h-full">
-        <defs>
-          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0066cc" />
-            <stop offset="50%" stopColor="#004499" />
-            <stop offset="100%" stopColor="#002266" />
-          </linearGradient>
-          <linearGradient id="glowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#0099ff" stopOpacity="0.4" />
-          </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-        
-        {/* Shield outline with glow */}
-        <path 
-          d="M70 5 L130 35 L130 95 Q130 125 70 150 Q10 125 10 95 L10 35 Z" 
-          fill="url(#shieldGrad)" 
-          stroke="#00d4ff" 
-          strokeWidth="2"
-          filter="url(#glow)"
-        />
-        
-        {/* Inner shield border */}
-        <path 
-          d="M70 15 L120 40 L120 90 Q120 115 70 135 Q20 115 20 90 L20 40 Z" 
-          fill="none" 
-          stroke="#00d4ff" 
-          strokeWidth="1.5"
-          opacity="0.6"
-        />
-        
-        {/* Face/Fingerprint pattern - left side (digital) */}
-        <g opacity="0.9">
-          {/* Left side - digital grid pattern */}
-          <path d="M35 50 L55 50" stroke="#00d4ff" strokeWidth="1.5" />
-          <path d="M35 65 L55 65" stroke="#00d4ff" strokeWidth="1.5" />
-          <path d="M35 80 L55 80" stroke="#00d4ff" strokeWidth="1.5" />
-          <path d="M35 95 L50 95" stroke="#00d4ff" strokeWidth="1.5" />
-          <circle cx="45" cy="45" r="3" fill="#00d4ff" />
-          <circle cx="40" cy="75" r="2" fill="#00d4ff" />
-          <circle cx="50" cy="88" r="2" fill="#00d4ff" />
-        </g>
-        
-        {/* Face/Fingerprint pattern - right side (human) */}
-        <g opacity="0.9">
-          {/* Right side - organic face pattern */}
-          <ellipse cx="85" cy="55" rx="8" ry="10" fill="none" stroke="#00d4ff" strokeWidth="1.5" />
-          <circle cx="82" cy="52" r="2" fill="#00d4ff" />
-          <circle cx="88" cy="52" r="2" fill="#00d4ff" />
-          <path d="M80 62 Q85 65 90 62" stroke="#00d4ff" strokeWidth="1.5" fill="none" />
-          <path d="M85 70 L85 85" stroke="#00d4ff" strokeWidth="1.5" />
-          <path d="M75 75 Q85 72 95 75" stroke="#00d4ff" strokeWidth="1" opacity="0.6" />
-        </g>
-        
-        {/* Center dividing line */}
-        <line x1="70" y1="25" x2="70" y2="125" stroke="#00d4ff" strokeWidth="2" opacity="0.8" />
-        
-        {/* Outer rings */}
-        <circle cx="70" cy="70" r="55" fill="none" stroke="#00d4ff" strokeWidth="0.5" opacity="0.3" />
-        <circle cx="70" cy="70" r="45" fill="none" stroke="#00d4ff" strokeWidth="0.5" opacity="0.4" />
-        <circle cx="70" cy="70" r="35" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.5" />
-        
-        {/* Connection dots */}
-        <circle cx="70" cy="15" r="3" fill="#00d4ff" />
-        <circle cx="70" cy="125" r="3" fill="#00d4ff" />
-        <circle cx="25" cy="40" r="2" fill="#00d4ff" />
-        <circle cx="115" cy="40" r="2" fill="#00d4ff" />
-        <circle cx="25" cy="100" r="2" fill="#00d4ff" />
-        <circle cx="115" cy="100" r="2" fill="#00d4ff" />
-      </svg>
+    <div className="relative w-[140px] h-[140px] flex items-center justify-center">
+      {/* Glow effect behind logo */}
+      <div 
+        className="absolute inset-0 rounded-full animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(0, 150, 255, 0.4) 0%, rgba(0, 100, 200, 0.2) 40%, transparent 70%)',
+          filter: 'blur(25px)',
+        }}
+      />
       
-      {/* Glow effect behind shield */}
-      <div className="absolute inset-0 rounded-full animate-pulse" style={{
-        background: 'radial-gradient(circle, rgba(0, 150, 255, 0.4) 0%, transparent 70%)',
-        filter: 'blur(20px)',
-        zIndex: -1
-      }} />
+      {/* Rotating outer ring */}
+      <div 
+        className="absolute w-[180px] h-[180px] rounded-full border border-cyan-400/30 animate-[spin_20s_linear_infinite]"
+        style={{
+          boxShadow: '0 0 30px rgba(0, 150, 255, 0.3), inset 0 0 20px rgba(0, 150, 255, 0.1)'
+        }}
+      />
+      
+      {/* Counter-rotating inner ring */}
+      <div 
+        className="absolute w-[160px] h-[160px] rounded-full border border-cyan-400/40 animate-[spin_15s_linear_infinite_reverse]"
+        style={{
+          borderStyle: 'dashed',
+          boxShadow: '0 0 25px rgba(0, 180, 255, 0.4)'
+        }}
+      />
+      
+      {/* Project logo image */}
+      <div className="relative z-10" style={{
+        filter: 'drop-shadow(0 0 20px rgba(0, 150, 255, 0.8)) drop-shadow(0 0 40px rgba(0, 100, 200, 0.5))'
+      }}>
+        <Image
+          src="/logo.png"
+          alt="Security System Logo"
+          width={120}
+          height={120}
+          className="object-contain"
+          priority
+        />
+      </div>
     </div>
   );
 }
 
-// ── Lock Icon for left side ──
+// ── Lock Icon for left side (from reference) ──
 function LockSideIcon() {
   return (
-    <div className="relative">
+    <div className="relative w-[50px] h-[60px]">
       <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
         <defs>
           <radialGradient id="lockGrad" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#00aaff" />
             <stop offset="100%" stopColor="#0066cc" />
           </radialGradient>
+          <filter id="lockGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
         {/* Lock body */}
-        <rect x="8" y="25" width="34" height="30" rx="4" fill="url(#lockGrad)" stroke="#00d4ff" strokeWidth="1.5" />
+        <rect x="8" y="25" width="34" height="30" rx="4" fill="url(#lockGrad)" stroke="#00d4ff" strokeWidth="1.5" filter="url(#lockGlow)" />
         {/* Lock shackle */}
-        <path d="M15 25 V18 Q15 8 25 8 Q35 8 35 18 V25" fill="none" stroke="#00d4ff" strokeWidth="2" />
+        <path d="M15 25 V18 Q15 8 25 8 Q35 8 35 18 V25" fill="none" stroke="#00d4ff" strokeWidth="2" filter="url(#lockGlow)" />
         {/* Keyhole */}
-        <circle cx="25" cy="38" r="4" fill="#001122" />
-        <path d="M25 42 L25 48" stroke="#001122" strokeWidth="2" />
+        <circle cx="25" cy="38" r="4" fill="#000511" />
+        <path d="M25 42 L25 48" stroke="#000511" strokeWidth="2" />
       </svg>
       {/* Glow */}
       <div className="absolute inset-0 animate-pulse" style={{
         background: 'radial-gradient(circle, rgba(0, 180, 255, 0.5) 0%, transparent 60%)',
-        filter: 'blur(10px)',
+        filter: 'blur(8px)',
         zIndex: -1
       }} />
     </div>
   );
 }
 
-// ── Envelope Icon ──
+// ── Envelope Icon (from reference) ──
 function EnvelopeIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="4" width="20" height="16" rx="2" stroke="#00d4ff" />
-      <path d="M22 7L12 13L2 7" stroke="#00d4ff" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" strokeWidth="1.5">
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <path d="M22 7L12 13L2 7" />
     </svg>
   );
 }
 
-// ── Small Lock Icon for password field ──
+// ── Small Lock Icon for password field (from reference) ──
 function SmallLockIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" strokeWidth="2">
-      <rect x="4" y="11" width="16" height="11" rx="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" strokeWidth="1.5">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M12 11V7a4 4 0 0 0-4-4 4 4 0 0 0-4 4v4" />
+      <circle cx="12" cy="16" r="1.5" fill="#00d4ff" />
     </svg>
   );
 }
 
-// ── Animated Floating Particle ──
+// ── Animated Floating Particle (from reference) ──
 function FloatingParticle({ delay, duration, size, top, left, color }: { delay: number, duration: number, size: number, top: string, left: string, color: string }) {
   return (
     <div
-      className="absolute rounded-full animate-float"
+      className="absolute rounded-full"
       style={{
         top,
         left,
         width: `${size}px`,
         height: `${size}px`,
         background: color,
-        boxShadow: `0 0 ${size * 2}px ${color}, 0 0 ${size * 4}px ${color}`,
+        boxShadow: `0 0 ${size * 3}px ${color}, 0 0 ${size * 6}px ${color}`,
+        animation: `float ${duration}s ease-in-out infinite`,
         animationDelay: `${delay}s`,
-        animationDuration: `${duration}s`,
       }}
     />
   );
 }
 
-// ── Galaxy Network Line ──
-function NetworkLine({ x1, y1, x2, y2, delay }: { x1: string, y1: string, x2: string, y2: string, delay: number }) {
-  return (
-    <line 
-      x1={x1} y1={y1} x2={x2} y2={y2} 
-      stroke="url(#lineGradient)" 
-      strokeWidth="1"
-      className="animate-pulse"
-      style={{ animationDelay: `${delay}s`, opacity: 0.6 }}
-    />
-  );
-}
-
-// ── Circuit Pattern Background ──
+// ── Circuit Pattern Background (from reference) ──
 function CircuitBackground() {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Dark base */}
+      {/* Deep dark blue base */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(180deg, #000511 0%, #001133 50%, #000511 100%)'
+        background: 'linear-gradient(180deg, #000208 0%, #000511 30%, #000818 60%, #000511 100%)'
       }} />
       
-      {/* Radial glow at top center */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px]" style={{
-        background: 'radial-gradient(ellipse, rgba(0, 100, 200, 0.3) 0%, transparent 70%)'
+      {/* Subtle radial glow at top center behind logo */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[350px]" style={{
+        background: 'radial-gradient(ellipse, rgba(0, 100, 200, 0.25) 0%, transparent 65%)'
       }} />
       
-      {/* Floating particles */}
-      <FloatingParticle delay={0} duration={3} size={3} top="10%" left="15%" color="#00aaff" />
-      <FloatingParticle delay={0.5} duration={4} size={2} top="20%" left="85%" color="#0099ff" />
-      <FloatingParticle delay={1} duration={3.5} size={3} top="5%" left="50%" color="#00ccff" />
-      <FloatingParticle delay={1.5} duration={4} size={2} top="30%" left="25%" color="#00aaff" />
-      <FloatingParticle delay={2} duration={3} size={4} top="15%" left="75%" color="#00ddff" />
-      <FloatingParticle delay={0.3} duration={4.5} size={2} top="25%" left="10%" color="#0099ff" />
-      <FloatingParticle delay={0.8} duration={3.5} size={3} top="35%" left="90%" color="#00aaff" />
-      <FloatingParticle delay={1.2} duration={4} size={2} top="40%" left="5%" color="#00ccff" />
-      <FloatingParticle delay={1.7} duration={3.5} size={3} top="45%" left="95%" color="#0099ff" />
+      {/* Floating blue particles */}
+      <FloatingParticle delay={0} duration={4} size={3} top="8%" left="12%" color="#00aaff" />
+      <FloatingParticle delay={0.7} duration={5} size={2} top="15%" left="88%" color="#0099ff" />
+      <FloatingParticle delay={1.4} duration={4.5} size={3} top="5%" left="52%" color="#00ccff" />
+      <FloatingParticle delay={2.1} duration={5.5} size={2} top="28%" left="18%" color="#00aaff" />
+      <FloatingParticle delay={0.3} duration={4} size={4} top="12%" left="78%" color="#00ddff" />
+      <FloatingParticle delay={1} duration={5} size={2} top="22%" left="8%" color="#0099ff" />
+      <FloatingParticle delay={1.8} duration={4.5} size={3} top="32%" left="92%" color="#00aaff" />
+      <FloatingParticle delay={2.5} duration={5} size={2} top="38%" left="5%" color="#00ccff" />
+      <FloatingParticle delay={0.5} duration={4.5} size={3} top="42%" left="95%" color="#0099ff" />
       
-      {/* Circuit patterns on sides */}
-      <svg className="absolute left-0 top-0 h-full w-[150px] opacity-30" preserveAspectRatio="none">
+      {/* Circuit patterns on left side */}
+      <svg className="absolute left-0 top-0 h-full w-[180px]" preserveAspectRatio="none">
         <defs>
           <linearGradient id="circuitLeft" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00aaff" />
+            <stop offset="0%" stopColor="#00aaff" stopOpacity="0.6" />
             <stop offset="100%" stopColor="transparent" />
           </linearGradient>
         </defs>
-        {/* Vertical lines */}
-        <line x1="20" y1="0" x2="20" y2="100%" stroke="url(#circuitLeft)" strokeWidth="1" />
-        <line x1="50" y1="0" x2="50" y2="100%" stroke="url(#circuitLeft)" strokeWidth="0.8" />
-        <line x1="80" y1="0" x2="80" y2="100%" stroke="url(#circuitLeft)" strokeWidth="0.6" />
-        {/* Horizontal connections */}
-        <line x1="20" y1="100" x2="50" y2="100" stroke="#00aaff" strokeWidth="1" />
-        <line x1="50" y1="150" x2="80" y2="150" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="20" y1="200" x2="50" y2="200" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="50" y1="250" x2="80" y2="250" stroke="#00aaff" strokeWidth="0.6" />
-        <line x1="20" y1="300" x2="50" y2="300" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="50" y1="350" x2="80" y2="350" stroke="#00aaff" strokeWidth="0.6" />
-        <line x1="20" y1="400" x2="50" y2="400" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="50" y1="450" x2="80" y2="450" stroke="#00aaff" strokeWidth="0.6" />
-        <line x1="20" y1="500" x2="50" y2="500" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="50" y1="550" x2="80" y2="550" stroke="#00aaff" strokeWidth="0.6" />
-        {/* Nodes */}
-        <circle cx="20" cy="100" r="3" fill="#00aaff" />
-        <circle cx="50" cy="100" r="2" fill="#00aaff" />
-        <circle cx="50" cy="150" r="2" fill="#00aaff" />
-        <circle cx="80" cy="150" r="2" fill="#00aaff" />
-        <circle cx="20" cy="200" r="3" fill="#00aaff" />
-        <circle cx="50" cy="250" r="2" fill="#00aaff" />
-        <circle cx="80" cy="300" r="2" fill="#00aaff" />
-        <circle cx="20" cy="400" r="3" fill="#00aaff" />
-        <circle cx="50" cy="500" r="2" fill="#00aaff" />
+        {/* Main vertical trunk */}
+        <line x1="30" y1="0" x2="30" y2="100%" stroke="url(#circuitLeft)" strokeWidth="1.5" />
+        <line x1="60" y1="0" x2="60" y2="100%" stroke="url(#circuitLeft)" strokeWidth="1" opacity="0.7" />
+        <line x1="90" y1="0" x2="90" y2="100%" stroke="url(#circuitLeft)" strokeWidth="0.8" opacity="0.5" />
+        <line x1="120" y1="0" x2="120" y2="100%" stroke="url(#circuitLeft)" strokeWidth="0.6" opacity="0.4" />
+        {/* Horizontal branches with tech pattern */}
+        <line x1="30" y1="80" x2="90" y2="80" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="60" y1="140" x2="120" y2="140" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="30" y1="200" x2="90" y2="200" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="60" y1="260" x2="120" y2="260" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="30" y1="320" x2="90" y2="320" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="60" y1="380" x2="120" y2="380" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="30" y1="440" x2="90" y2="440" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="60" y1="500" x2="120" y2="500" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="30" y1="560" x2="90" y2="560" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        {/* Small connecting lines for tech feel */}
+        <line x1="90" y1="80" x2="90" y2="100" stroke="#00aaff" strokeWidth="0.8" opacity="0.4" />
+        <line x1="120" y1="140" x2="120" y2="160" stroke="#00aaff" strokeWidth="0.6" opacity="0.3" />
+        <line x1="90" y1="200" x2="90" y2="220" stroke="#00aaff" strokeWidth="0.8" opacity="0.4" />
+        {/* Circuit nodes */}
+        <circle cx="30" cy="80" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="60" cy="80" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="80" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="60" cy="140" r="3" fill="#00aaff" opacity="0.7" />
+        <circle cx="90" cy="140" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="120" cy="140" r="2" fill="#00aaff" opacity="0.4" />
+        <circle cx="30" cy="200" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="60" cy="200" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="200" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="60" cy="260" r="3" fill="#00aaff" opacity="0.7" />
+        <circle cx="90" cy="260" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="30" cy="320" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="60" cy="320" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="320" r="2" fill="#00aaff" opacity="0.5" />
       </svg>
       
-      <svg className="absolute right-0 top-0 h-full w-[150px] opacity-30" preserveAspectRatio="none">
+      {/* Circuit patterns on right side */}
+      <svg className="absolute right-0 top-0 h-full w-[180px]" preserveAspectRatio="none">
         <defs>
           <linearGradient id="circuitRight" x1="100%" y1="0%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#00aaff" />
+            <stop offset="0%" stopColor="#00aaff" stopOpacity="0.6" />
             <stop offset="100%" stopColor="transparent" />
           </linearGradient>
         </defs>
-        {/* Vertical lines */}
-        <line x1="130" y1="0" x2="130" y2="100%" stroke="url(#circuitRight)" strokeWidth="1" />
-        <line x1="100" y1="0" x2="100" y2="100%" stroke="url(#circuitRight)" strokeWidth="0.8" />
-        <line x1="70" y1="0" x2="70" y2="100%" stroke="url(#circuitRight)" strokeWidth="0.6" />
-        {/* Horizontal connections */}
-        <line x1="130" y1="120" x2="100" y2="120" stroke="#00aaff" strokeWidth="1" />
-        <line x1="100" y1="180" x2="70" y2="180" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="130" y1="240" x2="100" y2="240" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="100" y1="300" x2="70" y2="300" stroke="#00aaff" strokeWidth="0.6" />
-        <line x1="130" y1="360" x2="100" y2="360" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="100" y1="420" x2="70" y2="420" stroke="#00aaff" strokeWidth="0.6" />
-        <line x1="130" y1="480" x2="100" y2="480" stroke="#00aaff" strokeWidth="0.8" />
-        <line x1="100" y1="540" x2="70" y2="540" stroke="#00aaff" strokeWidth="0.6" />
-        {/* Nodes */}
-        <circle cx="130" cy="120" r="3" fill="#00aaff" />
-        <circle cx="100" cy="120" r="2" fill="#00aaff" />
-        <circle cx="100" cy="180" r="2" fill="#00aaff" />
-        <circle cx="70" cy="180" r="2" fill="#00aaff" />
-        <circle cx="130" cy="240" r="3" fill="#00aaff" />
-        <circle cx="100" cy="300" r="2" fill="#00aaff" />
-        <circle cx="70" cy="360" r="2" fill="#00aaff" />
-        <circle cx="130" cy="480" r="3" fill="#00aaff" />
-        <circle cx="100" cy="540" r="2" fill="#00aaff" />
+        {/* Main vertical trunk */}
+        <line x1="150" y1="0" x2="150" y2="100%" stroke="url(#circuitRight)" strokeWidth="1.5" />
+        <line x1="120" y1="0" x2="120" y2="100%" stroke="url(#circuitRight)" strokeWidth="1" opacity="0.7" />
+        <line x1="90" y1="0" x2="90" y2="100%" stroke="url(#circuitRight)" strokeWidth="0.8" opacity="0.5" />
+        <line x1="60" y1="0" x2="60" y2="100%" stroke="url(#circuitRight)" strokeWidth="0.6" opacity="0.4" />
+        {/* Horizontal branches */}
+        <line x1="150" y1="100" x2="90" y2="100" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="120" y1="160" x2="60" y2="160" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="150" y1="220" x2="90" y2="220" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="120" y1="280" x2="60" y2="280" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="150" y1="340" x2="90" y2="340" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="120" y1="400" x2="60" y2="400" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="150" y1="460" x2="90" y2="460" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        <line x1="120" y1="520" x2="60" y2="520" stroke="#00aaff" strokeWidth="1" opacity="0.5" />
+        <line x1="150" y1="580" x2="90" y2="580" stroke="#00aaff" strokeWidth="1.2" opacity="0.6" />
+        {/* Connecting lines */}
+        <line x1="90" y1="100" x2="90" y2="120" stroke="#00aaff" strokeWidth="0.8" opacity="0.4" />
+        <line x1="60" y1="160" x2="60" y2="180" stroke="#00aaff" strokeWidth="0.6" opacity="0.3" />
+        <line x1="90" y1="220" x2="90" y2="240" stroke="#00aaff" strokeWidth="0.8" opacity="0.4" />
+        {/* Circuit nodes */}
+        <circle cx="150" cy="100" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="120" cy="100" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="100" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="120" cy="160" r="3" fill="#00aaff" opacity="0.7" />
+        <circle cx="90" cy="160" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="60" cy="160" r="2" fill="#00aaff" opacity="0.4" />
+        <circle cx="150" cy="220" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="120" cy="220" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="220" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="120" cy="280" r="3" fill="#00aaff" opacity="0.7" />
+        <circle cx="90" cy="280" r="2" fill="#00aaff" opacity="0.5" />
+        <circle cx="150" cy="340" r="4" fill="#00aaff" opacity="0.8">
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="3.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="120" cy="340" r="2.5" fill="#00aaff" opacity="0.6" />
+        <circle cx="90" cy="340" r="2" fill="#00aaff" opacity="0.5" />
       </svg>
       
-      {/* Scan line effect */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0, 170, 255, 0.1) 4px, rgba(0, 170, 255, 0.1) 8px)'
+      {/* Subtle scan lines */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 170, 255, 0.08) 3px, rgba(0, 170, 255, 0.08) 6px)'
       }} />
     </div>
   );
@@ -322,26 +304,26 @@ export default function LoginPage() {
       {/* Main content container */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
         
-        {/* ── Logo Area with Shield and Lock Icon ── */}
-        <div className="relative flex items-center justify-center mb-8">
+        {/* ── Logo Area with Project Logo and Lock Icon ── */}
+        <div className="relative flex items-center justify-center mb-10">
           {/* Lock icon on left side */}
-          <div className="absolute -left-20 top-1/2 -translate-y-1/2">
+          <div className="absolute -left-24 top-1/2 -translate-y-1/2">
             <LockSideIcon />
           </div>
           
-          {/* Main Shield Logo */}
+          {/* Main Project Logo (replaced from reference design) */}
           <div className="animate-fade-in">
-            <ShieldLogo />
+            <ProjectLogo />
           </div>
         </div>
 
         {/* ── Login Form Container ── */}
-        <div className="w-full max-w-[320px]">
+        <div className="w-full max-w-[340px]">
           <form onSubmit={handleLogin} className="flex flex-col">
             
             {/* Email field */}
-            <div className="mb-5">
-              <label className="text-white text-[15px] font-normal mb-2 block">
+            <div className="mb-6">
+              <label className="text-white text-[16px] font-normal mb-2 block">
                 Email
               </label>
               <div className="relative">
@@ -353,14 +335,14 @@ export default function LoginPage() {
                   onBlur={() => setFocusedField(null)}
                   required
                   placeholder="example@email.com"
-                  className="w-full h-[50px] text-white text-[15px] rounded-[25px] pl-5 pr-12 
+                  className="w-full h-[52px] text-white text-[15px] rounded-[26px] pl-5 pr-12 
                     focus:outline-none transition-all duration-300"
                   style={{ 
-                    background: 'rgba(0, 10, 40, 0.6)',
-                    border: '1.5px solid #00aaff',
+                    background: 'rgba(0, 8, 30, 0.7)',
+                    border: '2px solid #00aaff',
                     boxShadow: focusedField === 'email'
-                      ? '0 0 20px rgba(0, 170, 255, 0.6), inset 0 0 10px rgba(0, 100, 200, 0.2)'
-                      : '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 8px rgba(0, 100, 200, 0.15)',
+                      ? '0 0 25px rgba(0, 170, 255, 0.7), inset 0 0 12px rgba(0, 100, 200, 0.25)'
+                      : '0 0 18px rgba(0, 170, 255, 0.4), inset 0 0 10px rgba(0, 100, 200, 0.2)',
                   }}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2">
@@ -370,8 +352,8 @@ export default function LoginPage() {
             </div>
 
             {/* Password field */}
-            <div className="mb-3">
-              <label className="text-white text-[15px] font-normal mb-2 block">
+            <div className="mb-4">
+              <label className="text-white text-[16px] font-normal mb-2 block">
                 Password
               </label>
               <div className="relative">
@@ -383,14 +365,14 @@ export default function LoginPage() {
                   onBlur={() => setFocusedField(null)}
                   required
                   placeholder="••••••••"
-                  className="w-full h-[50px] text-white text-[15px] rounded-[25px] pl-5 pr-12 
+                  className="w-full h-[52px] text-white text-[15px] rounded-[26px] pl-5 pr-12 
                     focus:outline-none transition-all duration-300"
                   style={{ 
-                    background: 'rgba(0, 10, 40, 0.6)',
-                    border: '1.5px solid #00aaff',
+                    background: 'rgba(0, 8, 30, 0.7)',
+                    border: '2px solid #00aaff',
                     boxShadow: focusedField === 'password'
-                      ? '0 0 20px rgba(0, 170, 255, 0.6), inset 0 0 10px rgba(0, 100, 200, 0.2)'
-                      : '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 8px rgba(0, 100, 200, 0.15)',
+                      ? '0 0 25px rgba(0, 170, 255, 0.7), inset 0 0 12px rgba(0, 100, 200, 0.25)'
+                      : '0 0 18px rgba(0, 170, 255, 0.4), inset 0 0 10px rgba(0, 100, 200, 0.2)',
                   }}
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2">
@@ -400,11 +382,11 @@ export default function LoginPage() {
             </div>
 
             {/* Forget Password - right aligned */}
-            <div className="flex justify-end mb-6">
+            <div className="flex justify-end mb-8">
               <Link
                 href="#"
-                className="text-white text-[13px] hover:text-cyan-300 transition-colors"
-                style={{ textShadow: '0 0 8px rgba(0, 200, 255, 0.5)' }}
+                className="text-white text-[14px] hover:text-cyan-300 transition-colors"
+                style={{ textShadow: '0 0 10px rgba(0, 200, 255, 0.6)' }}
               >
                 Forget Password
               </Link>
@@ -412,10 +394,11 @@ export default function LoginPage() {
 
             {/* Error message */}
             {error && (
-              <div className="mb-4 p-3 rounded-xl text-center text-red-300 text-sm"
+              <div className="mb-5 p-3 rounded-xl text-center text-red-300 text-sm"
                 style={{
                   background: 'rgba(200, 0, 50, 0.2)',
                   border: '1px solid rgba(255, 50, 100, 0.4)',
+                  boxShadow: '0 0 15px rgba(255, 0, 50, 0.2)',
                 }}
               >
                 {error}
@@ -426,23 +409,25 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-[52px] rounded-[26px] text-white font-semibold text-[18px] tracking-[2px] 
-                transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed mb-6"
+              className="w-full h-[54px] rounded-[27px] text-white font-semibold text-[18px] tracking-[3px] uppercase
+                transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed mb-8"
               style={{ 
-                background: 'linear-gradient(180deg, #001a4d 0%, #003399 100%)',
+                background: 'linear-gradient(180deg, #00154d 0%, #003d99 100%)',
                 border: '2px solid #00aaff',
-                boxShadow: '0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(0, 150, 255, 0.3)',
-                textShadow: '0 0 10px rgba(0, 200, 255, 0.8)'
+                boxShadow: '0 0 25px rgba(0, 170, 255, 0.6), 0 0 50px rgba(0, 150, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                textShadow: '0 0 12px rgba(0, 200, 255, 1), 0 0 20px rgba(0, 150, 255, 0.8)'
               }}
               onMouseEnter={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 170, 255, 0.8), 0 0 60px rgba(0, 150, 255, 0.5)';
-                  e.currentTarget.style.background = 'linear-gradient(180deg, #002266 0%, #0044aa 100%)';
+                  e.currentTarget.style.boxShadow = '0 0 35px rgba(0, 170, 255, 0.9), 0 0 70px rgba(0, 150, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.background = 'linear-gradient(180deg, #002266 0%, #0044cc 100%)';
+                  e.currentTarget.style.transform = 'scale(1.02)';
                 }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(0, 150, 255, 0.3)';
-                e.currentTarget.style.background = 'linear-gradient(180deg, #001a4d 0%, #003399 100%)';
+                e.currentTarget.style.boxShadow = '0 0 25px rgba(0, 170, 255, 0.6), 0 0 50px rgba(0, 150, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.background = 'linear-gradient(180deg, #00154d 0%, #003d99 100%)';
+                e.currentTarget.style.transform = 'scale(1)';
               }}
             >
               {loading ? 'AUTHENTICATING...' : 'LOGIN'}
@@ -450,11 +435,11 @@ export default function LoginPage() {
 
             {/* Sign up link */}
             <p className="text-center">
-              <span className="text-white/70 text-[14px]">No account? </span>
+              <span className="text-white/60 text-[14px]">No account? </span>
               <Link 
                 href="/signup" 
-                className="text-white text-[14px] underline hover:text-cyan-300 transition-colors"
-                style={{ textShadow: '0 0 8px rgba(0, 200, 255, 0.5)' }}
+                className="text-white text-[14px] underline underline-offset-2 hover:text-cyan-300 transition-colors"
+                style={{ textShadow: '0 0 10px rgba(0, 200, 255, 0.6)' }}
               >
                 Sign up
               </Link>
