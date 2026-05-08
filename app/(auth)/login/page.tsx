@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────
 // Login Page — /login
 //
-// Futuristic cyber-security style redesign with
-// neon blue effects, animated particles, and
-// modern glassmorphism UI while keeping all
-// backend logic and functionality unchanged.
+// Cybersecurity / blockchain aesthetic matching
+// reference image with deep navy blue background,
+// glowing particles, neural network effects,
+// and precise styling as specified.
 // ─────────────────────────────────────────────
 
 "use client";
@@ -13,7 +13,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import Image from "next/image";
 
 // ── Envelope icon (right side of email input) ──
 function MailIcon() {
@@ -35,64 +34,105 @@ function LockIcon() {
   );
 }
 
-// ── Futuristic Shield Security Logo Component ──
-function FuturisticSecurityLogo() {
+// ── Padlock icon (top-left corner) ──
+function CornerPadlockIcon() {
   return (
-    <div className="relative flex items-center justify-center mb-12 animate-fade-in">
-      {/* Outer glow ring */}
-      <div className="absolute w-48 h-48 rounded-full bg-blue-500/10 blur-3xl animate-pulse-slow"></div>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
+
+// ── Hexagonal Shield with Fingerprint Diamond Logo ──
+function HexagonalShieldLogo() {
+  return (
+    <div className="relative flex items-center justify-center" style={{ width: '180px', height: '180px' }}>
+      {/* Outer circular glow halo */}
+      <div className="absolute inset-0 rounded-full bg-[#00D4FF]/10 blur-2xl"></div>
       
-      {/* Circular digital ring 1 */}
-      <div className="absolute w-44 h-44 rounded-full border-2 border-blue-400/30 animate-spin-slow"></div>
-      
-      {/* Circular digital ring 2 */}
-      <div className="absolute w-40 h-40 rounded-full border border-cyan-400/20 animate-spin-reverse"></div>
-      
-      {/* Shield icon with glow */}
-      <div className="relative z-10 w-32 h-32 flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full blur-xl opacity-50"></div>
-        <svg 
-          width="80" 
-          height="80" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-          className="relative z-10 text-white drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]"
-        >
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
+      {/* Concentric circular lines (radar/sonar pulse effect) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-[160px] h-[160px] rounded-full border border-[#00D4FF]/20"></div>
+        <div className="absolute w-[140px] h-[140px] rounded-full border border-[#00D4FF]/30"></div>
+        <div className="absolute w-[120px] h-[120px] rounded-full border border-[#00D4FF]/40"></div>
+        <div className="absolute w-[100px] h-[100px] rounded-full border border-[#00D4FF]/50"></div>
       </div>
       
-      {/* Decorative dots */}
-      <div className="absolute top-0 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-      <div className="absolute bottom-0 w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-100"></div>
-      <div className="absolute left-0 w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-200"></div>
-      <div className="absolute right-0 w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-300"></div>
+      {/* Hexagonal shield */}
+      <div className="relative z-10 flex items-center justify-center">
+        <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 15px rgba(0, 212, 255, 0.8))' }}>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+        
+        {/* Fingerprint / Diamond hybrid icon inside shield */}
+        <div className="absolute">
+          <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 10px rgba(0, 191, 255, 1))' }}>
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
 
-// ── Animated Background Particles Component ──
-function AnimatedBackground() {
+// ── Neural Network / Constellation Background Component ──
+function NeuralNetworkBackground() {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Animated particles */}
-      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-float opacity-60"></div>
-      <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-float-delay-1 opacity-50"></div>
-      <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full animate-float-delay-2 opacity-40"></div>
-      <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-cyan-300 rounded-full animate-float-delay-3 opacity-50"></div>
-      <div className="absolute top-1/2 left-1/5 w-1 h-1 bg-blue-500 rounded-full animate-float-delay-4 opacity-30"></div>
-      <div className="absolute bottom-1/3 right-1/5 w-1.5 h-1.5 bg-cyan-500 rounded-full animate-float-delay-5 opacity-40"></div>
+      {/* Scattered glowing cyan dots of varying sizes */}
+      <div className="absolute top-[10%] left-[15%] w-3 h-3 rounded-full bg-[#00D4FF] opacity-80" style={{ filter: 'drop-shadow(0 0 8px rgba(0, 212, 255, 1))' }}></div>
+      <div className="absolute top-[20%] left-[70%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-60"></div>
+      <div className="absolute top-[30%] left-[25%] w-1.5 h-1.5 rounded-full bg-[#00D4FF] opacity-50"></div>
+      <div className="absolute top-[40%] left-[80%] w-2.5 h-2.5 rounded-full bg-[#00D4FF] opacity-70" style={{ filter: 'drop-shadow(0 0 6px rgba(0, 212, 255, 0.8))' }}></div>
+      <div className="absolute top-[50%] left-[10%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-40"></div>
+      <div className="absolute top-[60%] left-[60%] w-1.5 h-1.5 rounded-full bg-[#00D4FF] opacity-50"></div>
+      <div className="absolute top-[70%] left-[30%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-60"></div>
+      <div className="absolute top-[80%] left-[75%] w-1 h-1 rounded-full bg-[#00D4FF] opacity-40"></div>
+      <div className="absolute top-[15%] left-[45%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-50"></div>
+      <div className="absolute top-[35%] left-[55%] w-1.5 h-1.5 rounded-full bg-[#00D4FF] opacity-40"></div>
+      <div className="absolute top-[55%] left-[40%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-60"></div>
+      <div className="absolute top-[75%] left-[85%] w-1.5 h-1.5 rounded-full bg-[#00D4FF] opacity-50"></div>
+      <div className="absolute top-[25%] left-[90%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-70" style={{ filter: 'drop-shadow(0 0 6px rgba(0, 212, 255, 0.8))' }}></div>
+      <div className="absolute top-[45%] left-[20%] w-1 h-1 rounded-full bg-[#00D4FF] opacity-40"></div>
+      <div className="absolute top-[65%] left-[50%] w-2 h-2 rounded-full bg-[#00D4FF] opacity-60"></div>
+      <div className="absolute top-[85%] left-[15%] w-1.5 h-1.5 rounded-full bg-[#00D4FF] opacity-50"></div>
       
-      {/* Circuit lines */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
-      <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
-      <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"></div>
+      {/* Connecting lines creating neural/tech mesh */}
+      <svg className="absolute inset-0 w-full h-full opacity-20">
+        <line x1="15%" y1="10%" x2="45%" y2="15%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="45%" y1="15%" x2="80%" y2="40%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="25%" y1="30%" x2="45%" y2="15%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="55%" y1="35%" x2="80%" y2="40%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="40%" y1="55%" x2="60%" y2="65%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="10%" y1="50%" x2="40%" y2="55%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="30%" y1="70%" x2="40%" y2="55%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="50%" y1="65%" x2="75%" y2="80%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="70%" y1="20%" x2="90%" y2="25%" stroke="#00D4FF" strokeWidth="0.5" />
+        <line x1="80%" y1="40%" x2="90%" y2="25%" stroke="#00D4FF" strokeWidth="0.5" />
+      </svg>
+      
+      {/* Circuit board traces along right edge */}
+      <svg className="absolute top-0 right-0 w-32 h-full opacity-15">
+        <line x1="0" y1="20%" x2="20" y2="20%" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="20" y1="20%" x2="20" y2="40%" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="0" y1="40%" x2="20" y2="40%" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="0" y1="60%" x2="15" y2="60%" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="15" y1="60%" x2="15" y2="80%" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="0" y1="80%" x2="15" y2="80%" stroke="#0A2A6E" strokeWidth="1" />
+      </svg>
+      
+      {/* Circuit board traces along bottom edge */}
+      <svg className="absolute bottom-0 left-0 w-full h-24 opacity-15">
+        <line x1="20%" y1="20" x2="20%" y2="0" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="20%" y1="20" x2="40%" y2="20" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="40%" y1="20" x2="40%" y2="0" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="60%" y1="20" x2="60%" y2="0" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="60%" y1="20" x2="80%" y2="20" stroke="#0A2A6E" strokeWidth="1" />
+        <line x1="80%" y1="20" x2="80%" y2="0" stroke="#0A2A6E" strokeWidth="1" />
+      </svg>
     </div>
   );
 }
@@ -107,12 +147,6 @@ export default function LoginPage() {
   // UI feedback state
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
-
-  // Animation on mount
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -130,39 +164,48 @@ export default function LoginPage() {
   }
 
   return (
-    /* ── Full-screen dark futuristic background with cyber effects ── */
+    /* ── Full-screen deep navy blue background with particles ── */
     <div
-      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       style={{ 
-        background: "linear-gradient(135deg, #0a0e27 0%, #0d1b3d 50%, #0a1628 100%)"
+        background: "linear-gradient(180deg, #020B2D 0%, #050F3A 100%)"
       }}
     >
-      <AnimatedBackground />
+      <NeuralNetworkBackground />
       
-      <div className={`w-full max-w-sm flex flex-col items-center relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      {/* Top-left padlock icon */}
+      <div className="absolute top-6 left-6 opacity-50">
+        <CornerPadlockIcon />
+      </div>
+      
+      {/* Main content container */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6" style={{ paddingTop: '60px' }}>
         
-        {/* ── Futuristic Security Logo ── */}
-        <FuturisticSecurityLogo />
+        {/* ── Hexagonal Shield Logo ── */}
+        <div style={{ marginBottom: '40px' }}>
+          <HexagonalShieldLogo />
+        </div>
 
-        {/* ── Glassmorphism Form Container ── */}
-        <form onSubmit={handleLogin} className="w-full flex flex-col gap-6 backdrop-blur-sm bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl shadow-blue-900/20">
+        {/* ── Form Container ── */}
+        <form onSubmit={handleLogin} className="w-full flex flex-col gap-5" style={{ maxWidth: '340px' }}>
 
           {/* Email field */}
           <div className="flex flex-col gap-2">
-            <label className="text-cyan-300 text-sm font-medium tracking-wide pl-1 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+            <label className="text-white text-sm font-normal text-left" style={{ paddingLeft: '4px' }}>
               Email
             </label>
-            <div className="relative group">
+            <div className="relative">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="example@email.com"
-                className="w-full bg-black/40 text-white placeholder-gray-500 rounded-2xl pl-5 pr-12 py-4 text-sm focus:outline-none border-2 border-blue-500/30 focus:border-cyan-400 shadow-lg shadow-blue-900/30 transition-all duration-300 focus:shadow-[0_0_30px_rgba(34,211,238,0.4)]"
+                className="w-full text-white placeholder-[#7A9CC0] rounded-[26px] pl-5 pr-12 py-[15px] text-sm focus:outline-none border-2 border-[#00D4FF] shadow-[0_0_15px_rgba(0,212,255,0.5)] transition-all"
+                style={{ background: 'rgba(5, 20, 70, 0.8)' }}
               />
-              {/* Mail icon — right side with glow */}
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
+              {/* Mail icon — right side in cyan-white */}
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#00D4FF] pointer-events-none">
                 <MailIcon />
               </span>
             </div>
@@ -170,129 +213,63 @@ export default function LoginPage() {
 
           {/* Password field */}
           <div className="flex flex-col gap-2">
-            <label className="text-cyan-300 text-sm font-medium tracking-wide pl-1 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+            <label className="text-white text-sm font-normal text-left" style={{ paddingLeft: '4px' }}>
               Password
             </label>
-            <div className="relative group">
+            <div className="relative">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full bg-black/40 text-white placeholder-gray-500 rounded-2xl pl-5 pr-12 py-4 text-sm focus:outline-none border-2 border-blue-500/30 focus:border-cyan-400 shadow-lg shadow-blue-900/30 transition-all duration-300 focus:shadow-[0_0_30px_rgba(34,211,238,0.4)]"
+                className="w-full text-white placeholder-[#7A9CC0] rounded-[26px] pl-5 pr-12 py-[15px] text-sm focus:outline-none border-2 border-[#00D4FF] shadow-[0_0_15px_rgba(0,212,255,0.5)] transition-all"
+                style={{ background: 'rgba(5, 20, 70, 0.8)' }}
               />
-              {/* Lock icon — right side with glow */}
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
+              {/* Lock icon — right side in cyan-white */}
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#00D4FF] pointer-events-none">
                 <LockIcon />
               </span>
             </div>
 
-            {/* Forget password — right-aligned below password input */}
-            <div className="flex justify-end pr-1 mt-1">
+            {/* Forget password — right-aligned with dashed underline */}
+            <div className="flex justify-end mt-1">
               <Link
                 href="#"
-                className="text-cyan-300 text-sm hover:text-cyan-200 hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all duration-300"
+                className="text-white text-xs relative"
               >
                 Forget Password
+                <span className="absolute bottom-0 left-0 w-full border-b border-dashed border-[#00D4FF]/50"></span>
               </Link>
             </div>
           </div>
 
           {/* Error message */}
           {error && (
-            <p className="text-red-300 text-xs bg-red-500/20 border border-red-400/30 rounded-xl px-4 py-3 text-center backdrop-blur-sm">
+            <p className="text-red-300 text-xs bg-red-500/20 border border-red-400/30 rounded-xl px-4 py-3 text-center">
               {error}
             </p>
           )}
 
-          {/* LOGIN button — futuristic glowing button */}
+          {/* LOGIN button — neon cyan border, dark navy fill */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-lg tracking-widest uppercase transition-all duration-300 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(34,211,238,0.8)] hover:scale-105 border-2 border-cyan-400/50 backdrop-blur-sm"
+            className="w-full py-[14px] rounded-[28px] text-white font-bold text-base tracking-widest uppercase transition-all disabled:opacity-60 disabled:cursor-not-allowed border-2 border-[#00D4FF] shadow-[0_0_20px_rgba(0,212,255,0.6)] hover:shadow-[0_0_30px_rgba(0,212,255,0.8)]"
+            style={{ background: 'rgba(5, 20, 70, 0.85)' }}
           >
             {loading ? "..." : "LOGIN"}
           </button>
 
           {/* Link to signup */}
-          <p className="text-center text-gray-400 text-sm mt-2">
+          <p className="text-center text-white text-sm mt-5">
             No account?{" "}
-            <Link href="/signup" className="text-cyan-300 font-semibold hover:text-cyan-200 hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all duration-300">
+            <Link href="/signup" className="text-white font-bold underline">
               Sign up
             </Link>
           </p>
         </form>
       </div>
-      
-      {/* Custom styles for animations */}
-      <style jsx global>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-20px) translateX(10px); }
-          50% { transform: translateY(-10px) translateX(-10px); }
-          75% { transform: translateY(-30px) translateX(5px); }
-        }
-        @keyframes float-delay-1 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-15px) translateX(-15px); }
-          50% { transform: translateY(-25px) translateX(10px); }
-          75% { transform: translateY(-10px) translateX(-5px); }
-        }
-        @keyframes float-delay-2 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-25px) translateX(15px); }
-          50% { transform: translateY(-15px) translateX(-10px); }
-          75% { transform: translateY(-20px) translateX(5px); }
-        }
-        @keyframes float-delay-3 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-20px) translateX(-10px); }
-          50% { transform: translateY(-30px) translateX(15px); }
-          75% { transform: translateY(-15px) translateX(-5px); }
-        }
-        @keyframes float-delay-4 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-30px) translateX(10px); }
-          50% { transform: translateY(-20px) translateX(-15px); }
-          75% { transform: translateY(-10px) translateX(5px); }
-        }
-        @keyframes float-delay-5 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          25% { transform: translateY(-15px) translateX(-5px); }
-          50% { transform: translateY(-25px) translateX(10px); }
-          75% { transform: translateY(-20px) translateX(-15px); }
-        }
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
-        }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 0.8; }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-float { animation: float 8s ease-in-out infinite; }
-        .animate-float-delay-1 { animation: float-delay-1 9s ease-in-out infinite; }
-        .animate-float-delay-2 { animation: float-delay-2 10s ease-in-out infinite; }
-        .animate-float-delay-3 { animation: float-delay-3 11s ease-in-out infinite; }
-        .animate-float-delay-4 { animation: float-delay-4 12s ease-in-out infinite; }
-        .animate-float-delay-5 { animation: float-delay-5 13s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-        .animate-spin-reverse { animation: spin-reverse 25s linear infinite; }
-        .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
-        .animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-      `}</style>
     </div>
   );
 }
