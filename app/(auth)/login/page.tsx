@@ -38,59 +38,98 @@ function LockIcon() {
 // ── Premium Futuristic Logo with AI Scanner Rings ──
 function PremiumLogo() {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: '200px', height: '240px' }}>
-      {/* Deep radial glow background */}
+    <div className="relative flex items-center justify-center" style={{ width: '220px', height: '260px' }}>
+      {/* Massive deep radial glow background */}
       <div className="absolute inset-0 rounded-full animate-pulse" style={{ 
-        background: 'radial-gradient(circle, rgba(0, 150, 255, 0.4) 0%, rgba(0, 100, 200, 0.2) 30%, transparent 70%)',
-        filter: 'blur(20px)'
+        background: 'radial-gradient(circle, rgba(0, 180, 255, 0.5) 0%, rgba(0, 120, 220, 0.3) 40%, transparent 80%)',
+        filter: 'blur(40px)',
+        animationDuration: '2s'
       }} />
       
-      {/* Outer rotating scanner ring */}
-      <div className="absolute w-[190px] h-[190px] rounded-full border-2 border-cyan-400/20 animate-[spin_20s_linear_infinite]" 
+      {/* Secondary glow layer */}
+      <div className="absolute inset-0 rounded-full animate-pulse" style={{ 
+        background: 'radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(0, 150, 200, 0.2) 50%, transparent 90%)',
+        filter: 'blur(60px)',
+        animationDuration: '3s',
+        animationDelay: '0.5s'
+      }} />
+      
+      {/* Outer rotating scanner ring - thick and dramatic */}
+      <div className="absolute w-[210px] h-[210px] rounded-full border-3 border-cyan-400/30 animate-[spin_18s_linear_infinite]" 
         style={{ 
-          boxShadow: '0 0 30px rgba(0, 200, 255, 0.3), inset 0 0 30px rgba(0, 200, 255, 0.1)',
-          borderStyle: 'dashed'
+          boxShadow: '0 0 50px rgba(0, 200, 255, 0.5), inset 0 0 50px rgba(0, 200, 255, 0.2), 0 0 100px rgba(0, 150, 255, 0.3)',
+          borderStyle: 'dashed',
+          borderWidth: '3px'
         }} 
       />
       
-      {/* Middle rotating scanner ring (opposite direction) */}
-      <div className="absolute w-[170px] h-[170px] rounded-full border border-cyan-300/30 animate-[spin_15s_linear_infinite_reverse]" 
+      {/* Second outer rotating scanner ring (opposite direction) */}
+      <div className="absolute w-[190px] h-[190px] rounded-full border-2 border-cyan-300/40 animate-[spin_12s_linear_infinite_reverse]" 
         style={{ 
-          boxShadow: '0 0 20px rgba(0, 212, 255, 0.4)'
+          boxShadow: '0 0 35px rgba(0, 212, 255, 0.6), inset 0 0 35px rgba(0, 212, 255, 0.15)',
+          borderStyle: 'dotted'
         }} 
       />
       
-      {/* Inner scanner ring with segments */}
-      <div className="absolute w-[150px] h-[150px] rounded-full border-2 border-cyan-400/40" 
+      {/* Middle rotating scanner ring with segments */}
+      <div className="absolute w-[170px] h-[170px] rounded-full border-2 border-cyan-400/50 animate-[spin_8s_linear_infinite]" 
         style={{ 
-          boxShadow: '0 0 25px rgba(0, 212, 255, 0.5), inset 0 0 15px rgba(0, 200, 255, 0.2)',
-          background: 'conic-gradient(from 0deg, transparent 0deg, rgba(0, 212, 255, 0.3) 60deg, transparent 120deg, transparent 180deg, rgba(0, 212, 255, 0.3) 240deg, transparent 300deg)'
+          boxShadow: '0 0 30px rgba(0, 212, 255, 0.7), inset 0 0 20px rgba(0, 200, 255, 0.25)',
+          background: 'conic-gradient(from 0deg, transparent 0deg, rgba(0, 212, 255, 0.4) 45deg, transparent 90deg, transparent 135deg, rgba(0, 212, 255, 0.4) 180deg, transparent 225deg, rgba(0, 212, 255, 0.4) 270deg, transparent 315deg)'
         }} 
       />
       
-      {/* Pulsing scanner line */}
+      {/* Inner scanner ring with different rotation */}
+      <div className="absolute w-[150px] h-[150px] rounded-full border-2 border-cyan-400/60 animate-[spin_6s_linear_infinite_reverse]" 
+        style={{ 
+          boxShadow: '0 0 25px rgba(0, 212, 255, 0.8), inset 0 0 15px rgba(0, 200, 255, 0.3)',
+          background: 'conic-gradient(from 45deg, transparent 0deg, rgba(0, 200, 255, 0.35) 30deg, transparent 60deg, transparent 120deg, rgba(0, 200, 255, 0.35) 150deg, transparent 180deg, transparent 210deg, rgba(0, 200, 255, 0.35) 240deg, transparent 270deg)'
+        }} 
+      />
+      
+      {/* Pulsing scanner line - horizontal */}
       <div className="absolute w-[140px] h-[140px] rounded-full overflow-hidden">
-        <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-[scan_3s_ease-in-out_infinite]" 
-          style={{ top: '50%', filter: 'blur(2px)' }} 
+        <div className="absolute w-full h-2 bg-gradient-to-r from-transparent via-cyan-300 to-transparent animate-[scan_2.5s_ease-in-out_infinite]" 
+          style={{ top: '50%', filter: 'blur(3px)', boxShadow: '0 0 20px rgba(0, 212, 255, 0.8)' }} 
         />
       </div>
       
-      {/* Concentric glowing rings radiating outward */}
+      {/* Pulsing scanner line - vertical */}
+      <div className="absolute w-[140px] h-[140px] rounded-full overflow-hidden">
+        <div className="absolute h-full w-2 bg-gradient-to-b from-transparent via-cyan-300 to-transparent animate-[scan_3s_ease-in-out_infinite]" 
+          style={{ left: '50%', filter: 'blur(3px)', boxShadow: '0 0 20px rgba(0, 212, 255, 0.8)', animationDelay: '1s' }} 
+        />
+      </div>
+      
+      {/* Concentric glowing rings radiating outward - more rings */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="absolute w-[220px] h-[220px] rounded-full border border-cyan-400/10 animate-ping" style={{ animationDuration: '3s' }} />
-        <div className="absolute w-[240px] h-[240px] rounded-full border border-cyan-400/8" />
-        <div className="absolute w-[260px] h-[260px] rounded-full border border-cyan-400/5" />
-        <div className="absolute w-[280px] h-[280px] rounded-full border border-cyan-400/3" />
+        <div className="absolute w-[240px] h-[240px] rounded-full border-2 border-cyan-400/15 animate-ping" style={{ animationDuration: '2.5s' }} />
+        <div className="absolute w-[260px] h-[260px] rounded-full border border-cyan-400/12" />
+        <div className="absolute w-[280px] h-[280px] rounded-full border border-cyan-400/10" />
+        <div className="absolute w-[300px] h-[300px] rounded-full border border-cyan-400/8" />
+        <div className="absolute w-[320px] h-[320px] rounded-full border border-cyan-400/5" />
+        <div className="absolute w-[340px] h-[340px] rounded-full border border-cyan-400/3" />
       </div>
       
-      {/* Original RadarShieldLogo - RESTORED */}
-      <div className="relative z-10" style={{ filter: 'drop-shadow(0 0 30px rgba(0, 200, 255, 0.8)) drop-shadow(0 0 60px rgba(0, 150, 255, 0.5))' }}>
-        <RadarShieldLogo size={110} />
+      {/* Orbiting particles */}
+      <div className="absolute w-[200px] h-[200px] rounded-full animate-[spin_10s_linear_infinite]">
+        <div className="absolute top-0 left-1/2 w-3 h-3 bg-cyan-400 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 15px #00D4FF, 0 0 30px #00D4FF' }} />
+      </div>
+      <div className="absolute w-[180px] h-[180px] rounded-full animate-[spin_7s_linear_infinite_reverse]">
+        <div className="absolute top-0 left-1/2 w-2 h-2 bg-cyan-300 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 10px #00BFFF, 0 0 20px #00BFFF' }} />
       </div>
       
-      {/* Holographic scan effect overlay */}
-      <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none" style={{ width: '120px', height: '120px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-        <div className="absolute w-full h-full bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent animate-[scan_2s_linear_infinite]" />
+      {/* Original RadarShieldLogo - RESTORED with stronger glow */}
+      <div className="relative z-10" style={{ filter: 'drop-shadow(0 0 40px rgba(0, 200, 255, 1)) drop-shadow(0 0 80px rgba(0, 150, 255, 0.7)) drop-shadow(0 0 120px rgba(0, 100, 200, 0.5))' }}>
+        <RadarShieldLogo size={120} />
+      </div>
+      
+      {/* Holographic scan effect overlay - multiple layers */}
+      <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none" style={{ width: '130px', height: '130px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <div className="absolute w-full h-full bg-gradient-to-b from-transparent via-cyan-400/15 to-transparent animate-[scan_1.5s_linear_infinite]" />
+      </div>
+      <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none" style={{ width: '140px', height: '140px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <div className="absolute w-full h-full bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-[scan_2s_linear_infinite_reverse]" />
       </div>
     </div>
   );
@@ -131,57 +170,78 @@ function NetworkLine({ x1, y1, x2, y2, delay }: { x1: string, y1: string, x2: st
 // ── Premium Galaxy Cyberpunk Background ──
 function GalaxyBackground() {
   const particles = [
-    { delay: 0, duration: 4, size: 4, top: '10%', left: '15%', color: '#00D4FF' },
-    { delay: 1, duration: 5, size: 3, top: '20%', left: '80%', color: '#00BFFF' },
-    { delay: 0.5, duration: 6, size: 5, top: '15%', left: '60%', color: '#00CFFF' },
-    { delay: 2, duration: 4.5, size: 3, top: '30%', left: '25%', color: '#0099FF' },
-    { delay: 1.5, duration: 5.5, size: 4, top: '40%', left: '85%', color: '#00D4FF' },
-    { delay: 0.8, duration: 4.2, size: 2, top: '50%', left: '10%', color: '#00BFFF' },
-    { delay: 2.2, duration: 6, size: 5, top: '60%', left: '70%', color: '#00CFFF' },
-    { delay: 1.2, duration: 4.8, size: 3, top: '70%', left: '30%', color: '#0099FF' },
-    { delay: 0.3, duration: 5.2, size: 4, top: '80%', left: '75%', color: '#00D4FF' },
-    { delay: 1.8, duration: 4.6, size: 3, top: '25%', left: '45%', color: '#00BFFF' },
-    { delay: 2.5, duration: 5.8, size: 2, top: '45%', left: '55%', color: '#00CFFF' },
-    { delay: 0.6, duration: 4.4, size: 4, top: '65%', left: '20%', color: '#0099FF' },
-    { delay: 1.4, duration: 5, size: 3, top: '85%', left: '90%', color: '#00D4FF' },
-    { delay: 2, duration: 4.2, size: 5, top: '5%', left: '40%', color: '#00BFFF' },
-    { delay: 0.9, duration: 5.5, size: 2, top: '90%', left: '50%', color: '#00CFFF' },
-    { delay: 1.6, duration: 4.8, size: 3, top: '35%', left: '5%', color: '#0099FF' },
-    { delay: 2.3, duration: 5.3, size: 4, top: '75%', left: '65%', color: '#00D4FF' },
-    { delay: 0.4, duration: 4.7, size: 2, top: '55%', left: '95%', color: '#00BFFF' },
+    { delay: 0, duration: 4, size: 5, top: '8%', left: '12%', color: '#00D4FF' },
+    { delay: 1, duration: 5, size: 4, top: '18%', left: '82%', color: '#00BFFF' },
+    { delay: 0.5, duration: 6, size: 6, top: '12%', left: '58%', color: '#00CFFF' },
+    { delay: 2, duration: 4.5, size: 4, top: '28%', left: '22%', color: '#0099FF' },
+    { delay: 1.5, duration: 5.5, size: 5, top: '38%', left: '88%', color: '#00D4FF' },
+    { delay: 0.8, duration: 4.2, size: 3, top: '48%', left: '8%', color: '#00BFFF' },
+    { delay: 2.2, duration: 6, size: 6, top: '58%', left: '72%', color: '#00CFFF' },
+    { delay: 1.2, duration: 4.8, size: 4, top: '68%', left: '28%', color: '#0099FF' },
+    { delay: 0.3, duration: 5.2, size: 5, top: '78%', left: '78%', color: '#00D4FF' },
+    { delay: 1.8, duration: 4.6, size: 4, top: '22%', left: '42%', color: '#00BFFF' },
+    { delay: 2.5, duration: 5.8, size: 3, top: '42%', left: '52%', color: '#00CFFF' },
+    { delay: 0.6, duration: 4.4, size: 5, top: '62%', left: '18%', color: '#0099FF' },
+    { delay: 1.4, duration: 5, size: 4, top: '82%', left: '92%', color: '#00D4FF' },
+    { delay: 2, duration: 4.2, size: 6, top: '3%', left: '38%', color: '#00BFFF' },
+    { delay: 0.9, duration: 5.5, size: 3, top: '88%', left: '48%', color: '#00CFFF' },
+    { delay: 1.6, duration: 4.8, size: 4, top: '32%', left: '3%', color: '#0099FF' },
+    { delay: 2.3, duration: 5.3, size: 5, top: '72%', left: '62%', color: '#00D4FF' },
+    { delay: 0.4, duration: 4.7, size: 3, top: '52%', left: '97%', color: '#00BFFF' },
+    { delay: 0.2, duration: 5.5, size: 4, top: '15%', left: '35%', color: '#00D4FF' },
+    { delay: 1.1, duration: 4.9, size: 5, top: '45%', left: '68%', color: '#00CFFF' },
+    { delay: 1.9, duration: 5.1, size: 3, top: '65%', left: '38%', color: '#0099FF' },
+    { delay: 0.7, duration: 4.3, size: 4, top: '85%', left: '15%', color: '#00D4FF' },
+    { delay: 2.1, duration: 5.7, size: 5, top: '25%', left: '75%', color: '#00BFFF' },
+    { delay: 1.3, duration: 4.5, size: 3, top: '55%', left: '85%', color: '#00CFFF' },
+    { delay: 0.1, duration: 5.4, size: 6, top: '5%', left: '55%', color: '#0099FF' },
   ];
 
   const networkNodes = [
-    { x1: '15%', y1: '10%', x2: '25%', y2: '20%', delay: 0 },
-    { x1: '25%', y1: '20%', x2: '45%', y2: '30%', delay: 0.5 },
-    { x1: '45%', y1: '30%', x2: '60%', y2: '15%', delay: 1 },
-    { x1: '60%', y1: '15%', x2: '80%', y2: '20%', delay: 1.5 },
-    { x1: '80%', y1: '20%', x2: '90%', y2: '40%', delay: 0.3 },
-    { x1: '10%', y1: '50%', x2: '30%', y2: '60%', delay: 0.8 },
-    { x1: '30%', y1: '60%', x2: '50%', y2: '45%', delay: 1.2 },
-    { x1: '50%', y1: '45%', x2: '70%', y2: '70%', delay: 1.8 },
-    { x1: '70%', y1: '70%', x2: '85%', y2: '80%', delay: 0.6 },
-    { x1: '20%', y1: '80%', x2: '40%', y2: '85%', delay: 1.4 },
-    { x1: '40%', y1: '85%', x2: '60%', y2: '90%', delay: 2 },
-    { x1: '5%', y1: '30%', x2: '15%', y2: '40%', delay: 0.2 },
-    { x1: '85%', y1: '50%', x2: '95%', y2: '60%', delay: 1 },
-    { x1: '35%', y1: '75%', x2: '55%', y2: '65%', delay: 1.6 },
+    { x1: '12%', y1: '8%', x2: '22%', y2: '18%', delay: 0 },
+    { x1: '22%', y1: '18%', x2: '42%', y2: '28%', delay: 0.5 },
+    { x1: '42%', y1: '28%', x2: '58%', y2: '13%', delay: 1 },
+    { x1: '58%', y1: '13%', x2: '78%', y2: '18%', delay: 1.5 },
+    { x1: '78%', y1: '18%', x2: '88%', y2: '38%', delay: 0.3 },
+    { x1: '8%', y1: '48%', x2: '28%', y2: '58%', delay: 0.8 },
+    { x1: '28%', y1: '58%', x2: '48%', y2: '43%', delay: 1.2 },
+    { x1: '48%', y1: '43%', x2: '68%', y2: '68%', delay: 1.8 },
+    { x1: '68%', y1: '68%', x2: '83%', y2: '78%', delay: 0.6 },
+    { x1: '18%', y1: '78%', x2: '38%', y2: '83%', delay: 1.4 },
+    { x1: '38%', y1: '83%', x2: '58%', y2: '88%', delay: 2 },
+    { x1: '3%', y1: '28%', x2: '13%', y2: '38%', delay: 0.2 },
+    { x1: '83%', y1: '48%', x2: '93%', y2: '58%', delay: 1 },
+    { x1: '33%', y1: '73%', x2: '53%', y2: '63%', delay: 1.6 },
+    { x1: '15%', y1: '35%', x2: '35%', y2: '45%', delay: 0.4 },
+    { x1: '65%', y1: '55%', x2: '85%', y2: '65%', delay: 1.1 },
+    { x1: '45%', y1: '15%', x2: '65%', y2: '25%', delay: 0.7 },
+    { x1: '25%', y1: '65%', x2: '45%', y2: '75%', delay: 1.3 },
+    { x1: '55%', y1: '85%', x2: '75%', y2: '95%', delay: 0.9 },
+    { x1: '5%', y1: '55%', x2: '25%', y2: '65%', delay: 1.7 },
   ];
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Deep space gradient layers */}
+      {/* Deep space gradient layers - enhanced */}
       <div className="absolute inset-0" style={{
         background: `
-          radial-gradient(ellipse at 20% 30%, rgba(0, 60, 120, 0.3) 0%, transparent 50%),
-          radial-gradient(ellipse at 80% 70%, rgba(0, 40, 100, 0.2) 0%, transparent 50%),
-          radial-gradient(ellipse at 50% 50%, rgba(0, 30, 80, 0.15) 0%, transparent 70%)
+          radial-gradient(ellipse at 15% 25%, rgba(0, 80, 140, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at 85% 75%, rgba(0, 60, 120, 0.3) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(0, 40, 100, 0.2) 0%, transparent 70%),
+          radial-gradient(ellipse at 70% 30%, rgba(0, 100, 180, 0.25) 0%, transparent 40%),
+          radial-gradient(ellipse at 30% 80%, rgba(0, 50, 110, 0.2) 0%, transparent 45%)
         `
       }} />
       
-      {/* Digital scan lines effect */}
+      {/* Digital scan lines effect - enhanced */}
+      <div className="absolute inset-0 opacity-[0.05]" style={{
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 212, 255, 0.15) 2px, rgba(0, 212, 255, 0.15) 4px)',
+        pointerEvents: 'none'
+      }} />
+      
+      {/* Horizontal scan lines */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
-        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 212, 255, 0.1) 2px, rgba(0, 212, 255, 0.1) 4px)',
+        background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0, 180, 255, 0.08) 3px, rgba(0, 180, 255, 0.08) 6px)',
         pointerEvents: 'none'
       }} />
       
@@ -211,43 +271,65 @@ function GalaxyBackground() {
         <FloatingParticle key={i} {...p} />
       ))}
       
-      {/* Circuit board pattern overlay */}
-      <svg className="absolute top-0 left-0 w-full h-full opacity-[0.08]" preserveAspectRatio="none">
-        <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-          <path d="M10 50 L30 50 L30 30 L50 30" fill="none" stroke="#00D4FF" strokeWidth="0.5" />
-          <path d="M50 10 L50 30 L70 30 L70 50" fill="none" stroke="#00D4FF" strokeWidth="0.5" />
-          <circle cx="30" cy="50" r="2" fill="#00D4FF" />
-          <circle cx="50" cy="30" r="2" fill="#00D4FF" />
-          <circle cx="70" cy="50" r="2" fill="#00D4FF" />
+      {/* Circuit board pattern overlay - enhanced */}
+      <svg className="absolute top-0 left-0 w-full h-full opacity-[0.12]" preserveAspectRatio="none">
+        <pattern id="circuit" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+          <path d="M10 50 L30 50 L30 30 L50 30" fill="none" stroke="#00D4FF" strokeWidth="0.6" />
+          <path d="M50 10 L50 30 L70 30 L70 50" fill="none" stroke="#00D4FF" strokeWidth="0.6" />
+          <path d="M30 70 L50 70 L50 90 L70 90" fill="none" stroke="#00D4FF" strokeWidth="0.6" />
+          <path d="M90 30 L90 50 L70 50 L70 70" fill="none" stroke="#00D4FF" strokeWidth="0.6" />
+          <circle cx="30" cy="50" r="2.5" fill="#00D4FF" />
+          <circle cx="50" cy="30" r="2.5" fill="#00D4FF" />
+          <circle cx="70" cy="50" r="2.5" fill="#00D4FF" />
+          <circle cx="50" cy="70" r="2.5" fill="#00D4FF" />
+          <circle cx="90" cy="30" r="2.5" fill="#00D4FF" />
+          <circle cx="70" cy="90" r="2.5" fill="#00D4FF" />
         </pattern>
         <rect width="100%" height="100%" fill="url(#circuit)" />
       </svg>
       
-      {/* Animated corner accents */}
-      <div className="absolute top-0 left-0 w-40 h-40">
+      {/* Hexagonal grid overlay */}
+      <svg className="absolute top-0 left-0 w-full h-full opacity-[0.05]" preserveAspectRatio="none">
+        <pattern id="hex" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+          <path d="M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z" fill="none" stroke="#00D4FF" strokeWidth="0.5" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#hex)" />
+      </svg>
+      
+      {/* Animated corner accents - enhanced with glow */}
+      <div className="absolute top-0 left-0 w-48 h-48">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <path d="M0 40 L0 0 L40 0" fill="none" stroke="rgba(0, 200, 255, 0.3)" strokeWidth="2" />
-          <path d="M0 60 L0 0 L60 0" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
+          <path d="M0 40 L0 0 L40 0" fill="none" stroke="rgba(0, 200, 255, 0.5)" strokeWidth="3" style={{ filter: 'drop-shadow(0 0 5px rgba(0, 200, 255, 0.8))' }} />
+          <path d="M0 60 L0 0 L60 0" fill="none" stroke="rgba(0, 200, 255, 0.25)" strokeWidth="1.5" />
+          <path d="M0 50 L0 0 L50 0" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
         </svg>
       </div>
-      <div className="absolute top-0 right-0 w-40 h-40">
+      <div className="absolute top-0 right-0 w-48 h-48">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <path d="M100 40 L100 0 L60 0" fill="none" stroke="rgba(0, 200, 255, 0.3)" strokeWidth="2" />
-          <path d="M100 60 L100 0 L40 0" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
+          <path d="M100 40 L100 0 L60 0" fill="none" stroke="rgba(0, 200, 255, 0.5)" strokeWidth="3" style={{ filter: 'drop-shadow(0 0 5px rgba(0, 200, 255, 0.8))' }} />
+          <path d="M100 60 L100 0 L40 0" fill="none" stroke="rgba(0, 200, 255, 0.25)" strokeWidth="1.5" />
+          <path d="M100 50 L100 0 L50 0" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
         </svg>
       </div>
-      <div className="absolute bottom-0 left-0 w-40 h-40">
+      <div className="absolute bottom-0 left-0 w-48 h-48">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <path d="M0 60 L0 100 L40 100" fill="none" stroke="rgba(0, 200, 255, 0.3)" strokeWidth="2" />
-          <path d="M0 40 L0 100 L60 100" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
+          <path d="M0 60 L0 100 L40 100" fill="none" stroke="rgba(0, 200, 255, 0.5)" strokeWidth="3" style={{ filter: 'drop-shadow(0 0 5px rgba(0, 200, 255, 0.8))' }} />
+          <path d="M0 40 L0 100 L60 100" fill="none" stroke="rgba(0, 200, 255, 0.25)" strokeWidth="1.5" />
+          <path d="M0 50 L0 100 L50 100" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
         </svg>
       </div>
-      <div className="absolute bottom-0 right-0 w-40 h-40">
+      <div className="absolute bottom-0 right-0 w-48 h-48">
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          <path d="M100 60 L100 100 L60 100" fill="none" stroke="rgba(0, 200, 255, 0.3)" strokeWidth="2" />
-          <path d="M100 40 L100 100 L40 100" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
+          <path d="M100 60 L100 100 L60 100" fill="none" stroke="rgba(0, 200, 255, 0.5)" strokeWidth="3" style={{ filter: 'drop-shadow(0 0 5px rgba(0, 200, 255, 0.8))' }} />
+          <path d="M100 40 L100 100 L40 100" fill="none" stroke="rgba(0, 200, 255, 0.25)" strokeWidth="1.5" />
+          <path d="M100 50 L100 100 L50 100" fill="none" stroke="rgba(0, 200, 255, 0.15)" strokeWidth="1" />
         </svg>
       </div>
+      
+      {/* Additional floating UI particles */}
+      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{ boxShadow: '0 0 10px #00D4FF, 0 0 20px #00D4FF' }} />
+      <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-cyan-300 rounded-full animate-pulse" style={{ boxShadow: '0 0 8px #00BFFF, 0 0 16px #00BFFF', animationDelay: '0.5s' }} />
+      <div className="absolute top-1/2 left-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-pulse" style={{ boxShadow: '0 0 6px #00D4FF, 0 0 12px #00D4FF', animationDelay: '1s' }} />
     </div>
   );
 }
@@ -285,7 +367,7 @@ export default function LoginPage() {
       className="min-h-screen relative overflow-hidden"
       style={{ 
         background: `
-          linear-gradient(180deg, #010614 0%, #020B2D 30%, #031540 70%, #020B2D 100%)
+          linear-gradient(180deg, #00030a 0%, #010818 20%, #020B2D 40%, #031540 60%, #021035 80%, #010818 100%)
         `
       }}
     >
@@ -308,35 +390,44 @@ export default function LoginPage() {
           className="relative w-full max-w-[380px] animate-fade-in-up"
           style={{ animationDelay: '0.2s' }}
         >
-          {/* Ambient glow behind form */}
+          {/* Ambient glow behind form - enhanced */}
           <div 
-            className="absolute -inset-4 rounded-[40px] blur-3xl opacity-60"
+            className="absolute -inset-6 rounded-[40px] blur-3xl opacity-70 animate-pulse"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(0, 150, 255, 0.25) 0%, rgba(0, 100, 200, 0.1) 50%, transparent 70%)'
+              background: 'radial-gradient(ellipse at center, rgba(0, 180, 255, 0.35) 0%, rgba(0, 120, 220, 0.2) 40%, rgba(0, 80, 180, 0.1) 70%, transparent 100%)',
+              animationDuration: '4s'
             }}
           />
           
-          {/* Glassmorphism form card */}
+          {/* Glassmorphism form card - enhanced */}
           <form 
             onSubmit={handleLogin} 
             className="relative w-full flex flex-col px-8 py-10 rounded-[32px]"
             style={{ 
-              background: 'linear-gradient(135deg, rgba(5, 20, 70, 0.6) 0%, rgba(3, 15, 50, 0.5) 50%, rgba(2, 10, 40, 0.6) 100%)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(0, 200, 255, 0.25)',
+              background: 'linear-gradient(135deg, rgba(8, 25, 80, 0.7) 0%, rgba(5, 18, 60, 0.6) 30%, rgba(3, 15, 50, 0.5) 50%, rgba(5, 18, 60, 0.6) 70%, rgba(8, 25, 80, 0.7) 100%)',
+              backdropFilter: 'blur(30px)',
+              border: '2px solid rgba(0, 200, 255, 0.35)',
               boxShadow: `
-                0 0 40px rgba(0, 150, 255, 0.2),
-                0 0 80px rgba(0, 100, 200, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2)
+                0 0 50px rgba(0, 150, 255, 0.3),
+                0 0 100px rgba(0, 100, 200, 0.15),
+                0 0 150px rgba(0, 80, 180, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3)
               `
             }}
           >
-            {/* Subtle holographic shimmer overlay */}
+            {/* Subtle holographic shimmer overlay - enhanced */}
             <div 
               className="absolute inset-0 rounded-[32px] overflow-hidden pointer-events-none"
               style={{
-                background: 'linear-gradient(135deg, transparent 40%, rgba(0, 212, 255, 0.03) 50%, transparent 60%)',
+                background: 'linear-gradient(135deg, transparent 30%, rgba(0, 212, 255, 0.05) 50%, transparent 70%)',
+              }}
+            />
+            <div 
+              className="absolute inset-0 rounded-[32px] overflow-hidden pointer-events-none animate-shimmer"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.08) 50%, transparent 100%)',
+                opacity: 0.5
               }}
             />
 
@@ -364,13 +455,13 @@ export default function LoginPage() {
                     focus:outline-none transition-all duration-300 ease-out
                     placeholder:text-cyan-300/40"
                   style={{ 
-                    background: 'linear-gradient(135deg, rgba(0, 30, 80, 0.7) 0%, rgba(0, 20, 60, 0.6) 100%)',
+                    background: 'linear-gradient(135deg, rgba(0, 35, 90, 0.8) 0%, rgba(0, 25, 70, 0.7) 100%)',
                     border: focusedField === 'email' 
-                      ? '2px solid #00D4FF' 
-                      : '1.5px solid rgba(0, 200, 255, 0.4)',
+                      ? '2.5px solid #00D4FF' 
+                      : '2px solid rgba(0, 200, 255, 0.5)',
                     boxShadow: focusedField === 'email'
-                      ? '0 0 20px rgba(0, 212, 255, 0.6), 0 0 40px rgba(0, 150, 255, 0.3), inset 0 0 20px rgba(0, 200, 255, 0.05)'
-                      : '0 0 10px rgba(0, 212, 255, 0.2), inset 0 0 15px rgba(0, 100, 200, 0.05)',
+                      ? '0 0 25px rgba(0, 212, 255, 0.8), 0 0 50px rgba(0, 150, 255, 0.4), 0 0 75px rgba(0, 100, 200, 0.2), inset 0 0 25px rgba(0, 200, 255, 0.08)'
+                      : '0 0 15px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 150, 255, 0.15), inset 0 0 20px rgba(0, 100, 200, 0.08)',
                   }}
                 />
                 {/* Glowing icon container */}
@@ -384,12 +475,12 @@ export default function LoginPage() {
                   <MailIcon />
                 </span>
                 
-                {/* Focus glow ring animation */}
+                {/* Focus glow ring animation - enhanced */}
                 {focusedField === 'email' && (
                   <div 
                     className="absolute inset-0 rounded-full animate-pulse pointer-events-none"
                     style={{
-                      boxShadow: '0 0 30px rgba(0, 212, 255, 0.3)',
+                      boxShadow: '0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 150, 255, 0.3)',
                     }}
                   />
                 )}
@@ -420,13 +511,13 @@ export default function LoginPage() {
                     focus:outline-none transition-all duration-300 ease-out
                     placeholder:text-cyan-300/40"
                   style={{ 
-                    background: 'linear-gradient(135deg, rgba(0, 30, 80, 0.7) 0%, rgba(0, 20, 60, 0.6) 100%)',
+                    background: 'linear-gradient(135deg, rgba(0, 35, 90, 0.8) 0%, rgba(0, 25, 70, 0.7) 100%)',
                     border: focusedField === 'password' 
-                      ? '2px solid #00D4FF' 
-                      : '1.5px solid rgba(0, 200, 255, 0.4)',
+                      ? '2.5px solid #00D4FF' 
+                      : '2px solid rgba(0, 200, 255, 0.5)',
                     boxShadow: focusedField === 'password'
-                      ? '0 0 20px rgba(0, 212, 255, 0.6), 0 0 40px rgba(0, 150, 255, 0.3), inset 0 0 20px rgba(0, 200, 255, 0.05)'
-                      : '0 0 10px rgba(0, 212, 255, 0.2), inset 0 0 15px rgba(0, 100, 200, 0.05)',
+                      ? '0 0 25px rgba(0, 212, 255, 0.8), 0 0 50px rgba(0, 150, 255, 0.4), 0 0 75px rgba(0, 100, 200, 0.2), inset 0 0 25px rgba(0, 200, 255, 0.08)'
+                      : '0 0 15px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 150, 255, 0.15), inset 0 0 20px rgba(0, 100, 200, 0.08)',
                   }}
                 />
                 {/* Glowing lock icon */}
@@ -440,12 +531,12 @@ export default function LoginPage() {
                   <LockIcon />
                 </span>
                 
-                {/* Focus glow ring */}
+                {/* Focus glow ring - enhanced */}
                 {focusedField === 'password' && (
                   <div 
                     className="absolute inset-0 rounded-full animate-pulse pointer-events-none"
                     style={{
-                      boxShadow: '0 0 30px rgba(0, 212, 255, 0.3)',
+                      boxShadow: '0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 150, 255, 0.3)',
                     }}
                   />
                 )}
@@ -494,47 +585,50 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* PREMIUM LOGIN BUTTON — Deep glossy gradient with strong neon glow */}
+            {/* PREMIUM LOGIN BUTTON — Deep glossy gradient with strong neon glow - enhanced */}
             <button
               type="submit"
               disabled={loading}
-              className="relative w-full h-[60px] rounded-full text-white font-bold text-[16px] tracking-[3px] uppercase 
+              className="relative w-full h-[64px] rounded-full text-white font-bold text-[17px] tracking-[3px] uppercase 
                 transition-all duration-300 ease-out overflow-hidden group disabled:opacity-60 disabled:cursor-not-allowed mt-4"
               style={{ 
-                background: 'linear-gradient(135deg, #001a4d 0%, #003d99 30%, #004db3 50%, #003d99 70%, #001a4d 100%)',
-                border: '2px solid #00D4FF',
+                background: 'linear-gradient(135deg, #00154d 0%, #003399 25%, #0055cc 50%, #003399 75%, #00154d 100%)',
+                border: '3px solid #00D4FF',
                 boxShadow: `
-                  0 0 20px rgba(0, 212, 255, 0.6),
-                  0 0 40px rgba(0, 150, 255, 0.4),
-                  0 0 60px rgba(0, 100, 200, 0.2),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                  inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+                  0 0 25px rgba(0, 212, 255, 0.8),
+                  0 0 50px rgba(0, 150, 255, 0.5),
+                  0 0 75px rgba(0, 100, 200, 0.3),
+                  0 0 100px rgba(0, 80, 180, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                  inset 0 -1px 0 rgba(0, 0, 0, 0.4)
                 `,
-                textShadow: '0 0 10px rgba(0, 212, 255, 0.8)'
+                textShadow: '0 0 15px rgba(0, 212, 255, 1), 0 0 30px rgba(0, 150, 255, 0.8)'
               }}
               onMouseEnter={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.transform = 'scale(1.03)';
                   e.currentTarget.style.boxShadow = `
-                    0 0 30px rgba(0, 212, 255, 0.9),
-                    0 0 60px rgba(0, 150, 255, 0.6),
-                    0 0 90px rgba(0, 100, 200, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+                    0 0 35px rgba(0, 212, 255, 1),
+                    0 0 70px rgba(0, 150, 255, 0.7),
+                    0 0 105px rgba(0, 100, 200, 0.5),
+                    0 0 140px rgba(0, 80, 180, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.4)
                   `;
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #002666 0%, #004db3 30%, #0066cc 50%, #004db3 70%, #002666 100%)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #002266 0%, #0044aa 25%, #0066dd 50%, #0044aa 75%, #002266 100%)';
                 }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
                 e.currentTarget.style.boxShadow = `
-                  0 0 20px rgba(0, 212, 255, 0.6),
-                  0 0 40px rgba(0, 150, 255, 0.4),
-                  0 0 60px rgba(0, 100, 200, 0.2),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                  inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+                  0 0 25px rgba(0, 212, 255, 0.8),
+                  0 0 50px rgba(0, 150, 255, 0.5),
+                  0 0 75px rgba(0, 100, 200, 0.3),
+                  0 0 100px rgba(0, 80, 180, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                  inset 0 -1px 0 rgba(0, 0, 0, 0.4)
                 `;
-                e.currentTarget.style.background = 'linear-gradient(135deg, #001a4d 0%, #003d99 30%, #004db3 50%, #003d99 70%, #001a4d 100%)';
+                e.currentTarget.style.background = 'linear-gradient(135deg, #00154d 0%, #003399 25%, #0055cc 50%, #003399 75%, #00154d 100%)';
               }}
             >
               {/* Button shimmer effect */}
