@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import RadarShieldLogo from "@/components/RadarShieldLogo";
+import Image from "next/image";
 
 // ── Mail Icon with Neon Glow ──
 function MailIcon() {
@@ -35,101 +35,131 @@ function LockIcon() {
   );
 }
 
-// ── Premium Futuristic Logo with AI Scanner Rings ──
+// ── Project Logo with Cosmic Galaxy Portal Reveal ──
 function PremiumLogo() {
   return (
     <div className="relative flex items-center justify-center" style={{ width: '220px', height: '260px' }}>
-      {/* Massive deep radial glow background */}
+      {/* Deep cosmic galaxy portal background glow */}
       <div className="absolute inset-0 rounded-full animate-pulse" style={{ 
-        background: 'radial-gradient(circle, rgba(0, 180, 255, 0.5) 0%, rgba(0, 120, 220, 0.3) 40%, transparent 80%)',
-        filter: 'blur(40px)',
+        background: 'radial-gradient(circle, rgba(0, 100, 255, 0.6) 0%, rgba(0, 80, 200, 0.4) 20%, rgba(0, 60, 150, 0.3) 40%, rgba(0, 40, 100, 0.2) 60%, transparent 80%)',
+        filter: 'blur(50px)',
         animationDuration: '2s'
       }} />
       
-      {/* Secondary glow layer */}
+      {/* Secondary galaxy energy aura */}
       <div className="absolute inset-0 rounded-full animate-pulse" style={{ 
-        background: 'radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(0, 150, 200, 0.2) 50%, transparent 90%)',
-        filter: 'blur(60px)',
-        animationDuration: '3s',
-        animationDelay: '0.5s'
+        background: 'radial-gradient(circle, rgba(0, 150, 255, 0.4) 0%, rgba(0, 100, 220, 0.3) 30%, rgba(0, 80, 180, 0.2) 50%, transparent 80%)',
+        filter: 'blur(70px)',
+        animationDuration: '2.5s',
+        animationDelay: '0.3s'
       }} />
       
-      {/* Outer rotating scanner ring - thick and dramatic */}
-      <div className="absolute w-[210px] h-[210px] rounded-full border-3 border-cyan-400/30 animate-[spin_18s_linear_infinite]" 
+      {/* Outer cosmic portal ring */}
+      <div className="absolute w-[220px] h-[220px] rounded-full border-4 border-cyan-400/40 animate-[spin_20s_linear_infinite]" 
         style={{ 
-          boxShadow: '0 0 50px rgba(0, 200, 255, 0.5), inset 0 0 50px rgba(0, 200, 255, 0.2), 0 0 100px rgba(0, 150, 255, 0.3)',
+          boxShadow: '0 0 60px rgba(0, 150, 255, 0.6), inset 0 0 60px rgba(0, 150, 255, 0.25), 0 0 120px rgba(0, 100, 200, 0.4)',
           borderStyle: 'dashed',
+          borderWidth: '4px'
+        }} 
+      />
+      
+      {/* Second portal ring (opposite rotation) */}
+      <div className="absolute w-[200px] h-[200px] rounded-full border-3 border-cyan-300/50 animate-[spin_14s_linear_infinite_reverse]" 
+        style={{ 
+          boxShadow: '0 0 45px rgba(0, 180, 255, 0.7), inset 0 0 45px rgba(0, 180, 255, 0.2)',
+          borderStyle: 'dotted',
           borderWidth: '3px'
         }} 
       />
       
-      {/* Second outer rotating scanner ring (opposite direction) */}
-      <div className="absolute w-[190px] h-[190px] rounded-full border-2 border-cyan-300/40 animate-[spin_12s_linear_infinite_reverse]" 
+      {/* Inner portal ring with energy segments */}
+      <div className="absolute w-[180px] h-[180px] rounded-full border-2 border-cyan-400/60 animate-[spin_10s_linear_infinite]" 
         style={{ 
-          boxShadow: '0 0 35px rgba(0, 212, 255, 0.6), inset 0 0 35px rgba(0, 212, 255, 0.15)',
-          borderStyle: 'dotted'
+          boxShadow: '0 0 35px rgba(0, 200, 255, 0.8), inset 0 0 25px rgba(0, 200, 255, 0.3)',
+          background: 'conic-gradient(from 0deg, transparent 0deg, rgba(0, 200, 255, 0.5) 30deg, transparent 60deg, transparent 90deg, rgba(0, 200, 255, 0.5) 120deg, transparent 150deg, transparent 180deg, rgba(0, 200, 255, 0.5) 210deg, transparent 240deg, transparent 270deg, rgba(0, 200, 255, 0.5) 300deg, transparent 330deg)'
         }} 
       />
       
-      {/* Middle rotating scanner ring with segments */}
-      <div className="absolute w-[170px] h-[170px] rounded-full border-2 border-cyan-400/50 animate-[spin_8s_linear_infinite]" 
+      {/* Energy portal ring */}
+      <div className="absolute w-[160px] h-[160px] rounded-full border-2 border-cyan-400/70 animate-[spin_7s_linear_infinite_reverse]" 
         style={{ 
-          boxShadow: '0 0 30px rgba(0, 212, 255, 0.7), inset 0 0 20px rgba(0, 200, 255, 0.25)',
-          background: 'conic-gradient(from 0deg, transparent 0deg, rgba(0, 212, 255, 0.4) 45deg, transparent 90deg, transparent 135deg, rgba(0, 212, 255, 0.4) 180deg, transparent 225deg, rgba(0, 212, 255, 0.4) 270deg, transparent 315deg)'
+          boxShadow: '0 0 30px rgba(0, 212, 255, 0.9), inset 0 0 20px rgba(0, 212, 255, 0.35)',
+          background: 'conic-gradient(from 30deg, transparent 0deg, rgba(0, 180, 255, 0.4) 45deg, transparent 90deg, transparent 135deg, rgba(0, 180, 255, 0.4) 180deg, transparent 225deg)'
         }} 
       />
       
-      {/* Inner scanner ring with different rotation */}
-      <div className="absolute w-[150px] h-[150px] rounded-full border-2 border-cyan-400/60 animate-[spin_6s_linear_infinite_reverse]" 
-        style={{ 
-          boxShadow: '0 0 25px rgba(0, 212, 255, 0.8), inset 0 0 15px rgba(0, 200, 255, 0.3)',
-          background: 'conic-gradient(from 45deg, transparent 0deg, rgba(0, 200, 255, 0.35) 30deg, transparent 60deg, transparent 120deg, rgba(0, 200, 255, 0.35) 150deg, transparent 180deg, transparent 210deg, rgba(0, 200, 255, 0.35) 240deg, transparent 270deg)'
-        }} 
-      />
+      {/* Galaxy portal swirl effect */}
+      <div className="absolute w-[150px] h-[150px] rounded-full animate-[spin_15s_linear_infinite]" style={{ opacity: 0.6 }}>
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          <defs>
+            <radialGradient id="galaxySwirl" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(0, 200, 255, 0.8)" />
+              <stop offset="50%" stopColor="rgba(0, 150, 255, 0.4)" />
+              <stop offset="100%" stopColor="transparent" />
+            </radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="45" fill="url(#galaxySwirl)" opacity="0.5" />
+          <path d="M50 50 m-40 0 a 40 40 0 1 0 80 0" fill="none" stroke="rgba(0, 200, 255, 0.3)" strokeWidth="2" strokeDasharray="10,5" />
+          <path d="M50 50 m-30 0 a 30 30 0 1 0 60 0" fill="none" stroke="rgba(0, 180, 255, 0.4)" strokeWidth="1.5" strokeDasharray="8,4" />
+          <path d="M50 50 m-20 0 a 20 20 0 1 0 40 0" fill="none" stroke="rgba(0, 160, 255, 0.5)" strokeWidth="1" strokeDasharray="5,3" />
+        </svg>
+      </div>
       
-      {/* Pulsing scanner line - horizontal */}
-      <div className="absolute w-[140px] h-[140px] rounded-full overflow-hidden">
-        <div className="absolute w-full h-2 bg-gradient-to-r from-transparent via-cyan-300 to-transparent animate-[scan_2.5s_ease-in-out_infinite]" 
-          style={{ top: '50%', filter: 'blur(3px)', boxShadow: '0 0 20px rgba(0, 212, 255, 0.8)' }} 
+      {/* Project Logo - Emerging from cosmic portal */}
+      <div className="relative z-10 flex items-center justify-center" style={{ 
+        width: '130px', 
+        height: '130px',
+        filter: 'drop-shadow(0 0 30px rgba(0, 150, 255, 1)) drop-shadow(0 0 60px rgba(0, 100, 220, 0.8)) drop-shadow(0 0 100px rgba(0, 80, 200, 0.6))'
+      }}>
+        <Image
+          src="/logo.png"
+          alt="Security System Logo"
+          width={130}
+          height={130}
+          className="object-contain animate-fade-in"
+          style={{
+            filter: 'brightness(1.1) contrast(1.1)'
+          }}
+          priority
         />
       </div>
       
-      {/* Pulsing scanner line - vertical */}
+      {/* Portal energy scan lines */}
       <div className="absolute w-[140px] h-[140px] rounded-full overflow-hidden">
-        <div className="absolute h-full w-2 bg-gradient-to-b from-transparent via-cyan-300 to-transparent animate-[scan_3s_ease-in-out_infinite]" 
-          style={{ left: '50%', filter: 'blur(3px)', boxShadow: '0 0 20px rgba(0, 212, 255, 0.8)', animationDelay: '1s' }} 
+        <div className="absolute w-full h-1.5 bg-gradient-to-r from-transparent via-cyan-300 to-transparent animate-[scan_2s_ease-in-out_infinite]" 
+          style={{ top: '50%', filter: 'blur(2px)', boxShadow: '0 0 15px rgba(0, 212, 255, 1)' }} 
         />
       </div>
       
-      {/* Concentric glowing rings radiating outward - more rings */}
+      {/* Vertical portal beam */}
+      <div className="absolute w-[140px] h-[140px] rounded-full overflow-hidden">
+        <div className="absolute h-full w-1.5 bg-gradient-to-b from-transparent via-cyan-300 to-transparent animate-[scan_2.5s_ease-in-out_infinite]" 
+          style={{ left: '50%', filter: 'blur(2px)', boxShadow: '0 0 15px rgba(0, 212, 255, 1)', animationDelay: '1s' }} 
+        />
+      </div>
+      
+      {/* Radiating portal rings */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="absolute w-[240px] h-[240px] rounded-full border-2 border-cyan-400/15 animate-ping" style={{ animationDuration: '2.5s' }} />
-        <div className="absolute w-[260px] h-[260px] rounded-full border border-cyan-400/12" />
-        <div className="absolute w-[280px] h-[280px] rounded-full border border-cyan-400/10" />
-        <div className="absolute w-[300px] h-[300px] rounded-full border border-cyan-400/8" />
-        <div className="absolute w-[320px] h-[320px] rounded-full border border-cyan-400/5" />
-        <div className="absolute w-[340px] h-[340px] rounded-full border border-cyan-400/3" />
+        <div className="absolute w-[260px] h-[260px] rounded-full border-2 border-cyan-400/20 animate-ping" style={{ animationDuration: '2s' }} />
+        <div className="absolute w-[280px] h-[280px] rounded-full border border-cyan-400/15" />
+        <div className="absolute w-[300px] h-[300px] rounded-full border border-cyan-400/10" />
+        <div className="absolute w-[320px] h-[320px] rounded-full border border-cyan-400/8" />
       </div>
       
-      {/* Orbiting particles */}
-      <div className="absolute w-[200px] h-[200px] rounded-full animate-[spin_10s_linear_infinite]">
-        <div className="absolute top-0 left-1/2 w-3 h-3 bg-cyan-400 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 15px #00D4FF, 0 0 30px #00D4FF' }} />
+      {/* Orbiting energy particles */}
+      <div className="absolute w-[210px] h-[210px] rounded-full animate-[spin_12s_linear_infinite]">
+        <div className="absolute top-0 left-1/2 w-3 h-3 bg-cyan-400 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 20px #00D4FF, 0 0 40px #00D4FF' }} />
       </div>
-      <div className="absolute w-[180px] h-[180px] rounded-full animate-[spin_7s_linear_infinite_reverse]">
-        <div className="absolute top-0 left-1/2 w-2 h-2 bg-cyan-300 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 10px #00BFFF, 0 0 20px #00BFFF' }} />
+      <div className="absolute w-[190px] h-[190px] rounded-full animate-[spin_8s_linear_infinite_reverse]">
+        <div className="absolute top-0 left-1/2 w-2.5 h-2.5 bg-cyan-300 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 15px #00BFFF, 0 0 30px #00BFFF' }} />
       </div>
-      
-      {/* Original RadarShieldLogo - RESTORED with stronger glow */}
-      <div className="relative z-10" style={{ filter: 'drop-shadow(0 0 40px rgba(0, 200, 255, 1)) drop-shadow(0 0 80px rgba(0, 150, 255, 0.7)) drop-shadow(0 0 120px rgba(0, 100, 200, 0.5))' }}>
-        <RadarShieldLogo size={120} />
+      <div className="absolute w-[170px] h-[170px] rounded-full animate-[spin_6s_linear_infinite]">
+        <div className="absolute top-0 left-1/2 w-2 h-2 bg-blue-400 rounded-full" style={{ transform: 'translateX(-50%)', boxShadow: '0 0 12px #0099FF, 0 0 24px #0099FF' }} />
       </div>
       
-      {/* Holographic scan effect overlay - multiple layers */}
-      <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none" style={{ width: '130px', height: '130px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-        <div className="absolute w-full h-full bg-gradient-to-b from-transparent via-cyan-400/15 to-transparent animate-[scan_1.5s_linear_infinite]" />
-      </div>
+      {/* Holographic portal overlay */}
       <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none" style={{ width: '140px', height: '140px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-        <div className="absolute w-full h-full bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-[scan_2s_linear_infinite_reverse]" />
+        <div className="absolute w-full h-full bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent animate-[scan_1.5s_linear_infinite]" />
       </div>
     </div>
   );
