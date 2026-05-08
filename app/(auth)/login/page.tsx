@@ -1,15 +1,15 @@
 // ─────────────────────────────────────────────
 // Login Page — /login
 //
-// Pixel-accurate recreation of the mobile mockup:
-// deep cobalt-blue background, hexagonal radar logo,
-// white floating input fields with right-side icons,
-// dark pill LOGIN button, and a "Forget Password" link.
+// Futuristic cyber-security style redesign with
+// neon blue effects, animated particles, and
+// modern glassmorphism UI while keeping all
+// backend logic and functionality unchanged.
 // ─────────────────────────────────────────────
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -35,6 +35,68 @@ function LockIcon() {
   );
 }
 
+// ── Futuristic Shield Security Logo Component ──
+function FuturisticSecurityLogo() {
+  return (
+    <div className="relative flex items-center justify-center mb-12 animate-fade-in">
+      {/* Outer glow ring */}
+      <div className="absolute w-48 h-48 rounded-full bg-blue-500/10 blur-3xl animate-pulse-slow"></div>
+      
+      {/* Circular digital ring 1 */}
+      <div className="absolute w-44 h-44 rounded-full border-2 border-blue-400/30 animate-spin-slow"></div>
+      
+      {/* Circular digital ring 2 */}
+      <div className="absolute w-40 h-40 rounded-full border border-cyan-400/20 animate-spin-reverse"></div>
+      
+      {/* Shield icon with glow */}
+      <div className="relative z-10 w-32 h-32 flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full blur-xl opacity-50"></div>
+        <svg 
+          width="80" 
+          height="80" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="1.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+          className="relative z-10 text-white drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      </div>
+      
+      {/* Decorative dots */}
+      <div className="absolute top-0 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+      <div className="absolute bottom-0 w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-100"></div>
+      <div className="absolute left-0 w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-200"></div>
+      <div className="absolute right-0 w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-300"></div>
+    </div>
+  );
+}
+
+// ── Animated Background Particles Component ──
+function AnimatedBackground() {
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Animated particles */}
+      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-float opacity-60"></div>
+      <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-float-delay-1 opacity-50"></div>
+      <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full animate-float-delay-2 opacity-40"></div>
+      <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-cyan-300 rounded-full animate-float-delay-3 opacity-50"></div>
+      <div className="absolute top-1/2 left-1/5 w-1 h-1 bg-blue-500 rounded-full animate-float-delay-4 opacity-30"></div>
+      <div className="absolute bottom-1/3 right-1/5 w-1.5 h-1.5 bg-cyan-500 rounded-full animate-float-delay-5 opacity-40"></div>
+      
+      {/* Circuit lines */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
+      <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"></div>
+    </div>
+  );
+}
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -45,6 +107,12 @@ export default function LoginPage() {
   // UI feedback state
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
+
+  // Animation on mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -62,67 +130,69 @@ export default function LoginPage() {
   }
 
   return (
-    /* ── Full-screen deep cobalt-blue background ── */
+    /* ── Full-screen dark futuristic background with cyber effects ── */
     <div
-      className="min-h-screen flex items-center justify-center px-6"
-      style={{ background: "linear-gradient(180deg, #1a4fbb 0%, #1253a8 60%, #0e3d8a 100%)" }}
+      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
+      style={{ 
+        background: "linear-gradient(135deg, #0a0e27 0%, #0d1b3d 50%, #0a1628 100%)"
+      }}
     >
-      <div className="w-full max-w-xs flex flex-col items-center">
+      <AnimatedBackground />
+      
+      <div className={`w-full max-w-sm flex flex-col items-center relative z-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        
+        {/* ── Futuristic Security Logo ── */}
+        <FuturisticSecurityLogo />
 
-        {/* ── Logo ── */}
-        <div className="mb-10">
-          <Image src="/logo.png" alt="Security System Logo" width={205} height={205} className="object-contain" priority />
-        </div>
-
-        {/* ── Form (no card, fields float on the blue bg) ── */}
-        <form onSubmit={handleLogin} className="w-full flex flex-col gap-5">
+        {/* ── Glassmorphism Form Container ── */}
+        <form onSubmit={handleLogin} className="w-full flex flex-col gap-6 backdrop-blur-sm bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl shadow-blue-900/20">
 
           {/* Email field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-white text-base font-normal pl-1">
+          <div className="flex flex-col gap-2">
+            <label className="text-cyan-300 text-sm font-medium tracking-wide pl-1 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
               Email
             </label>
-            <div className="relative">
+            <div className="relative group">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="example@email.com"
-                className="w-full bg-white text-gray-700 placeholder-gray-400 rounded-2xl pl-4 pr-12 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md"
+                className="w-full bg-black/40 text-white placeholder-gray-500 rounded-2xl pl-5 pr-12 py-4 text-sm focus:outline-none border-2 border-blue-500/30 focus:border-cyan-400 shadow-lg shadow-blue-900/30 transition-all duration-300 focus:shadow-[0_0_30px_rgba(34,211,238,0.4)]"
               />
-              {/* Mail icon — right side */}
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              {/* Mail icon — right side with glow */}
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
                 <MailIcon />
               </span>
             </div>
           </div>
 
           {/* Password field */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-white text-base font-normal pl-1">
+          <div className="flex flex-col gap-2">
+            <label className="text-cyan-300 text-sm font-medium tracking-wide pl-1 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
               Password
             </label>
-            <div className="relative">
+            <div className="relative group">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full bg-white text-gray-700 placeholder-gray-400 rounded-2xl pl-4 pr-12 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-md"
+                className="w-full bg-black/40 text-white placeholder-gray-500 rounded-2xl pl-5 pr-12 py-4 text-sm focus:outline-none border-2 border-blue-500/30 focus:border-cyan-400 shadow-lg shadow-blue-900/30 transition-all duration-300 focus:shadow-[0_0_30px_rgba(34,211,238,0.4)]"
               />
-              {/* Lock icon — right side */}
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              {/* Lock icon — right side with glow */}
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-cyan-400 pointer-events-none drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
                 <LockIcon />
               </span>
             </div>
 
             {/* Forget password — right-aligned below password input */}
-            <div className="flex justify-end pr-1">
+            <div className="flex justify-end pr-1 mt-1">
               <Link
                 href="#"
-                className="text-white text-sm hover:text-blue-200 transition-colors"
+                className="text-cyan-300 text-sm hover:text-cyan-200 hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all duration-300"
               >
                 Forget Password
               </Link>
@@ -131,29 +201,98 @@ export default function LoginPage() {
 
           {/* Error message */}
           {error && (
-            <p className="text-red-300 text-xs bg-red-500/20 border border-red-400/30 rounded-xl px-3 py-2 text-center">
+            <p className="text-red-300 text-xs bg-red-500/20 border border-red-400/30 rounded-xl px-4 py-3 text-center backdrop-blur-sm">
               {error}
             </p>
           )}
 
-          {/* LOGIN button — dark pill, bold uppercase */}
+          {/* LOGIN button — futuristic glowing button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-4 rounded-2xl bg-gray-900 hover:bg-black disabled:opacity-60 text-white font-bold text-lg tracking-widest uppercase transition-colors shadow-xl shadow-black/40"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-lg tracking-widest uppercase transition-all duration-300 shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_50px_rgba(34,211,238,0.8)] hover:scale-105 border-2 border-cyan-400/50 backdrop-blur-sm"
           >
             {loading ? "..." : "LOGIN"}
           </button>
 
           {/* Link to signup */}
-          <p className="text-center text-white/70 text-sm mt-1">
+          <p className="text-center text-gray-400 text-sm mt-2">
             No account?{" "}
-            <Link href="/signup" className="text-white font-semibold hover:text-blue-200 underline underline-offset-2">
+            <Link href="/signup" className="text-cyan-300 font-semibold hover:text-cyan-200 hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.8)] transition-all duration-300">
               Sign up
             </Link>
           </p>
         </form>
       </div>
+      
+      {/* Custom styles for animations */}
+      <style jsx global>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-20px) translateX(10px); }
+          50% { transform: translateY(-10px) translateX(-10px); }
+          75% { transform: translateY(-30px) translateX(5px); }
+        }
+        @keyframes float-delay-1 {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-15px) translateX(-15px); }
+          50% { transform: translateY(-25px) translateX(10px); }
+          75% { transform: translateY(-10px) translateX(-5px); }
+        }
+        @keyframes float-delay-2 {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-25px) translateX(15px); }
+          50% { transform: translateY(-15px) translateX(-10px); }
+          75% { transform: translateY(-20px) translateX(5px); }
+        }
+        @keyframes float-delay-3 {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-20px) translateX(-10px); }
+          50% { transform: translateY(-30px) translateX(15px); }
+          75% { transform: translateY(-15px) translateX(-5px); }
+        }
+        @keyframes float-delay-4 {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-30px) translateX(10px); }
+          50% { transform: translateY(-20px) translateX(-15px); }
+          75% { transform: translateY(-10px) translateX(5px); }
+        }
+        @keyframes float-delay-5 {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          25% { transform: translateY(-15px) translateX(-5px); }
+          50% { transform: translateY(-25px) translateX(10px); }
+          75% { transform: translateY(-20px) translateX(-15px); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-float { animation: float 8s ease-in-out infinite; }
+        .animate-float-delay-1 { animation: float-delay-1 9s ease-in-out infinite; }
+        .animate-float-delay-2 { animation: float-delay-2 10s ease-in-out infinite; }
+        .animate-float-delay-3 { animation: float-delay-3 11s ease-in-out infinite; }
+        .animate-float-delay-4 { animation: float-delay-4 12s ease-in-out infinite; }
+        .animate-float-delay-5 { animation: float-delay-5 13s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-spin-reverse { animation: spin-reverse 25s linear infinite; }
+        .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+        .animate-fade-in { animation: fade-in 0.8s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+      `}</style>
     </div>
   );
 }
